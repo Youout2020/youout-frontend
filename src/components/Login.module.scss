@@ -1,3 +1,21 @@
-.splash {
+@import '../styles/theme.module.scss';
 
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+
+  .splash {
+    width: 90vw;
+  }
+
+  .loginButton {
+    width: 50vw;
+    height: 40px;
+    border-radius: 20px;
+    background: rgb(105, 164, 212);
+    color: $light-pink;
+  }
 }

@@ -4,11 +4,12 @@ import SRC from '../constants/src';
 import styles from './Login.module.scss';
 
 const Login = ({ onLogin }) => {
+  //TODO: Button component 만들기
   return (
-    <>
+    <div className={styles.container}>
       <img className={styles.splash} src={`${process.env.PUBLIC_URL}${SRC.splash}`} />
-      <button onClick={onLogin}>Login</button>
-    </>
+      <button className={styles.loginButton} onClick={onLogin}>Continue with Google</button>
+    </div>
   );
 };
 

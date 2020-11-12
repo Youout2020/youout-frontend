@@ -1,0 +1,40 @@
+$light-pink: #FFDEDC;
+$pink: #F1B6B5;
+$gray: #93939B;
+$dark-green: #5f6863;
+$green: #C8D2C7;
+$light-green: #DFE2DB;
+$red: #DA4040;
+
+$font-size-1: 12px;
+$font-size-2: 18px;
+$font-size-3: 24px;
+$font-size-4: 36px;
+$font-size-5: 42px;
+$font-size-6: 80px;
+
+@mixin buttonBase($border, $background) {
+  display: inline;
+  background-color: $background;
+  padding: 5px 20px;
+  transition: all 0.3s;
+  border: $border;
+  border-radius: 5px;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+}
+
+@mixin inputBase() {
+  border: none;
+  border-bottom: 1px solid $gray;
+  background: none;
+  text-align: center;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}

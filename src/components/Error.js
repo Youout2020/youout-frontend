@@ -5,8 +5,10 @@ import propTypes from 'prop-types';
 import ROUTE from '../constants/route';
 
 const Error = ({ message }) => {
+  const histoty = useHistory();
+
   const handleRenderHome = () => {
-    useHistory(ROUTE.home);
+    histoty.push(ROUTE.home);
   };
 
   return (
