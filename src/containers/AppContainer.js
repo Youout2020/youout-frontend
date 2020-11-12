@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import Loader from 'react-loader-spinner';
 
 import Error from '../components/Error';
 import Login from '../components/Login';
@@ -9,6 +10,7 @@ import api from '../utils/api';
 import { initUser } from '../reducer/user';
 import ROUTE from '../constants/route';
 import { findCookie } from '../utils';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const AppContainer = () => {
   const [ isLoading, setIsLoading ] = useState(true);
@@ -25,7 +27,7 @@ const AppContainer = () => {
     (async () => {
       try {
         const { user } = await firebase.listenRedirect();
-        setIsLoading(false);
+        setIsLoading(true);
 
         if (findCookie('token')) {
           history.push(ROUTE.games);
@@ -57,7 +59,12 @@ const AppContainer = () => {
       {
         isLoading
         ?
-        <div>Loading.....</div>
+        <Loader
+          type='ThreeDots'
+          color='rgb(112, 112, 112)'
+          height={50}
+          width={50}
+        />
         :
           <Switch>
             <Route path={ROUTE.login}>
