@@ -1,0 +1,14 @@
+@import '../styles/theme.module.scss';
+
+.container {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100vw;
+  height: 10vh;
+  padding: 5vw;
+  background-color: black;
+  color: white;
+}
