@@ -9,3 +9,16 @@ export const findCookie = (key) => {
 
   return cookies[key];
 };
+
+export const getUserLocation = () => {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition((position, err) => {
+      if (err) reject(err);
+
+      resolve({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      });
+    });
+  });
+};
