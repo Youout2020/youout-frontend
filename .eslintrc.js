@@ -20,31 +20,32 @@ module.exports = {
   ],
   'rules': {
     'semi': [
-      'error',
+      'warn',
       'always',
     ],
     'quotes': [
-      'error',
+      'warn',
       'single',
     ],
     'eol-last': [
-      'error',
+      'warn',
       'always',
     ],
     'no-unused-vars': [
-      'error',
+      'warn',
       {
         'args': 'none',
       },
     ],
     'arrow-parens': [
-      'error',
+      'warn',
       'always',
     ],
     'func-style': [
-      'error',
+      'warn',
       'expression',
     ],
     'no-unsafe-finally': 'off',
+    'react/prop-types': 'off',
   },
 };
