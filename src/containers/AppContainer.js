@@ -8,6 +8,7 @@ import firebase from '../utils/firebase';
 import api from '../utils/api';
 import { initUser } from '../reducer/user';
 import ROUTE from '../constants/route';
+import { findCookie } from '../utils';
 
 const AppContainer = () => {
   const [ isLoading, setIsLoading ] = useState(true);
@@ -26,6 +27,11 @@ const AppContainer = () => {
         const { user } = await firebase.listenRedirect();
         setIsLoading(false);
 
+        if (findCookie('token')) {
+          history.push(ROUTE.games);
+          return;
+        }
+
         if (!user) {
           history.push(ROUTE.login);
           return;
@@ -33,13 +39,13 @@ const AppContainer = () => {
 
         const { email, displayName, photoURL } = user;
         const body = { email, name: displayName, image: photoURL };
-        const data = await api.post({ path: ROUTE.login, body });
+        const response = await api.post({ path: ROUTE.login, body });
 
-        dispatch(initUser(data));
+        document.cookie = `token=${response.token}`;
+        dispatch(initUser(response.user));
 
         history.push(ROUTE.games);
       } catch (err) {
-        console.error(err);
         setErrMessage(err.message);
         history.push(ROUTE.error);
       }

@@ -6,21 +6,22 @@ const logger = (errorMessage) => {
   }
 };
 
-const post = async ({ path, body, options }) => {
+const post = async ({ path, body, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
-      credentials: 'include',
     };
 
     Object.keys(options).forEach((key) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, status, errMessage } = await fetch(`${SERVER_URI}${path}`, {
+    const { data, errMessage, status } = await fetch(`${SERVER_URI}${path}`, {
+      method: 'POST',
+      credentials: 'include',
       headers,
-      body,
-    });
+      body: JSON.stringify(body),
+    }).then((result) => result.json());
 
     if (status >= 400) throw Error(errMessage);
 
