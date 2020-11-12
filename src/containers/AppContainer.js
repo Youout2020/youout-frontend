@@ -3,6 +3,7 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import Error from '../components/Error';
+import Login from '../components/Login';
 import firebase from '../utils/firebase';
 import api from '../utils/api';
 import { initUser } from '../reducer/user';
@@ -54,13 +55,13 @@ const AppContainer = () => {
         :
           <Switch>
             <Route path={ROUTE.login}>
-              <button onClick={handleLogin}>LOGIN</button>
+              <Login onLogin={handleLogin} />
             </Route>
             <Route path={ROUTE.games}>
               <div>games</div>
             </Route>
             <Route path={ROUTE.error}>
-              <Error message={errMessage}/>
+              <Error message={errMessage} />
             </Route>
           </Switch>
       }
