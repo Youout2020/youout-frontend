@@ -14,4 +14,9 @@
     background: rgb(112, 112, 112);
     color: $white;
   }
+
+  &:first-child {
+    position: fixed;
+    top: 0;
+  }
 }

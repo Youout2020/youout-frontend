@@ -18,7 +18,7 @@ const AppContainer = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     history.push(ROUTE.home);
     firebase.googleLogin();
   };

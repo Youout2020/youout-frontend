@@ -8,8 +8,9 @@ const Login = ({ onLogin }) => {
   //TODO: Button component 만들기
   return (
     <div className={styles.container}>
-      <Splash />
-      <Button text='Login with Google' onClick={onLogin} />
+      <Splash>
+        <Button text='Login with Google' onClick={onLogin} />
+      </Splash>
     </div>
   );
 };
