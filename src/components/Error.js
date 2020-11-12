@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import ROUTE from '../constants/route';
 
@@ -20,7 +20,7 @@ const Error = ({ message }) => {
 };
 
 Error.propTypes = {
-  message: propTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
 };
 
 export default Error;

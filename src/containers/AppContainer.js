@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Loader from 'react-loader-spinner';
 
 import Error from '../components/Error';
 import Login from '../components/Login';
+import Loading from '../components/Loading';
 import firebase from '../utils/firebase';
 import api from '../utils/api';
 import { initUser } from '../reducer/user';
@@ -27,7 +27,7 @@ const AppContainer = () => {
     (async () => {
       try {
         const { user } = await firebase.listenRedirect();
-        setIsLoading(true);
+        setIsLoading(false);
 
         if (findCookie('token')) {
           history.push(ROUTE.games);
@@ -59,12 +59,7 @@ const AppContainer = () => {
       {
         isLoading
         ?
-        <Loader
-          type='ThreeDots'
-          color='rgb(112, 112, 112)'
-          height={50}
-          width={50}
-        />
+        <Loading />
         :
           <Switch>
             <Route path={ROUTE.login}>
