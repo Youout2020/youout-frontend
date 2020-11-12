@@ -6,6 +6,31 @@ const logger = (errorMessage) => {
   }
 };
 
+const get = async({ path, options = {} }) => {
+  try {
+    const headers = {
+      'content-type': 'application/json',
+    };
+
+    Object.keys(options).forEach((key) => {
+      headers[key.toLowerCase()] = options[key];
+    });
+
+    const { data, errMessage, status } = await fetch(`${SERVER_URI}${path}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers,
+    }).then((result) => result.json());
+
+    if (status >= 400) throw Error(errMessage);
+
+    return data;
+  } catch (err) {
+    logger('🔥 Error fired: business -> api -> get');
+    throw(err);
+  }
+};
+
 const post = async ({ path, body, options = {} }) => {
   try {
     const headers = {
@@ -27,11 +52,12 @@ const post = async ({ path, body, options = {} }) => {
 
     return data;
   } catch (err) {
-    logger('🔥 Error fired: business -> api -> get');
+    logger('🔥 Error fired: business -> api -> post');
     throw(err);
   }
 };
 
 export default {
+  get,
   post,
 };
