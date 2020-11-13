@@ -3,4 +3,5 @@ export default {
   login: '/login',
   games: '/games',
   error: '/error',
+  user: '/user',
 };

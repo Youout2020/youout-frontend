@@ -32,6 +32,8 @@ const AppContainer = () => {
         setIsLoading(false);
 
         if (findCookie('token')) {
+          const response = await api.get({ path: ROUTE.user });
+          dispatch(initUser(response.user));
           history.push(ROUTE.games);
           return;
         }
