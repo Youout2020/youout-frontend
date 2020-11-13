@@ -11,10 +11,12 @@ import { findCookie } from '../utils';
 import { initUser } from '../reducer/user';
 import ROUTE from '../constants/route';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import GameContainer from './GameContainer';
 
 const AppContainer = () => {
   const [ isLoading, setIsLoading ] = useState(true);
   const [ errMessage, setErrMessage ] = useState('');
+
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -63,13 +65,13 @@ const AppContainer = () => {
         :
         <Switch>
           <Route path={ROUTE.login}>
-            <Login onLogin={handleLogin}/>
+            <Login onLogin={handleLogin} />
           </Route>
           <Route path={ROUTE.games}>
-            <div>games</div>
+            <GameContainer />
           </Route>
           <Route path={ROUTE.error}>
-            <Error message={errMessage}/>
+            <Error message={errMessage} />
           </Route>
         </Switch>
       }

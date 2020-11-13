@@ -5,7 +5,6 @@ import Button from './Button';
 import styles from './Login.module.scss';
 
 const Login = ({ onLogin }) => {
-  //TODO: Button component 만들기
   return (
     <div className={styles.container}>
       <Splash>
