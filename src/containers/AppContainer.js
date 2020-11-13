@@ -16,6 +16,10 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 const AppContainer = () => {
   const [ isLoading, setIsLoading ] = useState(true);
   const [ errMessage, setErrMessage ] = useState('');
+  const [ gameList, setGameList ] = useState([]);
+  const [ nextGameListToken, setNextGameListToken ] = useState('');
+  const [ hasNextPage, setHasNextPage ] = useState(false);
+
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -27,7 +31,26 @@ const AppContainer = () => {
   const getGameList = async () => {
     try {
       const { lat, lng } = await getUserLocation();
-      return await api.get({ path: `${ROUTE.games}?lat=${lat}&lng=${lng}` });
+      const response = await api.get({ path: `${ROUTE.games}?type=location&lat=${lat}&lng=${lng}` });
+      setNextGameListToken(response.data.nextPage);
+      setHasNextPage(response.data.hasNextPage);
+      setGameList(response.data.doc);
+    } catch (err) {
+      setErrMessage(err.message);
+      history.push(ROUTE.error);
+    }
+  };
+
+  const getNextGameList = async () => {
+    try {
+      const { lat, lng } = await getUserLocation();
+      const response = await api.get({ path: `${ROUTE.games}?type=location&lat=${lat}&lng=${lng}&page=${nextGameListToken}` });
+      setNextGameListToken(response.data.nextPage);
+      setHasNextPage(response.data.hasNextPage);
+      setGameList(
+        ...gameList,
+        response.data.docs,
+      );
     } catch (err) {
       setErrMessage(err.message);
       history.push(ROUTE.error);
@@ -77,7 +100,11 @@ const AppContainer = () => {
               <Login onLogin={handleLogin} />
             </Route>
             <Route path={ROUTE.games}>
-              <Games onGetList={getGameList} />
+              <Games
+                gameList={gameList}
+                onGetList={getGameList}
+                onGetNextList={getNextGameList}
+              />
             </Route>
             <Route path={ROUTE.error}>
               <Error message={errMessage} />

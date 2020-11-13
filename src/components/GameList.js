@@ -12,7 +12,11 @@ const GameList = ({ list }) => {
 
   return (
     <div className={styles.container}>
-      <Button className='filterButton' text='Wating only' onClick={handleFilter} />
+      <Button
+        className='toggleButton'
+        text={isSelected ? 'All' : 'Waiting'}
+        onClick={handleFilter}
+      />
       {
         !list.length
         ?
@@ -27,12 +31,12 @@ const GameList = ({ list }) => {
         :
         (
           isSelected
-          ? list.filter((item) => !item.isPlaying)
+          ? list.filter((item) => !item.status.isPlaying)
           : list
         ).map((item) => {
           return (
             <GameItem
-              isPlaying={item.isPlaying}
+              isPlaying={item.status.isPlaying}
               name={item.name}
               users={item.users.length}
               key={item._id}
