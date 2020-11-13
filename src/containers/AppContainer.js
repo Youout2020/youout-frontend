@@ -5,11 +5,12 @@ import { useDispatch } from 'react-redux';
 import Error from '../components/Error';
 import Login from '../components/Login';
 import Loading from '../components/Loading';
+import Games from '../components/Games';
 import firebase from '../utils/firebase';
 import api from '../utils/api';
 import { initUser } from '../reducer/user';
 import ROUTE from '../constants/route';
-import { findCookie } from '../utils';
+import { findCookie, getUserLocation } from '../utils';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const AppContainer = () => {
@@ -21,6 +22,16 @@ const AppContainer = () => {
   const handleLogin = () => {
     history.push(ROUTE.home);
     firebase.googleLogin();
+  };
+
+  const getGameList = async () => {
+    try {
+      const { lat, lng } = await getUserLocation();
+      return await api.get({ path: `${ROUTE.games}?lat=${lat}&lng=${lng}` });
+    } catch (err) {
+      setErrMessage(err.message);
+      history.push(ROUTE.error);
+    }
   };
 
   useEffect(() => {
@@ -66,7 +77,7 @@ const AppContainer = () => {
               <Login onLogin={handleLogin} />
             </Route>
             <Route path={ROUTE.games}>
-              <div>games</div>
+              <Games onGetList={getGameList} />
             </Route>
             <Route path={ROUTE.error}>
               <Error message={errMessage} />

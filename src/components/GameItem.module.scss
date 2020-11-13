@@ -1,0 +1,41 @@
+@import '../styles/theme.module.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  padding: 2vw 4vw;
+  height: 10vh;
+  border-radius: 10px;
+  background-color: $livid;
+
+  .status {
+    border-radius: 10px;
+    font-size: $font-size-1;
+    color: $white;
+
+    .playingBullet {
+      background-color: $black;
+      padding: 0 10px;
+      border-radius: 10px;
+    }
+
+    .waitingBullet {
+      background-color: $blue-gray;
+      padding: 0 10px;
+      border-radius: 10px;
+    }
+  }
+
+  .gameInfo {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding: 0 10px;
+
+    .name {
+      font-size: $font-size-2;
+      font-weight: 600;
+    }
+  }
+}
