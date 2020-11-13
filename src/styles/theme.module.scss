@@ -1,0 +1,23 @@
+$livid: #6a89cc;
+$blue: #4a69bd;
+$blue-gray: #3c6382;
+$white: #ffffff;
+$black: #2f3542;
+$white-gray: #ced6e0;
+
+$font-size-1: 12px;
+$font-size-2: 18px;
+$font-size-3: 24px;
+$font-size-4: 36px;
+$font-size-5: 42px;
+$font-size-6: 80px;
+
+@mixin buttonBase() {
+  display: inline;
+  background-color: $livid;
+  padding: 10px 30px;
+  border: $black;
+  border-radius: 20px;
+  color: $white;
+  font-size: $font-size-1;
+}
