@@ -11,6 +11,7 @@ import { findCookie } from '../utils';
 import { initUser } from '../reducer/user';
 import ROUTE from '../constants/route';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import UserContainer from './UserContainer';
 import GameContainer from './GameContainer';
 
 const AppContainer = () => {
@@ -28,7 +29,9 @@ const AppContainer = () => {
   useEffect(() => {
     (async () => {
       try {
+        console.log(1);
         const { user } = await firebase.listenRedirect();
+        console.log(2);
         setIsLoading(false);
 
         if (findCookie('token')) {
@@ -71,6 +74,9 @@ const AppContainer = () => {
           </Route>
           <Route path={ROUTE.games}>
             <GameContainer />
+          </Route>
+          <Route path={ROUTE.user}>
+            <UserContainer />
           </Route>
           <Route path={ROUTE.error}>
             <Error message={errMessage} />
