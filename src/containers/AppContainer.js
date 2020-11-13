@@ -31,10 +31,10 @@ const AppContainer = () => {
   const getGameList = async () => {
     try {
       const { lat, lng } = await getUserLocation();
-      const response = await api.get({ path: `${ROUTE.games}?type=location&lat=${lat}&lng=${lng}` });
-      setNextGameListToken(response.data.nextPage);
-      setHasNextPage(response.data.hasNextPage);
-      setGameList(response.data.doc);
+      const response = await api.get({ path: `${ROUTE.games}?type=location&lat=${126.8719347}&lng=${33.3765812}` });
+      setNextGameListToken(response.nextPage);
+      setHasNextPage(response.hasNextPage);
+      setGameList(response.docs);
     } catch (err) {
       setErrMessage(err.message);
       history.push(ROUTE.error);
@@ -44,12 +44,12 @@ const AppContainer = () => {
   const getNextGameList = async () => {
     try {
       const { lat, lng } = await getUserLocation();
-      const response = await api.get({ path: `${ROUTE.games}?type=location&lat=${lat}&lng=${lng}&page=${nextGameListToken}` });
-      setNextGameListToken(response.data.nextPage);
-      setHasNextPage(response.data.hasNextPage);
+      const response = await api.get({ path: `${ROUTE.games}?type=location&lat=${126.8719347}&lng=${33.3765812}&page=${nextGameListToken}` });
+      setNextGameListToken(response.nextPage);
+      setHasNextPage(response.hasNextPage);
       setGameList(
         ...gameList,
-        response.data.docs,
+        response.docs,
       );
     } catch (err) {
       setErrMessage(err.message);

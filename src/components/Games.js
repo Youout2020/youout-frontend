@@ -11,6 +11,7 @@ const Games = ({ gameList, onGetList, onGetNextList }) => {
   }, []);
 
   useEffect(() => {
+    if (!target) return;
     let observer;
     if (target) {
       observer = new IntersectionObserver(onIntersect, { threshold: 1 });
