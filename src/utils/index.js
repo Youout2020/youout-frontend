@@ -16,8 +16,8 @@ export const getUserLocation = () => {
       if (err) reject(err);
 
       resolve({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
+        lat: 126.8719347,
+        lng: 33.3765812,
       });
     });
   });

@@ -5,20 +5,17 @@ import { useDispatch } from 'react-redux';
 import Error from '../components/Error';
 import Login from '../components/Login';
 import Loading from '../components/Loading';
-import Games from '../components/Games';
 import firebase from '../utils/firebase';
 import api from '../utils/api';
 import { initUser } from '../reducer/user';
 import ROUTE from '../constants/route';
-import { findCookie, getUserLocation } from '../utils';
+import { findCookie } from '../utils';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import GameContainer from './GameContainer';
 
 const AppContainer = () => {
   const [ isLoading, setIsLoading ] = useState(true);
   const [ errMessage, setErrMessage ] = useState('');
-  const [ gameList, setGameList ] = useState([]);
-  const [ nextGameListToken, setNextGameListToken ] = useState('');
-  const [ hasNextPage, setHasNextPage ] = useState(false);
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -26,35 +23,6 @@ const AppContainer = () => {
   const handleLogin = () => {
     history.push(ROUTE.home);
     firebase.googleLogin();
-  };
-
-  const getGameList = async () => {
-    try {
-      const { lat, lng } = await getUserLocation();
-      const response = await api.get({ path: `${ROUTE.games}?type=location&lat=${126.8719347}&lng=${33.3765812}` });
-      setNextGameListToken(response.nextPage);
-      setHasNextPage(response.hasNextPage);
-      setGameList(response.docs);
-    } catch (err) {
-      setErrMessage(err.message);
-      history.push(ROUTE.error);
-    }
-  };
-
-  const getNextGameList = async () => {
-    try {
-      const { lat, lng } = await getUserLocation();
-      const response = await api.get({ path: `${ROUTE.games}?type=location&lat=${126.8719347}&lng=${33.3765812}&page=${nextGameListToken}` });
-      setNextGameListToken(response.nextPage);
-      setHasNextPage(response.hasNextPage);
-      setGameList(
-        ...gameList,
-        response.docs,
-      );
-    } catch (err) {
-      setErrMessage(err.message);
-      history.push(ROUTE.error);
-    }
   };
 
   useEffect(() => {
@@ -100,11 +68,7 @@ const AppContainer = () => {
               <Login onLogin={handleLogin} />
             </Route>
             <Route path={ROUTE.games}>
-              <Games
-                gameList={gameList}
-                onGetList={getGameList}
-                onGetNextList={getNextGameList}
-              />
+              <GameContainer />
             </Route>
             <Route path={ROUTE.error}>
               <Error message={errMessage} />
