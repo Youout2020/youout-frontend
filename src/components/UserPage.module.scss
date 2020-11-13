@@ -1,0 +1,44 @@
+.imageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(233, 169, 169);
+  height: 200px;
+
+  img {
+    margin-top: 20px;
+    border-radius: 100px;
+  }
+
+  p {
+    text-align: center;
+  }
+}
+
+.historiesContainer,
+.myRoomsContainer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+
+  ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    & button {
+      width: 150px;
+      height: 50px;
+      margin: 5px;
+    }
+  }
+}
+
+.myRoomsContainer {
+  height: 200px;
+}
