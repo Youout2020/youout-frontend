@@ -13,9 +13,9 @@ export default createReducer(initState, {
     return state = action.payload;
   },
   [ADD_NEXT_GAME]: (state, action) => {
-    return [
-      ...state,
-      ...action.payload,
-    ];
+    const { docs, nextPage, hasNextPage } = action.payload;
+    state.docs = state.docs.concat(docs);
+    state.nextPage = nextPage;
+    state.hasNextPage = hasNextPage;
   },
 });
