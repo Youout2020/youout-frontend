@@ -63,17 +63,17 @@ const AppContainer = () => {
         ?
         <Loading />
         :
-          <Switch>
-            <Route path={ROUTE.login}>
-              <Login onLogin={handleLogin} />
-            </Route>
-            <Route path={ROUTE.games}>
-              <GameContainer />
-            </Route>
-            <Route path={ROUTE.error}>
-              <Error message={errMessage} />
-            </Route>
-          </Switch>
+        <Switch>
+          <Route path={ROUTE.login}>
+            <Login onLogin={handleLogin} />
+          </Route>
+          <Route path={ROUTE.games}>
+            <GameContainer />
+          </Route>
+          <Route path={ROUTE.error}>
+            <Error message={errMessage} />
+          </Route>
+        </Switch>
       }
     </div>
   );
