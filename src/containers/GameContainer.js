@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import Header from '../components/Header';
 import GameList from '../components/GameList';
@@ -56,7 +56,7 @@ const GameContainer = () => {
 
     let observer;
     if (target) {
-      observer = new IntersectionObserver(onIntersect, { threshold: 1 });
+      observer = new IntersectionObserver(onIntersect, { threshold: [0.25] });
       observer.observe(target);
     }
 
