@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux';
 import Error from '../components/Error';
 import Login from '../components/Login';
 import Loading from '../components/Loading';
-import firebase from '../utils/firebase';
 import api from '../utils/api';
+import firebase from '../utils/firebase';
+import { findCookie } from '../utils';
 import { initUser } from '../reducer/user';
 import ROUTE from '../constants/route';
-import { findCookie } from '../utils';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import GameContainer from './GameContainer';
 
