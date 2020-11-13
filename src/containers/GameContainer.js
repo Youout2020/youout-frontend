@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Header from '../components/Header';
 import GameList from '../components/GameList';
 import api from '../utils/api';
 import ROUTE from '../constants/route';
 import { getUserLocation } from '../utils';
+import { initGame, addNextGame } from '../reducer/game';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import { useHistory } from 'react-router-dom';
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 10;
@@ -24,6 +26,8 @@ const usePagination = (option) => {
     setList(docs);
     setPage(nextPage);
     setHasNextPage(hasNextPage);
+
+    return { docs, nextPage, hasNextPage };
   };
 
   const next = async () => {
@@ -34,6 +38,8 @@ const usePagination = (option) => {
     setPage(nextPage);
     setHasNextPage(hasNext);
     setList([...list, ...docs]);
+
+    return { nextPage, docs, hasNextPage: hasNext };
   };
 
   return {
@@ -51,20 +57,16 @@ const GameContainer = () => {
   const [ isLoading, setIsLoading ] = useState(true);
   const [ errMessage, setErrMessage ] = useState('');
   const [ target, setTarget ] = useState(null);
+  const dispatch = useDispatch();
   const history = useHistory();
   const gameList = usePagination();
-
-  const onIntersect = ([{ isIntersecting }]) => {
-    if (isIntersecting) {
-      gameList.next();
-    }
-  };
 
   useEffect(() => {
     (async () => {
       try {
         const { lat, lng } = await getUserLocation();
-        await gameList.init(`${ROUTE.games}?type=location&lat=${lat}&lng=${lng}`);
+        const response = await gameList.init(`${ROUTE.games}?type=location&lat=${lat}&lng=${lng}`);
+        dispatch(initGame(response));
         setIsLoading(false);
       } catch (err) {
         setErrMessage(err.message);
@@ -73,12 +75,19 @@ const GameContainer = () => {
     })();
   }, []);
 
+  const onIntersect = async ([{ isIntersecting }]) => {
+    if (isIntersecting) {
+      const response = await gameList.next();
+      dispatch(initGame(response));
+    }
+  };
+
   useEffect(() => {
     if (!target) return;
 
     let observer;
     if (target) {
-      observer = new IntersectionObserver(onIntersect, { threshold: 1 });
+      observer = new IntersectionObserver(onIntersect, { threshold: [0.25] });
       observer.observe(target);
     }
 

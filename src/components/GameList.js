@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import GameItem from '../components/GameItem';
+import GameRoom from './GameRoom';
 import Button from './Button';
 import styles from './GameList.module.scss';
 import Loading from './Loading';
@@ -41,7 +41,7 @@ const GameList = ({ isLoading, list, setTarget }) => {
         ).map((item, index) => {
           const lastItem = index === list.length - 1;
           return (
-            <GameItem
+            <GameRoom
               isPlaying={item.status.isPlaying}
               name={item.name}
               users={item.users.length}
