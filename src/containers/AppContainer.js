@@ -12,6 +12,7 @@ import { initUser } from '../reducer/user';
 import ROUTE from '../constants/route';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import GameContainer from './GameContainer';
+import NewGame from '../components/NewGame';
 
 const AppContainer = () => {
   const [ isLoading, setIsLoading ] = useState(true);
@@ -68,6 +69,9 @@ const AppContainer = () => {
         <Switch>
           <Route path={ROUTE.login}>
             <Login onLogin={handleLogin} />
+          </Route>
+          <Route path={`${ROUTE.games}/new`}>
+            <NewGame />
           </Route>
           <Route path={ROUTE.games}>
             <GameContainer />

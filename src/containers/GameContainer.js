@@ -9,6 +9,7 @@ import ROUTE from '../constants/route';
 import { getUserLocation } from '../utils';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { initGame, addNextGame } from '../reducer/game';
+import Button from '../components/Button';
 
 const GameContainer = () => {
   const [ isLoading, setIsLoading ] = useState(true);

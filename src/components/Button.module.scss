@@ -13,3 +13,16 @@
   color: $white;
   font-size: $font-size-1;
 }
+
+.newRoomButton {
+  position: fixed;
+  left: 25%;
+  bottom: 3vh;
+  width: 50%;
+  padding: 10px;
+  border: 2px solid $black;
+  border-radius: 30px;
+  background-color: $white;
+  color: $black;
+  font-size: $font-size-2;
+}

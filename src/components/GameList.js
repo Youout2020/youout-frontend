@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import GameRoom from './GameRoom';
 import Button from './Button';
-import styles from './GameList.module.scss';
 import Loading from './Loading';
+import ROUTE from '../constants/route';
+import styles from './GameList.module.scss';
 
-//TODO: '방 만들기' button onClick event 컴포넌트로 이동시키기
 const GameList = ({ isLoading, list, setTarget }) => {
+  const history = useHistory();
   const [ isSelected, setIsSelected ] = useState(false);
   const handleFilter = () => {
     setIsSelected(!isSelected);
@@ -51,6 +53,11 @@ const GameList = ({ isLoading, list, setTarget }) => {
           );
         })
       }
+      <Button
+        className='newRoomButton'
+        text='방 만들기'
+        onClick={() => history.push(`${ROUTE.games}/new`)}
+      />
     </div>
   );
 };
