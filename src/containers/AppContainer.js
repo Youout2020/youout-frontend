@@ -29,13 +29,11 @@ const AppContainer = () => {
   useEffect(() => {
     (async () => {
       try {
-        console.log(1);
         const { user } = await firebase.listenRedirect();
-        console.log(2);
         setIsLoading(false);
 
         if (findCookie('token')) {
-          const response = await api.get({ path: ROUTE.user });
+          const response = await api.get({ path: ROUTE.user.main });
           dispatch(initUser(response.user));
           history.push(ROUTE.games);
           return;
@@ -75,7 +73,7 @@ const AppContainer = () => {
           <Route path={ROUTE.games}>
             <GameContainer />
           </Route>
-          <Route path={ROUTE.user}>
+          <Route path={ROUTE.user.main}>
             <UserContainer />
           </Route>
           <Route path={ROUTE.error}>

@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-export function useLazyObserver () {
+export const useLazyObserver = () => {
   const roomRef = useRef(null);
 
   useEffect(() => {
@@ -21,4 +21,4 @@ export function useLazyObserver () {
   }, [roomRef]);
 
   return { roomRef };
-}
+};

@@ -3,5 +3,10 @@ export default {
   login: '/login',
   games: '/games',
   error: '/error',
-  user: '/user',
+  histories: '/histories',
+  user: {
+    main: '/user',
+    histories: '/user/histories',
+    games: '/user/games'
+  },
 };
