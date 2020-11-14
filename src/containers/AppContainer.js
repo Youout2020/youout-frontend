@@ -13,6 +13,7 @@ import ROUTE from '../constants/route';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import UserContainer from './UserContainer';
 import GameContainer from './GameContainer';
+import WatingContainer from './WatingContainer';
 
 const AppContainer = () => {
   const [ isLoading, setIsLoading ] = useState(true);
@@ -70,8 +71,11 @@ const AppContainer = () => {
           <Route path={ROUTE.login}>
             <Login onLogin={handleLogin} />
           </Route>
-          <Route path={ROUTE.games}>
+          <Route exact path={ROUTE.games}>
             <GameContainer />
+          </Route>
+          <Route path={`${ROUTE.games}/:game_id`}>
+            <WatingContainer />
           </Route>
           <Route path={ROUTE.user.main}>
             <UserContainer />

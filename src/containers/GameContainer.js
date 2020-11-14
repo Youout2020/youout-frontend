@@ -10,6 +10,7 @@ import PATH from '../constants/path';
 import HEADER_TITLE from '../constants/headerTitle';
 import { getUserLocation } from '../utils';
 import { initGame, addNextGame } from '../reducer/game';
+import { joinWatingRoom } from '../utils/socket';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const GameContainer = () => {
@@ -17,11 +18,11 @@ const GameContainer = () => {
   const [ errMessage, setErrMessage ] = useState('');
   const [ target, setTarget ] = useState(null);
   const games = useSelector((state) => state.game);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
 
   const onIntersect = async ([{ isIntersecting }]) => {
-    console.log(games.hasNextPage)
     if (isIntersecting && games.hasNextPage) {
       const { lat, lng } = await getUserLocation();
       const path = PATH.gamesLocation({ lat, lng, page: games.nextPage});
@@ -29,6 +30,10 @@ const GameContainer = () => {
 
       dispatch(addNextGame({ docs, nextPage, hasNextPage }));
     }
+  };
+
+  const handleJoinWatingRoom = (id) => {
+    history.push(`/games/${id}`);
   };
 
   useEffect(() => {
@@ -51,7 +56,6 @@ const GameContainer = () => {
         const { lat, lng } = await getUserLocation();
         const path = PATH.gamesLocation({ lat, lng });
         const { docs, nextPage, hasNextPage } = await api.get({ path });
-        console.log(hasNextPage)
         dispatch(initGame({ docs, nextPage, hasNextPage }));
         setIsLoading(false);
       } catch (err) {
@@ -68,6 +72,7 @@ const GameContainer = () => {
           list={games.docs}
           setTarget={setTarget}
           isLoading={isLoading}
+          joinWatingRoom={handleJoinWatingRoom}
         />
       </Header>
     </>
