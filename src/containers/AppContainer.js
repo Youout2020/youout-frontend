@@ -30,9 +30,7 @@ const AppContainer = () => {
   useEffect(() => {
     (async () => {
       try {
-        console.log(1);
         const { user } = await firebase.listenRedirect();
-        console.log(2);
         setIsLoading(false);
 
         if (findCookie('token')) {

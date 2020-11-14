@@ -46,7 +46,7 @@ const GameList = ({ isLoading, list, setTarget }) => {
             <GameRoom
               isPlaying={item.status.isPlaying}
               name={item.name}
-              users={item.users.length}
+              users={item.status.users.length}
               key={item._id}
               setTarget={lastItem ? setTarget : null}
             />
@@ -54,7 +54,7 @@ const GameList = ({ isLoading, list, setTarget }) => {
         })
       }
       <Button
-        className='newRoomButton'
+        className='fixedButton'
         text='방 만들기'
         onClick={() => history.push(`${ROUTE.games}/new`)}
       />

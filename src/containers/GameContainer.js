@@ -79,7 +79,7 @@ const GameContainer = () => {
   const onIntersect = async ([{ isIntersecting }]) => {
     if (isIntersecting) {
       const response = await gameList.next();
-      dispatch(initGame(response));
+      dispatch(addNextGame(response));
     }
   };
 
