@@ -84,11 +84,11 @@ const AppContainer = () => {
           <Route path={ROUTE.login}>
             <Login onLogin={handleLogin} />
           </Route>
-          <Route path={`${ROUTE.games}/new`}>
-            <NewGame onCreateNewGame={createNewGame} />
-          </Route>
-          <Route path={ROUTE.games}>
+          <Route exact path={ROUTE.games}>
             <GameContainer />
+          </Route>
+          <Route exact path={`${ROUTE.games}/new`}>
+            <NewGame onCreateNewGame={createNewGame} />
           </Route>
           <Route path={`${ROUTE.games}/:game_id`}>
             <WaitingContainer />
