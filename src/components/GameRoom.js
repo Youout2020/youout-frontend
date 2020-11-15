@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './GameRoom.module.scss';
 
-const GameRoom = ({ isPlaying, name, users, setTarget }) => {
+const GameRoom = ({ isPlaying, name, users, setTarget, id, joinWaitingRoom }) => {
   return (
-    <div className={styles.container} ref={setTarget}>
+    <div className={styles.container} ref={setTarget} onClick={() => joinWaitingRoom(id)}>
       <div className={styles.status}>
         <span className={isPlaying ? styles.playingBullet : styles.waitingBullet}>
           {

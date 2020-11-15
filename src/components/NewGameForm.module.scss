@@ -1,0 +1,66 @@
+@import '../styles/theme.module.scss';
+
+.container {
+  padding: 10vh 10vw;
+
+  .firstForm {
+    display: flex;
+    flex-direction: column;
+
+    .quizCounter {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .quizCount {
+        margin: 5vh 5vw;
+        font-size: $font-size-3;
+      }
+    }
+  }
+
+  .secondForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .quizContainer {
+      display: flex;
+      align-items: center;
+
+      .quizDone {
+        margin-right: 5px;
+        font-size: $font-size-2;
+      }
+
+      Button {
+        width: 70vw;
+      }
+    }
+  }
+
+  .thirdForm {
+    display: flex;
+    flex-direction: column;
+
+    .gameInfoContainer {
+      display: flex;
+      flex-direction: column;
+
+      .title {
+        font-size: $font-size-2;
+      }
+      .content {
+        font-size: $font-size-2;
+      }
+    }
+  }
+
+  .buttonContainer {
+    align-self: center;
+    margin-top: 5vh;
+    Button {
+      margin: 0 10px;
+    }
+  }
+}

@@ -13,6 +13,7 @@ const Button = ({
 }) => {
   return (
     <button
+      type='button'
       className={styles[className]}
       onClick={onClick}
       {...attrs}
