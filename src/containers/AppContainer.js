@@ -15,7 +15,7 @@ import UserContainer from './UserContainer';
 import GameContainer from './GameContainer';
 import NewGame from '../components/NewGame';
 import { addNewGame } from '../reducer/game';
-import WatingContainer from './WatingContainer';
+import WaitingContainer from './WaitingContainer';
 
 const AppContainer = () => {
   const [ isLoading, setIsLoading ] = useState(true);
@@ -91,7 +91,7 @@ const AppContainer = () => {
             <GameContainer />
           </Route>
           <Route path={`${ROUTE.games}/:game_id`}>
-            <WatingContainer />
+            <WaitingContainer />
           </Route>
           <Route path={ROUTE.user.main}>
             <UserContainer />

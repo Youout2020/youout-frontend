@@ -7,7 +7,7 @@ import ROUTE from '../constants/route';
 import styles from './GameList.module.scss';
 
 //TODO: '방 만들기' button onClick event 컴포넌트로 이동시키기
-const GameList = ({ isLoading, list, setTarget, joinWatingRoom }) => {
+const GameList = ({ isLoading, list, setTarget, joinWaitingRoom }) => {
   const [ isSelected, setIsSelected ] = useState(false);
   const handleFilter = () => {
     setIsSelected(!isSelected);
@@ -50,7 +50,7 @@ const GameList = ({ isLoading, list, setTarget, joinWatingRoom }) => {
               key={item._id}
               setTarget={lastItem ? setTarget : null}
               id={item._id}
-              joinWatingRoom={joinWatingRoom}
+              joinWaitingRoom={joinWaitingRoom}
             />
           );
         })

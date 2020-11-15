@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Header from './Header';
-import styles from './WatingRoom.module.scss';
+import styles from './WaitingRoom.module.scss';
 
 const Users = ({ users }) => {
   return (
@@ -23,10 +23,10 @@ const StartButton = ({ isMaster }) => {
   );
 };
 
-const WatingRoom = ({ users, isMaster }) => {
+const WaitingRoom = ({ users, isMaster }) => {
   return (
     <Header title='대기방'>
-      <div className={styles.watingRoom}>
+      <div className={styles.waitingRoom}>
         <Users users={users}/>
         <StartButton isMaster={isMaster}/>
       </div>
@@ -34,4 +34,4 @@ const WatingRoom = ({ users, isMaster }) => {
   );
 };
 
-export default WatingRoom;
+export default WaitingRoom;

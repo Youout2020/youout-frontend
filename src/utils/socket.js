@@ -8,7 +8,7 @@ const SOCKET = {
   userLeave: 'USER_LEAVE'
 };
 
-export const joinWatingRoom = (data) => {
+export const joinWaitingRoom = (data) => {
   socket.emit(SOCKET.userJoin, data);
 };
 

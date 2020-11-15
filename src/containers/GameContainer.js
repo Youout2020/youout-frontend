@@ -10,7 +10,7 @@ import PATH from '../constants/path';
 import HEADER_TITLE from '../constants/headerTitle';
 import { getUserLocation } from '../utils';
 import { initGame, addNextGame } from '../reducer/game';
-import { joinWatingRoom } from '../utils/socket';
+import { joinWaitingRoom } from '../utils/socket';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const GameContainer = () => {
@@ -32,7 +32,7 @@ const GameContainer = () => {
     }
   };
 
-  const handleJoinWatingRoom = (id) => {
+  const handleJoinWaitingRoom = (id) => {
     history.push(`/games/${id}`);
   };
 
@@ -72,7 +72,7 @@ const GameContainer = () => {
           list={games.docs}
           setTarget={setTarget}
           isLoading={isLoading}
-          joinWatingRoom={handleJoinWatingRoom}
+          joinWaitingRoom={handleJoinWaitingRoom}
         />
       </Header>
     </>
