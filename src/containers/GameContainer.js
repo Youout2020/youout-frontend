@@ -6,79 +6,27 @@ import Header from '../components/Header';
 import GameList from '../components/GameList';
 import api from '../utils/api';
 import ROUTE from '../constants/route';
+import PATH from '../constants/path';
+import HEADER_TITLE from '../constants/headerTitle';
 import { getUserLocation } from '../utils';
 import { initGame, addNextGame } from '../reducer/game';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-
-const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 10;
-
-const usePagination = (option) => {
-  const [path, setPath] = useState('');
-  const [list, setList] = useState([]);
-  const [page, setPage] = useState(option?.page || DEFAULT_PAGE);
-  const [hasNextPage, setHasNextPage] = useState(true);
-  const limit = option?.limit || DEFAULT_LIMIT;
-
-  const init = async (path) => {
-    const { docs, nextPage, hasNextPage } = await api.get({ path: `${path}&limit=${limit}&page=${page}` });
-    setPath(path);
-    setList(docs);
-    setPage(nextPage);
-    setHasNextPage(hasNextPage);
-
-    return { docs, nextPage, hasNextPage };
-  };
-
-  const next = async () => {
-    if (!hasNextPage) return;
-
-    const { nextPage, docs, hasNextPage: hasNext } = await api.get({ path: `${path}&limit=${limit}&page=${page}` });
-
-    setPage(nextPage);
-    setHasNextPage(hasNext);
-    setList([...list, ...docs]);
-
-    return { nextPage, docs, hasNextPage: hasNext };
-  };
-
-  return {
-    payload: {
-      list,
-      page,
-      hasNextPage,
-    },
-    init,
-    next,
-  };
-};
 
 const GameContainer = () => {
   const [ isLoading, setIsLoading ] = useState(true);
   const [ errMessage, setErrMessage ] = useState('');
   const [ target, setTarget ] = useState(null);
+  const games = useSelector((state) => state.game);
   const dispatch = useDispatch();
   const history = useHistory();
-  const gameList = usePagination();
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const { lat, lng } = await getUserLocation();
-        const response = await gameList.init(`${ROUTE.games}?type=location&lat=${lat}&lng=${lng}`);
-        dispatch(initGame(response));
-        setIsLoading(false);
-      } catch (err) {
-        setErrMessage(err.message);
-        history.push(ROUTE.error);
-      }
-    })();
-  }, []);
 
   const onIntersect = async ([{ isIntersecting }]) => {
-    if (isIntersecting) {
-      const response = await gameList.next();
-      dispatch(addNextGame(response));
+    if (isIntersecting && games.hasNextPage) {
+      const { lat, lng } = await getUserLocation();
+      const path = PATH.gamesLocation({ lat, lng, page: games.nextPage});
+      const { docs, nextPage, hasNextPage } = await api.get({ path });
+
+      dispatch(addNextGame({ docs, nextPage, hasNextPage }));
     }
   };
 
@@ -94,11 +42,28 @@ const GameContainer = () => {
     return () => observer.unobserve(target);
   }, [target]);
 
+  useEffect(() => {
+    if (games.docs.length) return setIsLoading(false);
+
+    (async () => {
+      try {
+        const { lat, lng } = await getUserLocation();
+        const path = PATH.gamesLocation({ lat, lng });
+        const { docs, nextPage, hasNextPage } = await api.get({ path });
+        dispatch(initGame({ docs, nextPage, hasNextPage }));
+        setIsLoading(false);
+      } catch (err) {
+        setErrMessage(err.message);
+        history.push(ROUTE.error);
+      }
+    })();
+  }, []);
+
   return (
     <>
-      <Header title='너, 나가'>
+      <Header title={HEADER_TITLE.games}>
         <GameList
-          list={gameList.payload.list}
+          list={games.docs}
           setTarget={setTarget}
           isLoading={isLoading}
         />

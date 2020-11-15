@@ -6,7 +6,11 @@ export const ADD_NEXT_GAME = 'gameReducer/ADD_NEXT_GAME';
 export const initGame = createAction(INIT_GAME);
 export const addNextGame = createAction(ADD_NEXT_GAME);
 
-const initState = [];
+const initState = {
+  docs: [],
+  nextPage: 1,
+  hasNextPage: true,
+};
 
 export default createReducer(initState, {
   [INIT_GAME]: (state, action) => {

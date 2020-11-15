@@ -1,4 +1,6 @@
-.imageContainer {
+@import '../styles/theme.module.scss';
+
+.imageBox {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,8 +18,7 @@
   }
 }
 
-.historiesContainer,
-.myRoomsContainer {
+.contentsBox {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
@@ -25,20 +26,33 @@
   justify-content: center;
   height: 200px;
 
+  .text {
+    font-size: $font-size-2;
+    margin-bottom: 20px;
+  }
+
   ul {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
 
-    & button {
+    & li button {
       width: 150px;
       height: 50px;
       margin: 5px;
+      background: $white;
+      border: none;
+      border-radius: 5px;
+      background: $blue;
+      color: $white;
     }
   }
-}
 
-.myRoomsContainer {
-  height: 200px;
+  .moreButton {
+    background: $white;
+    border: none;
+    color: $blue;
+    margin-top: 10px;
+  }
 }

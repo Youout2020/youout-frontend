@@ -1,84 +1,72 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, Switch, Route } from 'react-router-dom';
 
 import api from '../utils/api';
 import Header from '../components/Header';
 import UserPage from '../components/UserPage';
-
-const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 10;
-
-const usePagination = (option) => {
-  const [path, setPath] = useState('');
-  const [list, setList] = useState([]);
-  const [page, setPage] = useState(option?.page || DEFAULT_PAGE);
-  const [hasNextPage, setHasNextPage] = useState(true);
-  const limit = option?.limit || DEFAULT_LIMIT;
-
-  const init = async (path) => {
-    const { docs, nextPage, hasNextPage } = await api.get({ path: `${path}&limit=${limit}&page=${page}` });
-    setPath(path);
-    setList(docs);
-    setPage(nextPage);
-    setHasNextPage(hasNextPage);
-  };
-
-  const next = async () => {
-    if (!hasNextPage) return;
-
-    const { nextPage, docs, hasNextPage: hasNext } = await api.get({ path: `${path}&limit=${limit}&page=${page}` });
-
-    setPage(nextPage);
-    setHasNextPage(hasNext);
-    setList([...list, ...docs]);
-  };
-
-  return {
-    payload: {
-      list,
-      page,
-      hasNextPage,
-    },
-    init,
-    next,
-  };
-};
+import HistoryPage from '../components/HistoryPage';
+import GamePage from '../components/GamePage';
+import ROUTE from '../constants/route';
+import PATH from '../constants/path';
+import HEADER_TITLE from '../constants/headerTitle';
+import { initHistories, initGames } from '../reducer/user';
 
 const UserContainer = () => {
-  const { image, name, email } = useSelector((state) => state.user);
-  const [isLoading, setIsLoading] = useState(true);
-  const histories = usePagination();
-  const games = usePagination();
-  const [ aaa, setHistories ] = useState([
-    { id: 1, name: 'test1', clearTime: '123' },
-    { id: 2, name: 'test1', clearTime: '123' },
-    { id: 3, name: 'test1', clearTime: '123' },
-    { id: 4, name: 'test1', clearTime: '123' },
-  ]);
-  const [bbb, setGames] = useState([
-    { id: 1, name: 'test1' },
-    { id: 2, name: 'test1' },
-    { id: 3, name: 'test1' },
-    { id: 4, name: 'test1' },
-  ]);
-  console.log('histories', histories);
-  console.log('games', games);
+  const {
+    image,
+    name,
+    email,
+    histories,
+    games
+  } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const navigation = {
+    moreHistories: () => history.push(ROUTE.user.histories),
+    moreGames: () => history.push(ROUTE.user.games),
+  };
 
   useEffect(() => {
-    histories.init('/games?type=user&selection=history');
-    games.init('/games?type=user&selection=games');
+    if (histories.docs.length) return;
+
+    (async () => {
+      const histories = await api.get({ path: PATH.userHistory });
+      dispatch(initHistories(histories));
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (games.docs.length) return;
+
+    (async () => {
+      const games = await api.get({ path: PATH.userGames });
+      dispatch(initGames(games));
+    })();
   }, []);
 
   return (
     <>
-      <Header title='내 정보'>
-        <UserPage
-          image={image}
-          name={name}
-          email={email}
-          histories={histories.payload.list}
-          games={games.payload.list}
-        />
+      <Header title={HEADER_TITLE.user}>
+        <Switch>
+          <Route exact path={ROUTE.user.main}>
+            <UserPage
+              image={image}
+              name={name}
+              email={email}
+              histories={histories.docs.slice(0, 4)}
+              games={games.docs.slice(0, 4)}
+              navigation={navigation}
+            />
+          </Route>
+          <Route path={ROUTE.user.histories}>
+            <HistoryPage histories={histories.docs}/>
+          </Route>
+          <Route path={ROUTE.user.games}>
+            <GamePage games={games.docs} />
+          </Route>
+        </Switch>
       </Header>
     </>
   );
