@@ -14,6 +14,7 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import UserContainer from './UserContainer';
 import GameContainer from './GameContainer';
 import NewGame from '../components/NewGame';
+import { addNewGame } from '../reducer/game';
 
 const AppContainer = () => {
   const [ isLoading, setIsLoading ] = useState(true);
@@ -25,6 +26,17 @@ const AppContainer = () => {
   const handleLogin = () => {
     history.push(ROUTE.home);
     firebase.googleLogin();
+  };
+
+  const createNewGame = async (body) => {
+    try {
+      const response = await api.post({ path: ROUTE.games, body });
+      dispatch(addNewGame(response));
+      history.push(ROUTE.games);
+    } catch (err) {
+      setErrMessage(err.message);
+      history.push(ROUTE.error);
+    }
   };
 
   useEffect(() => {
@@ -72,7 +84,7 @@ const AppContainer = () => {
             <Login onLogin={handleLogin} />
           </Route>
           <Route path={`${ROUTE.games}/new`}>
-            <NewGame />
+            <NewGame onCreateNewGame={createNewGame} />
           </Route>
           <Route path={ROUTE.games}>
             <GameContainer />

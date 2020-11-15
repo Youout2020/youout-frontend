@@ -4,7 +4,13 @@ import Button from './Button';
 
 const QuizForm = ({ index, setPage, quizList, setQuizList }) => {
   const memo = quizList[index];
-  const [ quiz, setQuiz ] = useState(memo || {});
+  const [ quiz, setQuiz ] = useState(memo || {
+    index,
+    keyword: '',
+    quiz: '',
+    answer: '',
+    hint: '',
+  });
 
   const handleQuizInputsChange = (event) => {
     const { name, value } = event.target;
@@ -12,7 +18,7 @@ const QuizForm = ({ index, setPage, quizList, setQuizList }) => {
       index,
       ...quiz,
       [name]: value,
-    })
+    });
   };
 
   const handleQuizSubmitButton = () => {

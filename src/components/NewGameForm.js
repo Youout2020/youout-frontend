@@ -6,13 +6,12 @@ import QuizForm from './QuizForm';
 import Map from './Map';
 import { pageName, pageNavigation } from '../constants/page';
 
-const NewGameForm = () => {
+const NewGameForm = ({ onCreateNewGame }) => {
   const [ gameInfo, setGameInfo ] = useState({
     name: '',
     address: '',
     addressDetail: '',
-    lat: '',
-    lng: '',
+    location: {},
     timeLimit: '',
   });
   const [ quizList, setQuizList ] = useState([]);
@@ -41,11 +40,6 @@ const NewGameForm = () => {
         ? prev
         : prev - 1;
      });
-
-    setGameInfo({
-      ...gameInfo,
-      quizCount: quizCount,
-    });
   };
 
   const handlePageNavigation = ({ target }) => {
@@ -70,7 +64,11 @@ const NewGameForm = () => {
     setPage(pageName.QUIZ_FORM);
   };
 
-  const handleSubmitButton = (event) => {
+  const handleSubmitButton = () => {
+    onCreateNewGame({
+      ...gameInfo,
+      quizList,
+    });
   };
 
   return (

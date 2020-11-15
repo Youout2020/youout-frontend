@@ -2,12 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Map.module.scss';
 import Button from './Button';
+import { pageName } from '../constants/page';
 
 const Map = ({ setPage, gameInfo, setGameInfo }) => {
   // user redux에서 가져오기 (최초)
   const [ currentCoords, setCurrentCoords ] = useState({
-    lat: 33.3765812,
-    lng: 126.8719347,
+    lat: 37.5058543,
+    lng: 127.0569843,
   });
   const { lat, lng } = currentCoords;
   const [ address, setAddress ] = useState(null);
@@ -50,10 +51,12 @@ const Map = ({ setPage, gameInfo, setGameInfo }) => {
     setGameInfo({
       ...gameInfo,
       address,
-      lat,
-      lng,
+      location: {
+        type: 'Point',
+        coordinates: [ lng, lat ],
+      },
     });
-    setPage(1);
+    setPage(pageName.FIRST);
   };
 
   return (
