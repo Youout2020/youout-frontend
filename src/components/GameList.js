@@ -6,8 +6,8 @@ import Loading from './Loading';
 import ROUTE from '../constants/route';
 import styles from './GameList.module.scss';
 
-const GameList = ({ isLoading, list, setTarget }) => {
-  const history = useHistory();
+//TODO: '방 만들기' button onClick event 컴포넌트로 이동시키기
+const GameList = ({ isLoading, list, setTarget, joinWatingRoom }) => {
   const [ isSelected, setIsSelected ] = useState(false);
   const handleFilter = () => {
     setIsSelected(!isSelected);
@@ -49,6 +49,8 @@ const GameList = ({ isLoading, list, setTarget }) => {
               users={item.status.users.length}
               key={item._id}
               setTarget={lastItem ? setTarget : null}
+              id={item._id}
+              joinWatingRoom={joinWatingRoom}
             />
           );
         })

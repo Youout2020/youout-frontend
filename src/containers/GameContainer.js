@@ -10,6 +10,7 @@ import PATH from '../constants/path';
 import HEADER_TITLE from '../constants/headerTitle';
 import { getUserLocation } from '../utils';
 import { initGame, addNextGame } from '../reducer/game';
+import { joinWatingRoom } from '../utils/socket';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const GameContainer = () => {
@@ -17,6 +18,7 @@ const GameContainer = () => {
   const [ errMessage, setErrMessage ] = useState('');
   const [ target, setTarget ] = useState(null);
   const games = useSelector((state) => state.game);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -28,6 +30,10 @@ const GameContainer = () => {
 
       dispatch(addNextGame({ docs, nextPage, hasNextPage }));
     }
+  };
+
+  const handleJoinWatingRoom = (id) => {
+    history.push(`/games/${id}`);
   };
 
   useEffect(() => {
@@ -66,6 +72,7 @@ const GameContainer = () => {
           list={games.docs}
           setTarget={setTarget}
           isLoading={isLoading}
+          joinWatingRoom={handleJoinWatingRoom}
         />
       </Header>
     </>
