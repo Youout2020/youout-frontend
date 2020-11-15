@@ -59,7 +59,7 @@ const Map = ({ setPage, gameInfo, setGameInfo }) => {
   return (
     <div className={styles.container}>
       <div id='map' className={styles.map} />
-      <span>{address}</span>
+      <span className={styles.address}>{address}</span>
       <Button text='선택' onClick={handleSelectButton} />
     </div>
   );

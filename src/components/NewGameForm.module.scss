@@ -1,12 +1,11 @@
 @import '../styles/theme.module.scss';
 
 .container {
-  padding-top: 30px;
+  padding: 10vh 10vw;
 
   .firstForm {
     display: flex;
     flex-direction: column;
-    align-items: center;
 
     .quizCounter {
       display: flex;
@@ -30,8 +29,38 @@
       align-items: center;
 
       .quizDone {
-        border: 1px solid black;
+        margin-right: 5px;
+        font-size: $font-size-2;
       }
+
+      Button {
+        width: 70vw;
+      }
+    }
+  }
+
+  .thirdForm {
+    display: flex;
+    flex-direction: column;
+
+    .gameInfoContainer {
+      display: flex;
+      flex-direction: column;
+
+      .title {
+        font-size: $font-size-2;
+      }
+      .content {
+        font-size: $font-size-2;
+      }
+    }
+  }
+
+  .buttonContainer {
+    align-self: center;
+    margin-top: 5vh;
+    Button {
+      margin: 0 10px;
     }
   }
 }

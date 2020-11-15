@@ -4,59 +4,79 @@ import styles from './NewGameForm.module.scss';
 import Button from './Button';
 import QuizForm from './QuizForm';
 import Map from './Map';
+import { pageName, pageNavigation } from '../constants/page';
 
 const NewGameForm = () => {
-  const [ gameInfo, setGameInfo ] = useState({});
+  const [ gameInfo, setGameInfo ] = useState({
+    name: '',
+    address: '',
+    addressDetail: '',
+    lat: '',
+    lng: '',
+    timeLimit: '',
+  });
+  const [ quizList, setQuizList ] = useState([]);
   const [ quizCount, setQuizCount ] = useState(5);
   const [ page, setPage ] = useState(1);
-  const [ quizList, setQuizList ] = useState([]);
   const [ currentIndex, setCurrentIndex ] = useState(-1);
 
-  const handleInputsChange = (event) => {
-    const { name, value } = event.target;
+  const handleInputsChange = ({ target }) => {
+    const { name, value } = target;
     setGameInfo({
       ...gameInfo,
       [name]: value,
     });
   };
 
-  const handleCounter = (event) => {
-    const { name } = event.target;
+  const handleCounter = ({ target }) => {
+    const { name } = target;
     name === 'increase'
-      ? setQuizCount((prev) => prev + 1)
-      : setQuizCount((prev) => prev - 1);
+     ? setQuizCount((prev) => {
+       return prev + 1 > 10
+        ? prev
+        : prev + 1;
+     })
+     : setQuizCount((prev) => {
+       return prev - 1 < 2
+        ? prev
+        : prev - 1;
+     });
+
     setGameInfo({
       ...gameInfo,
       quizCount: quizCount,
     });
   };
 
-  const handlePageNavigation = (event) => {
-    const isAllInputsFilled = gameInfo.name && gameInfo.address && gameInfo.addressDetail && gameInfo.timeLimit;
+  const handlePageNavigation = ({ target }) => {
+    const isAllInputsFilled =
+      gameInfo.name
+      && gameInfo.address
+      && gameInfo.addressDetail
+      && gameInfo.timeLimit;
     const isAllQuizesFilled = quizList.every((quiz) => quiz.quiz);
 
     if (page === 1 && !isAllInputsFilled) return;
     if (page === 2 && !isAllQuizesFilled) return;
 
-    const { name } = event.target;
-    name === 'prev'
+    const { name } = target;
+    name === pageNavigation.PREV
       ? setPage((prev) => prev - 1)
       : setPage((prev) => prev + 1);
   };
 
   const handleQuizInputButton = (index) => {
     setCurrentIndex(index);
-    setPage('quizForm');
+    setPage(pageName.QUIZ_FORM);
   };
 
-  const handleSubmitButton = () => {
-    // 정보 axios 처리인데 App Container에서 진행하기
+  const handleSubmitButton = (event) => {
   };
 
   return (
     <form className={styles.container}>
       {
-        page === 1 &&
+        page === pageName.FIRST &&
         <div className={styles.firstForm}>
           <Input
             type='text'
@@ -69,7 +89,7 @@ const NewGameForm = () => {
           />
           <Button
             text='현 위치로 주소 설정'
-            onClick={() => setPage('map')}
+            onClick={() => setPage(pageName.MAP)}
           />
           <Input
             type='text'
@@ -97,12 +117,12 @@ const NewGameForm = () => {
             id='timeLimit'
             onChange={handleInputsChange}
           />
-
           <div className={styles.quizCounter}>
             <Button
               name='decrease'
               className='circleButton'
-              onClick={handleCounter} text='-'
+              onClick={handleCounter}
+              text='-'
             />
             <span className={styles.quizCount}>{quizCount}</span>
             <Button
@@ -112,17 +132,21 @@ const NewGameForm = () => {
               text='+'
             />
           </div>
-          <Button name='next' text='다음' onClick={handlePageNavigation} />
+          <Button name={pageNavigation.NEXT} text='Next' onClick={handlePageNavigation} />
         </div>
       }
       {
-        page === 2 &&
+        page === pageName.SECOND &&
         <div className={styles.secondForm}>
           {
             Array(quizCount).fill(0).map((quiz, index) => {
               return (
                 <div className={styles.quizContainer} key={index}>
-                  <div className={styles.quizDone}>{ quizList[index]?.quiz ? 'O' : 'X' }</div>
+                  <div className={styles.quizDone}>
+                    {
+                      quizList[index]?.quiz ? '✓' : '✕'
+                    }
+                  </div>
                   <Button
                     className='quizButton'
                     text={quizList[index]?.quiz || '문제를 입력하세요.'}
@@ -133,42 +157,46 @@ const NewGameForm = () => {
             })
           }
           <div className={styles.buttonContainer}>
-            <Button name='prev' text='이전' onClick={handlePageNavigation} />
-            <Button name='next' text='다음' onClick={handlePageNavigation} />
+            <Button name={pageNavigation.PREV} text='Prev' onClick={handlePageNavigation} />
+            <Button name={pageNavigation.NEXT} text='Next' onClick={handlePageNavigation} />
           </div>
         </div>
       }
       {
-        page === 3 &&
-        <div className='thirdForm'>
-          <div className='gameInfoContainer'>
-            <h5>게임 이름</h5>
-            <div>{gameInfo.name}</div>
+        page === pageName.THIRD &&
+        <div className={styles.thirdForm}>
+          <div className={styles.gameInfoContainer}>
+            <h5 className={styles.title}>게임 이름</h5>
+            <div className={styles.content}>{gameInfo.name}</div>
           </div>
-          <div className='gameInfoContainer'>
-            <h5>위치</h5>
-            <div>{`${gameInfo.address} ${gameInfo.addressDetail}`}</div>
+          <div className={styles.gameInfoContainer}>
+            <h5 className={styles.title}>위치</h5>
+            <div className={styles.content}>{`${gameInfo.address} ${gameInfo.addressDetail}`}</div>
           </div>
-          <div className='gameInfoContainer'>
-            <h5>제한시간</h5>
-            <div>{gameInfo.timeLimit}</div>
+          <div className={styles.gameInfoContainer}>
+            <h5 className={styles.title}>제한시간</h5>
+            <div className={styles.content}>{gameInfo.timeLimit}</div>
           </div>
-          <div className='gameInfoContainer'>
-            <h5>문제 리스트</h5>
+          <div className={styles.gameInfoContainer}>
+            <h5 className={styles.title}>문제 리스트</h5>
             {
               quizList.map((quiz, index) => {
-                return <div key={index}>{quiz.quiz}</div>;
+                return (
+                  <div className={styles.content} key={index}>
+                    {quiz.quiz}
+                  </div>
+                );
               })
             }
           </div>
           <div className={styles.buttonContainer}>
-            <Button name='prev' text='이전' onClick={handlePageNavigation} />
-            <Button text='만들어' onClick={handleSubmitButton} />
+            <Button name={pageNavigation.PREV} text='Prev' onClick={handlePageNavigation} />
+            <Button text='만들기 ' onClick={handleSubmitButton} />
           </div>
         </div>
       }
       {
-        page === 'quizForm' &&
+        page === pageName.QUIZ_FORM &&
         <QuizForm
           index={currentIndex}
           setPage={setPage}
@@ -177,7 +205,7 @@ const NewGameForm = () => {
         />
       }
       {
-        page === 'map' &&
+        page === pageName.MAP &&
         <Map
           setPage={setPage}
           gameInfo={gameInfo}

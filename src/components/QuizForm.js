@@ -16,6 +16,13 @@ const QuizForm = ({ index, setPage, quizList, setQuizList }) => {
   };
 
   const handleQuizSubmitButton = () => {
+    const isAllInputsFilled =
+      quiz.keyword
+      && quiz.quiz
+      && quiz.answer
+      && quiz.hint;
+    if (!isAllInputsFilled) return;
+
     const prevQuizList = [...quizList];
     prevQuizList[index] = quiz;
     setQuizList(prevQuizList);
@@ -45,7 +52,7 @@ const QuizForm = ({ index, setPage, quizList, setQuizList }) => {
       <Input
         type='text'
         id='answer'
-        labelName='문제를 입력하세요.'
+        labelName='답을 입력하세요.'
         value={quiz['answer']}
         name='answer'
         placeholder='예) 나'
@@ -54,13 +61,13 @@ const QuizForm = ({ index, setPage, quizList, setQuizList }) => {
       <Input
         type='text'
         id='hint'
-        labelName='문제를 입력하세요.'
+        labelName='힌트를 입력하세요.'
         value={quiz['hint']}
         name='hint'
         placeholder='예) 그런거 안줘!'
         onChange={handleQuizInputsChange}
       />
-      <Button text='완료' onClick={handleQuizSubmitButton}></Button>
+      <Button text='완료' onClick={handleQuizSubmitButton} />
     </div>
   );
 };

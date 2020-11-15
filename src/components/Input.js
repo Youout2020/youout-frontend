@@ -35,6 +35,7 @@ const Input = ({
           onChange={onChange}
           defaultValue={1000 * 60 * 10}
         >
+          <option>--선택--</option>
           <option value={1000 * 60 * 10}>10분</option>
           <option value={1000 * 60 * 20}>20분</option>
           <option value={1000 * 60 * 30}>30분</option>

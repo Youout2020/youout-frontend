@@ -8,7 +8,6 @@ import api from '../utils/api';
 import ROUTE from '../constants/route';
 import { getUserLocation } from '../utils';
 import { initGame, addNextGame } from '../reducer/game';
-import Button from '../components/Button';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const DEFAULT_PAGE = 1;
