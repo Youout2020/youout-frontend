@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route, useHistory, useParams, useLocation } from 'react-router-dom';
+import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import Error from '../components/Error';
 import Login from '../components/Login';
-import Loading from '../components/Loading';
 import api from '../utils/api';
-// import firebase from '../utils/firebase';
 import { findCookie } from '../utils';
 import { initUser } from '../reducer/user';
 import ROUTE from '../constants/route';
