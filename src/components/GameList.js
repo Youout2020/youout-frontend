@@ -8,6 +8,7 @@ import styles from './GameList.module.scss';
 
 //TODO: '방 만들기' button onClick event 컴포넌트로 이동시키기
 const GameList = ({ isLoading, list, setTarget, joinWaitingRoom }) => {
+  const history = useHistory();
   const [ isSelected, setIsSelected ] = useState(false);
   const handleFilter = () => {
     setIsSelected(!isSelected);

@@ -12,8 +12,8 @@ const initState = {
   name: '',
   email: '',
   image: '',
-  histories: { docs: [] },
-  games: { docs: [] },
+  histories: { nextPage: 1, hasNextPage: true, docs: [] },
+  games: { nextPage: 1, hasNextPage: true, docs: [] },
 };
 
 export default createReducer(initState, {
