@@ -62,7 +62,7 @@ const AppContainer = () => {
         const body = { email, name: displayName, image: photoURL };
         const response = await api.post({ path: ROUTE.login, body });
 
-        document.cookie = `token=${response.token}`;
+        document.cookie = `token=${response.token}; secure`;
         dispatch(initUser(response.user));
 
         history.push(ROUTE.games);

@@ -27,7 +27,7 @@ export default createReducer(initState, {
   [ADD_NEW_GAME]: (state, action) => {
     return {
       ...state,
-      docs: [...state.docs, action.payload],
+      docs: [action.payload, ...state.docs],
     };
   },
 });

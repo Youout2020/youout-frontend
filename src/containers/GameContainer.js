@@ -14,7 +14,7 @@ import { joinWaitingRoom } from '../utils/socket';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const GameContainer = () => {
-  const [ isLoading, setIsLoading ] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(true);
   const [ errMessage, setErrMessage ] = useState('');
   const [ target, setTarget ] = useState(null);
   const games = useSelector((state) => state.game);
