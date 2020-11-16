@@ -13,6 +13,9 @@ const WaitingContainer = () => {
   const { game_id } = useParams();
   const isMaster = users[MASTER_INDEX]?.userId === id;
 
+  const handleStart = () => {
+  };
+
   useEffect(() => {
     joinWaitingRoom({ gameId: game_id, userId: id, username: name });
     listenJoinUser((users) => {
@@ -28,6 +31,9 @@ const WaitingContainer = () => {
       users={users}
       isMaster={isMaster}
     />
+    // <Route path='/camera'>
+    //   <Camera onStart={handleStart} />
+    // </Route>
   );
 };
 

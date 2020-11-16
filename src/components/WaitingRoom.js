@@ -13,22 +13,22 @@ const Users = ({ users }) => {
   );
 };
 
-const StartButton = ({ isMaster }) => {
+const StartButton = ({ isMaster, onStart }) => {
   return (
     isMaster
       ?
-      <button className={styles.startButton}>시작</button>
+      <button className={styles.startButton} onClick={onStart}>시작</button>
       :
       <button className={styles.startButton}>대기</button>
   );
 };
 
-const WaitingRoom = ({ users, isMaster }) => {
+const WaitingRoom = ({ users, isMaster, onStart }) => {
   return (
     <Header title='대기방'>
       <div className={styles.waitingRoom}>
         <Users users={users}/>
-        <StartButton isMaster={isMaster}/>
+        <StartButton isMaster={isMaster} onStart={onStart} />
       </div>
     </Header>
   );

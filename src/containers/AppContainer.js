@@ -42,7 +42,7 @@ const AppContainer = () => {
   const dispatch = useDispatch();
 
   const handleLogin = () => {
-    window.location = 'http://192.168.0.80:4000/login';
+    window.location = 'http://localhost:4000/login';
   };
 
   const createNewGame = async (body) => {
