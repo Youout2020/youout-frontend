@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
+import Camera from '../components/Camera';
+import { Route } from 'react-router-dom';
+import ROUTE from '../constants/route';
 
 import { joinWaitingRoom, listenJoinUser, disconnectRoom } from '../utils/socket';
 import WaitingRoom from '../components/WaitingRoom';
@@ -12,8 +15,10 @@ const WaitingContainer = () => {
   const { name, id } = useSelector((state) => state.user);
   const { game_id } = useParams();
   const isMaster = users[MASTER_INDEX]?.userId === id;
+  const history = useHistory();
 
   const handleStart = () => {
+    history.push(`/games/${game_id}/camera`);
   };
 
   useEffect(() => {
@@ -27,13 +32,16 @@ const WaitingContainer = () => {
   }, []);
 
   return (
-    <WaitingRoom
-      users={users}
-      isMaster={isMaster}
-    />
-    // <Route path='/camera'>
-    //   <Camera onStart={handleStart} />
-    // </Route>
+    <>
+      <WaitingRoom
+        users={users}
+        isMaster={isMaster}
+        onStart={handleStart}
+      />
+      <Route path={`${ROUTE.games}/:game_id/camera`}>
+        <Camera />
+      </Route>
+    </>
   );
 };
 
