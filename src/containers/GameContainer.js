@@ -41,13 +41,14 @@ const GameContainer = () => {
 
     let observer;
     if (target) {
-      observer = new IntersectionObserver(onIntersect, { threshold: [0.25] });
+      observer = new IntersectionObserver(onIntersect, { threshold: [0.1] });
       observer.observe(target);
     }
 
     return () => observer.unobserve(target);
   }, [target]);
 
+  const [path, setPath] = useState(null);
   useEffect(() => {
     if (games.docs.length) return setIsLoading(false);
 
