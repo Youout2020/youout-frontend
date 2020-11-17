@@ -7,16 +7,6 @@ const SOCKET = {
   userLeave: 'USER_LEAVE',
   gameUpdate: 'GAME_UPDATE',
   gameStart: 'GAME_START',
-  initGame: 'INIT_GAME',
-};
-
-export const initGameData = async (gameId, callback) => {
-  socket.on(SOCKET.initGame, (data) => {
-    console.log(data);
-    callback(data);
-  });
-  console.log(gameId);
-  socket.emit(SOCKET.initGame, { gameId });
 };
 
 export const gameStart = (data) => {
