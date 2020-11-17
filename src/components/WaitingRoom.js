@@ -23,10 +23,11 @@ const StartButton = ({ isMaster, onStart }) => {
   );
 };
 
-const WaitingRoom = ({ users, isMaster, onStart }) => {
+const WaitingRoom = ({ users, isMaster, onStart, count }) => {
   return (
     <Header title='대기방'>
       <div className={styles.waitingRoom}>
+        <div>{count >= 0 ? count : ''}</div>
         <Users users={users}/>
         <StartButton isMaster={isMaster} onStart={onStart} />
       </div>

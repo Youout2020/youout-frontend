@@ -1,16 +1,36 @@
 import io from 'socket.io-client';
 
-const { REACT_APP_SERVER_URI } = process.env;
-const socket = io.connect(REACT_APP_SERVER_URI, { secure: true });
+const socket = io.connect('', { secure: true });
 
 const SOCKET = {
   userJoin: 'USER_JOIN',
   userLeave: 'USER_LEAVE',
   gameUpdate: 'GAME_UPDATE',
+  gameStart: 'GAME_START',
+  initGame: 'INIT_GAME',
+};
+
+export const initGameData = async (gameId, callback) => {
+  socket.on(SOCKET.initGame, (data) => {
+    console.log(data);
+    callback(data);
+  });
+  console.log(gameId);
+  socket.emit(SOCKET.initGame, { gameId });
+};
+
+export const gameStart = (data) => {
+  socket.emit(SOCKET.gameStart, data);
 };
 
 export const joinWaitingRoom = (data) => {
   socket.emit(SOCKET.userJoin, data);
+};
+
+export const listenGameStart = (callback) => {
+  socket.on(SOCKET.gameStart, (gameInfo) => {
+    callback(gameInfo);
+  });
 };
 
 export const listenJoinUser = (callback) => {
@@ -20,8 +40,8 @@ export const listenJoinUser = (callback) => {
 };
 
 export const listenUpdateData = (callback) => {
-  socket.on(SOCKET.gameUpdate, (data) => {
-    callback(data);
+  socket.on(SOCKET.gameUpdate, (gameInfo) => {
+    callback(gameInfo);
   });
 };
 

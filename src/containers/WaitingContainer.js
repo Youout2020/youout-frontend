@@ -1,28 +1,57 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 
-import { joinWaitingRoom, listenJoinUser, disconnectRoom } from '../utils/socket';
+import {
+  joinWaitingRoom,
+  listenJoinUser,
+  disconnectRoom,
+  gameStart,
+  listenGameStart,
+} from '../utils/socket';
 import WaitingRoom from '../components/WaitingRoom';
+import { updateCurrentGame } from '../reducer/currentGame';
 
 const MASTER_INDEX = 0;
+const DEFAULT_COUNT = 3;
 
 const WaitingContainer = () => {
   const [ users, setUsers ] = useState([]);
+  const [ count, setCount ] = useState(-1);
   const { name, id } = useSelector((state) => state.user);
   const { game_id } = useParams();
-  const isMaster = users[MASTER_INDEX]?.userId === id;
   const history = useHistory();
+  const dispatch = useDispatch();
+  const isMaster = users[MASTER_INDEX] && users[MASTER_INDEX]._id === id;
 
   const handleStart = () => {
-    history.push(`/games/${game_id}/camera`);
+    gameStart({ gameId: game_id });
   };
 
   useEffect(() => {
+    console.log(count);
+    if (count < 0) return;
+    if (count === 0) {
+      history.push(`/games/${game_id}/camera`);
+      return;
+    }
+
+    const timerId = setTimeout(() => {
+      setCount((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearTimeout(timerId);
+  }, [count]);
+
+  useEffect(() => {
     joinWaitingRoom({ gameId: game_id, userId: id, username: name });
-    listenJoinUser((users) => {
-      users[MASTER_INDEX].isMaster = true;
-      setUsers(users);
+    listenJoinUser((game) => {
+      game.users[MASTER_INDEX].isMaster = true;
+      setUsers(game.users);
+    });
+    listenGameStart((gameInfo) => {
+      dispatch(updateCurrentGame(gameInfo));
+      setCount(DEFAULT_COUNT);
     });
 
     return () => disconnectRoom({ gameId: game_id });
@@ -34,6 +63,7 @@ const WaitingContainer = () => {
         users={users}
         isMaster={isMaster}
         onStart={handleStart}
+        count={count}
       />
     </>
   );

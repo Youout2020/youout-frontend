@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { disconnectRoom, listenUpdateData } from '../utils/socket';
+import { updateCurrentGame } from '../reducer/currentGame';
 
 const CameraContainer = () => {
-  const [gameData, setGameData] = useState(null);
+  const dispatch = useDispatch();
+  const gameInfo = useSelector((state) => state.currentGame);
   const { game_id } = useParams();
 
   useEffect(() => {
-    listenUpdateData({ gameId: game_id }, (data) => {
-      setGameData(data);
+    listenUpdateData((data) => {
+      dispatch(updateCurrentGame(data));
     });
 
     return () => disconnectRoom({ gameId: game_id });
   }, []);
 
   return (
-    <h1>Camera</h1>
+    <h1>{gameInfo && gameInfo._id}</h1>
   );
 };
 

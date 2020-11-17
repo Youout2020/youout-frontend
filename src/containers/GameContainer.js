@@ -48,7 +48,6 @@ const GameContainer = () => {
     return () => observer.unobserve(target);
   }, [target]);
 
-  const [path, setPath] = useState(null);
   useEffect(() => {
     if (games.docs.length) return setIsLoading(false);
 
