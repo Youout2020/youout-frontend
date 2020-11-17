@@ -9,5 +9,3 @@ export default {
     games: '/user/games'
   },
 };
-
-// 다시 절대 경로로 교체

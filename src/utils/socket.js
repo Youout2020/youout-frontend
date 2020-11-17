@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 
 const { REACT_APP_SERVER_URI } = process.env;
-const socket = io.connect(REACT_APP_SERVER_URI, { secure: true });
+const socket = io.connect('', { secure: true });
 
 const SOCKET = {
   userJoin: 'USER_JOIN',

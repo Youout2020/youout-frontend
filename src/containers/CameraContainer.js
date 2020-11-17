@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { disconnectRoom, listenUpdateData } from '../utils/socket';
+import CameraWrapper from '../components/CameraWrapper';
 
 const CameraContainer = () => {
   const [gameData, setGameData] = useState(null);
@@ -16,7 +17,7 @@ const CameraContainer = () => {
   }, []);
 
   return (
-    <h1>Camera</h1>
+    <CameraWrapper />
   );
 };
 

@@ -21,8 +21,8 @@ const GameContainer = () => {
 
   // 1. DB에서 전체 GameList 가져옴
   // 2. Socket에서 현재 playing 중인 게임 리스트 useState로 저장
-  const games = useSelector((state) => state.game);
   const [ playingGameList, setPlayingGameList ] = useState(mockData);
+  const games = useSelector((state) => state.game);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
