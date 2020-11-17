@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { disconnectRoom, listenUpdateData } from '../utils/socket';
 import { updateCurrentGame } from '../reducer/currentGame';
+import CameraWrapper from '../components/CameraWrapper';
 
 const CameraContainer = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const CameraContainer = () => {
   }, []);
 
   return (
-    <h1>{gameInfo && gameInfo._id}</h1>
+    <CameraWrapper />
   );
 };
 
