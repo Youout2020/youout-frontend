@@ -5,7 +5,8 @@ const socket = io.connect(REACT_APP_SERVER_URI, { secure: true });
 
 const SOCKET = {
   userJoin: 'USER_JOIN',
-  userLeave: 'USER_LEAVE'
+  userLeave: 'USER_LEAVE',
+  gameUpdate: 'GAME_UPDATE',
 };
 
 export const joinWaitingRoom = (data) => {
@@ -15,6 +16,12 @@ export const joinWaitingRoom = (data) => {
 export const listenJoinUser = (callback) => {
   socket.on(SOCKET.userJoin, (users) => {
     callback(users);
+  });
+};
+
+export const listenUpdateData = (callback) => {
+  socket.on(SOCKET.gameUpdate, (data) => {
+    callback(data);
   });
 };
 
