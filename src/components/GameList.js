@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import GameRoom from './GameRoom';
 import Button from './Button';
@@ -6,13 +6,21 @@ import Loading from './Loading';
 import ROUTE from '../constants/route';
 import styles from './GameList.module.scss';
 
-//TODO: '방 만들기' button onClick event 컴포넌트로 이동시키기
-const GameList = ({ isLoading, list, setTarget, joinWaitingRoom }) => {
+const GameList = ({ isLoading, gameList, playingGameList, setTarget, joinWaitingRoom }) => {
   const history = useHistory();
   const [ isSelected, setIsSelected ] = useState(false);
+  const [ playingGameIds, setPlayingGameIds ] = useState([]);
   const handleFilter = () => {
     setIsSelected(!isSelected);
   };
+
+  useEffect(() => {
+    const playingGameIds = playingGameList.map((game) => {
+      return game.isPlaying ? game._id : null;
+    });
+
+    setPlayingGameIds(playingGameIds);
+  }, [playingGameList]);
 
   return (
     isLoading
@@ -26,31 +34,27 @@ const GameList = ({ isLoading, list, setTarget, joinWaitingRoom }) => {
         onClick={handleFilter}
       />
       {
-        !list.length
+        !gameList.length
         ?
         <div className={styles.message}>
           <span>방 없음🤐</span>
-          <Button
-            className='filterButton'
-            text='방 만들기'
-            onClick={() => '방 만들기로 이동'}
-          />
         </div>
         :
         (
           isSelected
-          ? list = list.filter((item) => !item.status.isPlaying)
-          : list
-        ).map((item, index) => {
-          const lastItem = index === list.length - 1;
+          ? gameList = playingGameList.filter((game) => !game.isPlaying)
+          : gameList
+        ).map((game, index) => {
+          const lastGame = index === gameList.length - 1;
+
           return (
             <GameRoom
-              isPlaying={item.status.isPlaying}
-              name={item.name}
-              users={item.status.users.length}
-              key={item._id}
-              setTarget={lastItem ? setTarget : null}
-              id={item._id}
+              key={game._id}
+              id={game._id}
+              isPlaying={playingGameIds.includes(game._id)}
+              name={game.name || game.gameInfo.name}
+              setTarget={lastGame ? setTarget : null}
+              userCount={game.users?.length || 0}
               joinWaitingRoom={joinWaitingRoom}
             />
           );
