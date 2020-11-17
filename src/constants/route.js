@@ -1,5 +1,4 @@
 export default {
-  home: '/',
   login: '/login',
   games: '/games',
   error: '/error',
@@ -10,3 +9,5 @@ export default {
     games: '/user/games'
   },
 };
+
+// 다시 절대 경로로 교체

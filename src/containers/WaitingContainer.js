@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
-import Camera from '../components/Camera';
-import { Route } from 'react-router-dom';
-import ROUTE from '../constants/route';
 
 import { joinWaitingRoom, listenJoinUser, disconnectRoom } from '../utils/socket';
 import WaitingRoom from '../components/WaitingRoom';
@@ -38,9 +35,6 @@ const WaitingContainer = () => {
         isMaster={isMaster}
         onStart={handleStart}
       />
-      <Route path={`${ROUTE.games}/:game_id/camera`}>
-        <Camera />
-      </Route>
     </>
   );
 };

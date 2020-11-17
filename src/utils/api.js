@@ -16,7 +16,7 @@ const get = async({ path, options = {} }) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`${SERVER_URI}${path}`, {
+    const { data, errMessage, status } = await fetch(`${path} `, {
       method: 'GET',
       credentials: 'include',
       headers,
@@ -41,7 +41,7 @@ const post = async ({ path, body, options = {} }) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`${SERVER_URI}${path}`, {
+    const { data, errMessage, status } = await fetch(`${path}`, {
       method: 'POST',
       credentials: 'include',
       headers,

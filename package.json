@@ -15,6 +15,7 @@
     "query-string": "^6.13.7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-html5-camera-photo": "^1.5.4",
     "react-loader-spinner": "^3.1.14",
     "react-query": "^2.26.2",
     "react-redux": "^7.2.2",
@@ -26,6 +27,7 @@
     "web-vitals": "^0.2.4",
     "yup": "^0.29.3"
   },
+  "proxy": "https://192.168.0.57:4000",
   "scripts": {
     "start": "export HTTPS=true&&PORT=3000 react-scripts start",
     "build": "react-scripts build",

@@ -16,6 +16,7 @@ import NewGame from '../components/NewGame';
 import { addNewGame } from '../reducer/game';
 import WaitingContainer from './WaitingContainer';
 import firebase from '../utils/firebase';
+import Camera from '../components/Camera';
 
 const AppContainer = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +26,7 @@ const AppContainer = () => {
   const dispatch = useDispatch();
 
   const handleLogin = () => {
-    history.push(ROUTE.home);
+    history.push(ROUTE.games);
     firebase.googleLogin();
   };
 
@@ -33,7 +34,7 @@ const AppContainer = () => {
     try {
       const response = await api.post({ path: ROUTE.games, body });
       dispatch(addNewGame(response));
-      history.push(ROUTE.games);
+      history.push('/games');
     } catch (err) {
       setErrMessage(err.message);
       history.push(ROUTE.error);
@@ -62,7 +63,7 @@ const AppContainer = () => {
         const body = { email, name: displayName, image: photoURL };
         const response = await api.post({ path: ROUTE.login, body });
 
-        document.cookie = `token=${response.token}`;
+        document.cookie = `token=${response.token}; secure`;
         dispatch(initUser(response.user));
 
         history.push(ROUTE.games);
@@ -89,6 +90,9 @@ const AppContainer = () => {
           </Route>
           <Route exact path={`${ROUTE.games}/new`}>
             <NewGame onCreateNewGame={createNewGame} />
+          </Route>
+          <Route exact path={`${ROUTE.games}/:game_id/camera`}>
+            <Camera />
           </Route>
           <Route path={`${ROUTE.games}/:game_id`}>
             <WaitingContainer />
