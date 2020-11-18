@@ -1,27 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Card.module.scss';
 import Button from './Button';
 
 const Card = ({
-  type,
+  gamePhase,
   title,
-  content,
-  subContents,
   buttonText,
   onClick,
+  userAnswer,
+  setUserAnswer,
 }) => {
+  const handleClick = () => {
+    onClick();
+  };
+
+  const handleChange = ({ target }) => {
+    const { value } = target;
+    setUserAnswer(value);
+  };
+
   return (
     <div className={styles.container}>
-      <div>{title}</div>
-      <div>{content}</div>
+      <h4>{gamePhase}</h4>
+      <h3>{title}</h3>
       {
-        type === 'quiz'
-        && <input type='text' placeholder='정답은?' />
+        gamePhase === 'quiz'
+        &&
+        <input
+          type='text'
+          placeholder='정답은?'
+          value={userAnswer}
+          onChange={handleChange}
+        />
       }
-      {
-        <div>{subContents}</div>
-      }
-      <Button text={buttonText} onClick={onClick} />
+      <Button text={buttonText} onClick={handleClick} />
     </div>
   );
 };

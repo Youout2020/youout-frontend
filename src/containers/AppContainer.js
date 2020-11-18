@@ -16,7 +16,7 @@ import NewGame from '../components/NewGame';
 import { addNewGame } from '../reducer/game';
 import WaitingContainer from './WaitingContainer';
 import firebase from '../utils/firebase';
-import GamePlayContainer from './GamePlayContainer';
+import GameListContainer from './GameListContainer';
 
 const AppContainer = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -86,13 +86,13 @@ const AppContainer = () => {
             <Login onLogin={handleLogin} />
           </Route>
           <Route exact path={ROUTE.games}>
-            <GameContainer />
+            <GameListContainer />
           </Route>
           <Route exact path={`${ROUTE.games}/new`}>
             <NewGame onCreateNewGame={createNewGame} />
           </Route>
           <Route exact path={`${ROUTE.games}/:game_id/camera`}>
-            <GamePlayContainer />
+            <GameContainer />
           </Route>
           <Route path={`${ROUTE.games}/:game_id`}>
             <WaitingContainer />

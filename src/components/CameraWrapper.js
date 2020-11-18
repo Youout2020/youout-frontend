@@ -6,27 +6,32 @@ import 'react-html5-camera-photo/build/css/index.css';
 const CameraWrapper = ({
   dataUri,
   setDataUri,
+  setGamePhase,
+  setIsCardShowing,
 }) => {
   const handleTakePhotoAnimationDone = (dataUri) => {
-    // 카메라 판별 진행 + Loader 띄어주기
+    let result = true;
+    // 사진 판별 진행
     setDataUri(dataUri);
+    if (result) {
+      setGamePhase('quiz');
+      setIsCardShowing(true);
+    } else {
+      setIsCardShowing(true);
+    }
   };
 
   return (
     <div className={styles.container}>
       {
-        dataUri
-          ?
-          <img className={styles.captureImage} src={dataUri} alt='keyword_image' />
-          :
-          <Camera
-            onTakePhotoAnimationDone={handleTakePhotoAnimationDone}
-            isFullscreen={true}
-            isImageMirror={false}
-            idealFacingMode={FACING_MODES.ENVIRONMENT}
-            imageType={IMAGE_TYPES.JPG}
-            imageCompression={0.5}
-          />
+        <Camera
+          onTakePhotoAnimationDone={handleTakePhotoAnimationDone}
+          isFullscreen={true}
+          isImageMirror={false}
+          idealFacingMode={FACING_MODES.ENVIRONMENT}
+          imageType={IMAGE_TYPES.JPG}
+          imageCompression={0.5}
+        />
       }
     </div>
   );

@@ -1,32 +1,53 @@
 import React from 'react';
+import Card from './Card';
+import styles from './CardWrapper.module.scss';
 
-const CardWrapper = () => {
+const MiniCard = ({ keyword }) => {
   return (
-    <div>
-      {
-        !gameInfo.quizList[gameIndex]
-          ?
-          <h1>이제 끝</h1>
-          :
-          gamePhase === 'keyword'
-            ?
-            <Card
-              type='keyword'
-              title='키워드를 찾아라'
-              content={gameInfo.quizList[gameIndex].keyword}
-              buttonText='확인'
-              onClick={handleKeywordClick}
-            />
-            :
-            <Card
-              type='quiz'
-              title='문제를 풀어라'
-              content={gameInfo.quizList[gameIndex].quiz}
-              buttonText='제출'
-              onClick={handleAnswerCheck}
-            />
-      }
+    <div className={styles.miniCardContainer}>
+      <h3>{keyword}</h3>
     </div>
+  );
+};
+
+const CardWrapper = ({
+  currentQuiz,
+  gamePhase,
+  onFindKeyword,
+  onRetryKeyword,
+  onSubmitAnswer,
+  onRetryAnswer,
+  isCardShowing,
+  userAnswer,
+  setUserAnswer,
+}) => {
+  const { keyword, quiz } = currentQuiz;
+  return (
+    <>
+      {
+        gamePhase === 'keyword'
+        ?
+        isCardShowing
+          ?
+          <Card
+            gamePhase={gamePhase}
+            title={keyword}
+            buttonText='찾기'
+            onClick={onFindKeyword}
+          />
+          :
+          <MiniCard keyword={keyword} />
+        :
+        <Card
+          gamePhase={gamePhase}
+          title={quiz}
+          buttonText='제출'
+          onClick={onSubmitAnswer}
+          userAnswer={userAnswer}
+          setUserAnswer={setUserAnswer}
+        />
+      }
+    </>
   );
 };
 
