@@ -19,15 +19,12 @@ const GameContainer = () => {
   const [ errMessage, setErrMessage ] = useState('');
   const [ target, setTarget ] = useState(null);
 
-  // 1. DB에서 전체 GameList 가져옴
-  // 2. Socket에서 현재 playing 중인 게임 리스트 useState로 저장
   const [ playingGameList, setPlayingGameList ] = useState(mockData);
   const games = useSelector((state) => state.game);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
 
-  // infinite Loading
   const onIntersect = async ([{ isIntersecting }]) => {
     if (isIntersecting && games.hasNextPage) {
       const { lat, lng } = await getUserLocation();
@@ -42,7 +39,6 @@ const GameContainer = () => {
     history.push(`/games/${id}`);
   };
 
-  // infinite Loading
   useEffect(() => {
     if (!target) return;
 

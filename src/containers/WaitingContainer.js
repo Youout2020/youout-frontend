@@ -29,7 +29,6 @@ const WaitingContainer = () => {
   };
 
   useEffect(() => {
-    console.log(count);
     if (count < 0) return;
     if (count === 0) {
       history.push(`/games/${game_id}/camera`);
