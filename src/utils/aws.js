@@ -73,17 +73,19 @@ const mockResponse = {
   LabelModelVersion: '2.0'
 };
 
-const compareLabels = ({ answer, response }) => {
-  if (typeof answer !== 'string') throw Error(`${answer} should be string`);
+const compareLabels = ({ keyword, response }) => {
+  if (typeof keyword !== 'string') throw Error(`${keyword} should be string`);
 
   return response.Labels.some((label) => (
-    label.Name.toLowerCase() === answer.toLowerCase()
+    label.Name.toLowerCase() === keyword.toLowerCase()
   ));
 };
 
 const detectLabels = (datauri) => {
   return new Promise((resolve, reject) => {
-    resolve(mockResponse);
+    setTimeout(() => {
+      resolve(mockResponse);
+    }, 1000);
     // const buffer = Buffer.from(datauri.split(',')[1], 'base64');
     // const params = {
     //   Image: {

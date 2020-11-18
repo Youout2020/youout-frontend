@@ -8,10 +8,16 @@ import CameraWrapper from '../components/CameraWrapper';
 import GameHeader from '../components/GameHeader';
 import { convertMsToMinutes } from '../utils/index';
 import CardWrapper from '../components/CardWrapper';
+import awsRekognition from '../utils/aws';
 
 const CameraContainer = () => {
   const dispatch = useDispatch();
-  const currentGame = useSelector((state) => state.currentGame);
+  const {
+    gameInfo: {
+      quizList,
+      timeLimit,
+    }
+  } = useSelector((state) => state.currentGame);
   const { game_id } = useParams();
 
   const [dataUri, setDataUri] = useState('');
@@ -22,6 +28,7 @@ const CameraContainer = () => {
   const [gamePhase, setGamePhase] = useState('keyword');
   const [userAnswer, setUserAnswer] = useState('');
   const [isCardShowing, setIsCardShowing] = useState(true);
+  const [resultMessage, setResultMessage] = useState('');
 
   useEffect(() => {
     listenUpdateData((data) => {
@@ -30,7 +37,7 @@ const CameraContainer = () => {
     // 재접속한 경우 gameInfo에서 해당 유저의 gameIndex 가지고 와야함
     // 또는 disconnected 되는 순간 현재 유저의 gameIndex 서버로 전달
     setGameIndex(0);
-    setMinutes(convertMsToMinutes(currentGame.gameInfo.timeLimit));
+    setMinutes(convertMsToMinutes(timeLimit));
 
     return () => disconnectRoom({ gameId: game_id });
   }, []);
@@ -39,22 +46,33 @@ const CameraContainer = () => {
     setIsCardShowing(false);
   };
 
-  const handleRetryFindKeyword = () => {
-
+  const matchPhotoToKeyword = async () => {
+    const response = await awsRekognition.detectLabels(dataUri);
+    return awsRekognition.compareLabels({
+      keyword: 'Accessories',
+      // keyword: quizList[gameIndex].keyword,
+      response,
+    });
   };
 
   const handleSubmitAnswer = () => {
-    console.log(userAnswer);
-      // 정답으로 카드 띄어주고
-      // socket으로 정답 맞춤 알리고
-      // gameIndex -> 다음으로 넘기고
-      // gamePhase -> keyword로 변경하고 띄워줘야 함
-    setGameIndex((prev) => prev + 1);
-    setGamePhase('keyword');
-  };
+    const isAnswerCorrect = userAnswer === quizList[gameIndex].answer;
+    if (isAnswerCorrect) {
+      setResultMessage('오~~~ 정답!🙆');
 
-  const handleRetryAnswer = () => {
+      setTimeout(() => {
+        setGameIndex((prev) => prev + 1);
+        setGamePhase('keyword');
+        setUserAnswer('');
+        setResultMessage('');
+      }, 2000);
 
+      return;
+    }
+
+    setResultMessage('땡! 다시!🙅‍♀️');
+    setUserAnswer('');
+    setGamePhase('quiz');
   };
 
   return (
@@ -66,23 +84,23 @@ const CameraContainer = () => {
         setSeconds={setSeconds}
       />
       <CameraWrapper
-        dataUri={dataUri}
         setDataUri={setDataUri}
         setGamePhase={setGamePhase}
         setIsCardShowing={setIsCardShowing}
+        matchPhotoToKeyword={matchPhotoToKeyword}
       />
       {
-        currentGame.gameInfo.quizList[gameIndex] &&
+        quizList[gameIndex] &&
         <CardWrapper
-          currentQuiz={currentGame.gameInfo.quizList[gameIndex]}
+          currentQuiz={quizList[gameIndex]}
           gamePhase={gamePhase}
           onFindKeyword={handleFindKeyword}
-          onRetryKeyword={handleRetryFindKeyword}
           onSubmitAnswer={handleSubmitAnswer}
-          onRetryAnswer={handleRetryAnswer}
           isCardShowing={isCardShowing}
           userAnswer={userAnswer}
           setUserAnswer={setUserAnswer}
+          resultMessage={resultMessage}
+          setResultMessage={setResultMessage}
         />
       }
     </>

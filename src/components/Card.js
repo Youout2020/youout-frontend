@@ -1,6 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './Card.module.scss';
 import Button from './Button';
+
+export const MiniCard = ({ keyword }) => {
+  return (
+    <div className={styles.miniCardContainer}>
+      <h3>{keyword}</h3>
+    </div>
+  );
+};
 
 const Card = ({
   gamePhase,
@@ -9,12 +17,15 @@ const Card = ({
   onClick,
   userAnswer,
   setUserAnswer,
+  resultMessage,
+  setResultMessage,
 }) => {
   const handleClick = () => {
     onClick();
   };
 
   const handleChange = ({ target }) => {
+    setResultMessage('');
     const { value } = target;
     setUserAnswer(value);
   };
@@ -32,6 +43,9 @@ const Card = ({
           value={userAnswer}
           onChange={handleChange}
         />
+      }
+      {
+        <div>{resultMessage}</div>
       }
       <Button text={buttonText} onClick={handleClick} />
     </div>

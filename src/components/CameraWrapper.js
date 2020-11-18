@@ -4,21 +4,19 @@ import styles from './CameraWrapper.module.scss';
 import 'react-html5-camera-photo/build/css/index.css';
 
 const CameraWrapper = ({
-  dataUri,
   setDataUri,
   setGamePhase,
   setIsCardShowing,
+  matchPhotoToKeyword,
 }) => {
   const handleTakePhotoAnimationDone = (dataUri) => {
-    let result = true;
-    // 사진 판별 진행
     setDataUri(dataUri);
+    const result = matchPhotoToKeyword();
+
     if (result) {
       setGamePhase('quiz');
-      setIsCardShowing(true);
-    } else {
-      setIsCardShowing(true);
     }
+    setIsCardShowing(true);
   };
 
   return (

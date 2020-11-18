@@ -1,25 +1,17 @@
 import React from 'react';
 import Card from './Card';
-import styles from './CardWrapper.module.scss';
-
-const MiniCard = ({ keyword }) => {
-  return (
-    <div className={styles.miniCardContainer}>
-      <h3>{keyword}</h3>
-    </div>
-  );
-};
+import { MiniCard } from './Card';
 
 const CardWrapper = ({
   currentQuiz,
   gamePhase,
   onFindKeyword,
-  onRetryKeyword,
   onSubmitAnswer,
-  onRetryAnswer,
   isCardShowing,
   userAnswer,
   setUserAnswer,
+  resultMessage,
+  setResultMessage,
 }) => {
   const { keyword, quiz } = currentQuiz;
   return (
@@ -45,6 +37,8 @@ const CardWrapper = ({
           onClick={onSubmitAnswer}
           userAnswer={userAnswer}
           setUserAnswer={setUserAnswer}
+          resultMessage={resultMessage}
+          setResultMessage={setResultMessage}
         />
       }
     </>
