@@ -6,6 +6,31 @@
   justify-content: center;
   flex-direction: column;
 
+  @keyframes pulse {
+    0% {
+      opacity: 100%;
+    }
+
+    33% {
+      opacity: 0%;
+    }
+
+    66% {
+      opacity: 100%;
+    }
+
+    100% {
+      opacity: 0%;
+    }
+  }
+
+  .counter {
+    position: fixed;
+    top: 40%;
+    font-size: $font-size-6;
+    animation: pulse 1s infinite;
+  }
+
   .users {
     li {
       display: flex;

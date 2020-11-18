@@ -3,6 +3,12 @@ import React from 'react';
 import Header from './Header';
 import styles from './WaitingRoom.module.scss';
 
+const Counter = ({ count }) => {
+  return (
+    <div className={styles.counter}>{count >= 0 ? count : ''}</div>
+  );
+};
+
 const Users = ({ users }) => {
   return (
     <ul className={styles.users}>
@@ -27,7 +33,7 @@ const WaitingRoom = ({ users, isMaster, onStart, count }) => {
   return (
     <Header title='대기방'>
       <div className={styles.waitingRoom}>
-        <div>{count >= 0 ? count : ''}</div>
+        <Counter count={count}/>
         <Users users={users}/>
         <StartButton isMaster={isMaster} onStart={onStart} />
       </div>
