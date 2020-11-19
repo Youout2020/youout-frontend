@@ -9,18 +9,16 @@ import GameHeader from '../components/GameHeader';
 import { convertMsToMinutes } from '../utils/index';
 import CardWrapper from '../components/CardWrapper';
 import awsRekognition from '../utils/aws';
+import { updateData } from '../utils/socket';
+import AlertBubble from '../components/AlertBubble';
 
-const CameraContainer = () => {
+const GameContainer = () => {
   const dispatch = useDispatch();
-  const {
-    gameInfo: {
-      quizList,
-      timeLimit,
-    }
-  } = useSelector((state) => state.currentGame);
+  const gameInfo = useSelector((state) => state.currentGame);
+  const { gameInfo: { quizList, timeLimit }, users } = gameInfo;
+  const { id: userId } = useSelector((state) => state.user);
   const { game_id } = useParams();
 
-  const [dataUri, setDataUri] = useState('');
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(59);
 
@@ -29,24 +27,35 @@ const CameraContainer = () => {
   const [userAnswer, setUserAnswer] = useState('');
   const [isCardShowing, setIsCardShowing] = useState(true);
   const [resultMessage, setResultMessage] = useState('');
+  const [userAlertList, setUserAlertList] = useState([]);
 
   useEffect(() => {
     listenUpdateData((data) => {
-      dispatch(updateCurrentGame(data));
+      dispatch(updateCurrentGame(data.game));
     });
-    // 재접속한 경우 gameInfo에서 해당 유저의 gameIndex 가지고 와야함
-    // 또는 disconnected 되는 순간 현재 유저의 gameIndex 서버로 전달
+
     setGameIndex(0);
     setMinutes(convertMsToMinutes(timeLimit));
 
     return () => disconnectRoom({ gameId: game_id });
   }, []);
 
+  useEffect(() => {
+    listenUpdateData((data) => {
+      const target = users.find((user) => user._id === data.userId);
+
+      setUserAlertList([
+        ...userAlertList,
+        target
+      ]);
+    });
+  }, [userAlertList]);
+
   const handleFindKeyword = () => {
     setIsCardShowing(false);
   };
 
-  const matchPhotoToKeyword = async () => {
+  const matchPhotoToKeyword = async (dataUri) => {
     const response = await awsRekognition.detectLabels(dataUri);
     return awsRekognition.compareLabels({
       keyword: 'Accessories',
@@ -59,6 +68,7 @@ const CameraContainer = () => {
     const isAnswerCorrect = userAnswer === quizList[gameIndex].answer;
     if (isAnswerCorrect) {
       setResultMessage('오~~~ 정답!🙆');
+      updateData({ gameId: game_id, userId });
 
       setTimeout(() => {
         setGameIndex((prev) => prev + 1);
@@ -82,15 +92,19 @@ const CameraContainer = () => {
         setMinutes={setMinutes}
         seconds={seconds}
         setSeconds={setSeconds}
+        gamePhase={gamePhase}
+        currentHint={quizList[gameIndex]?.hint}
       />
       <CameraWrapper
-        setDataUri={setDataUri}
+        gamePhase={gamePhase}
         setGamePhase={setGamePhase}
         setIsCardShowing={setIsCardShowing}
         matchPhotoToKeyword={matchPhotoToKeyword}
+        setResultMessage={setResultMessage}
       />
       {
-        quizList[gameIndex] &&
+        quizList[gameIndex]
+        &&
         <CardWrapper
           currentQuiz={quizList[gameIndex]}
           gamePhase={gamePhase}
@@ -103,8 +117,21 @@ const CameraContainer = () => {
           setResultMessage={setResultMessage}
         />
       }
+      {
+        userAlertList.length > 0
+        &&
+        userAlertList.map((user, index) => {
+          return (
+            <AlertBubble
+              key={index}
+              username={user.username}
+              gameIndex={user.gameIndex + 1}
+            />
+          );
+        })
+      }
     </>
   );
 };
 
-export default CameraContainer;
+export default GameContainer;
