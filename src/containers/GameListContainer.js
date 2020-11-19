@@ -39,7 +39,8 @@ const GameListContainer = () => {
       dispatch(loadMoreGames());
     }
   };
-
+  console.log(docs);
+  console.log(playingGameList);
   useEffect(() => {
     (async () => {
       const { lat, lng } = await getUserLocation();

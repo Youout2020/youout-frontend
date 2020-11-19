@@ -11,7 +11,7 @@ import awsRekognition from '../utils/aws';
 import { updateData, listenUpdateData } from '../utils/socket';
 import { Popup } from '../components/Card';
 import Button from '../components/Button';
-
+import { disconnectGame } from '../reducer/currentGame';
 
 const GameContainer = () => {
   const dispatch = useDispatch();
@@ -47,6 +47,8 @@ const GameContainer = () => {
       const target = users.find((user) => user._id === data.userId);
       setUserAlertList([ ...userAlertList, target ]);
     });
+
+    return () => dispatch(disconnectGame({ gameId: game_id }));
   }, [userAlertList]);
 
   useEffect(() => {

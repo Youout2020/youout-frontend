@@ -16,9 +16,9 @@ const GameList = ({
   playingGameList,
   setTarget,
   joinWaitingRoom,
-  address
+  address,
 }) => {
-  const [ isSelected, setIsSelected ] = useState(false);
+  const [ isSelected, setIsSelected ] = useState(true);
   const [ playingGameData, setPlayingGameData ] = useState([]);
   const dispatch = useDispatch();
   const handleFilter = () => {
@@ -50,8 +50,11 @@ const GameList = ({
             </div>
           : (
               isSelected
-                ? gameList = playingGameList.filter((game) => !game.isPlaying)
-                : gameList
+                ? gameList
+                : gameList = gameList.reduce((acc, cur) => {
+                    if (!playingGameData[cur._id]) acc.push(cur);
+                    return acc;
+                  }, [])
             ).map((game, index) => {
               const lastGame = index === gameList.length - 1;
               const users = playingGameData[game._id];
