@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Input from './Input';
 import styles from './NewGameForm.module.scss';
 import Button from './Button';
 import QuizForm from './QuizForm';
 import Map from './Map';
 import { pageName, pageNavigation } from '../constants/page';
+import PATH from '../constants/path';
+import { useParams } from 'react-router-dom';
+import api from '../utils/api';
 
-const NewGameForm = ({ onCreateNewGame }) => {
-  const [ gameInfo, setGameInfo ] = useState({
+const NewGameForm = ({
+  onCreateNewGame,
+}) => {
+  const [gameInfo, setGameInfo] = useState({
     name: '',
     address: '',
     addressDetail: '',
@@ -18,6 +23,25 @@ const NewGameForm = ({ onCreateNewGame }) => {
   const [ quizCount, setQuizCount ] = useState(5);
   const [ page, setPage ] = useState(1);
   const [ currentIndex, setCurrentIndex ] = useState(-1);
+  const { game_id } = useParams();
+
+  useEffect(() => {
+    if (!game_id) return;
+
+    (async () => {
+      const path = PATH.gameId(game_id);
+      const { name, address, addressDetail, location, timeLimit, quizList } = await api.get({ path });
+      setGameInfo({
+        name,
+        address,
+        addressDetail,
+        location,
+        timeLimit
+      });
+      setQuizList(quizList);
+      setQuizCount(quizList.length);
+    })();
+  }, []);
 
   const handleInputsChange = ({ target }) => {
     const { name, value } = target;
@@ -68,7 +92,7 @@ const NewGameForm = ({ onCreateNewGame }) => {
     onCreateNewGame({
       ...gameInfo,
       quizList,
-    });
+    }, game_id ? game_id : '');
   };
 
   return (

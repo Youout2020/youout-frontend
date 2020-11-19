@@ -11,6 +11,8 @@ import ROUTE from '../constants/route';
 import PATH from '../constants/path';
 import HEADER_TITLE from '../constants/headerTitle';
 import { initHistories, initGames } from '../reducer/user';
+import { updateGame } from '../reducer/game';
+import NewGameForm from '../components/NewGameForm';
 
 const UserContainer = () => {
   const {
@@ -26,6 +28,21 @@ const UserContainer = () => {
   const navigation = {
     moreHistories: () => history.push(ROUTE.user.histories),
     moreGames: () => history.push(ROUTE.user.games),
+  };
+
+  const handleRenderGameForm = (id) => {
+    history.push('/user/games/' + id);
+  };
+
+  const handleUpdateGame = async (body, gameId) => {
+    try {
+      const path = `/games/${gameId}/update`;
+      const response = await api.put({ path, body });
+      dispatch(updateGame(response));
+      history.push('/games');
+    } catch (err) {
+      history.push(ROUTE.error);
+    }
   };
 
   useEffect(() => {
@@ -63,8 +80,11 @@ const UserContainer = () => {
           <Route path={ROUTE.user.histories}>
             <HistoryPage histories={histories.docs}/>
           </Route>
-          <Route path={ROUTE.user.games}>
-            <GamePage games={games.docs} />
+          <Route exact path={ROUTE.user.games}>
+            <GamePage games={games.docs} onUpdate={handleRenderGameForm} />
+          </Route>
+          <Route path={ROUTE.user.gameId}>
+            <NewGameForm onCreateNewGame={handleUpdateGame}/>
           </Route>
         </Switch>
       </Header>

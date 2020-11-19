@@ -26,11 +26,10 @@ const AppContainer = () => {
   const dispatch = useDispatch();
 
   const handleLogin = () => {
-    history.push(ROUTE.games);
     firebase.googleLogin();
   };
 
-   const createNewGame = async (body) => {
+  const createNewGame = async (body) => {
     try {
       const response = await api.post({ path: ROUTE.games, body });
       dispatch(addNewGame(response));
