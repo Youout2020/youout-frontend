@@ -1,3 +1,4 @@
+/* global kakao */
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -9,20 +10,34 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { mockData } from '../utils/mock';
 import { setRoute } from '../reducer/route';
 import Loading from '../components/Loading';
+import { getUserLocation } from '../utils';
 
 const GameListContainer = () => {
   const { docs, hasNextPage, isLoading, error } = useSelector((state) => state.game);
   const { info } = useSelector((state) => state.user);
   const [ target, setTarget ] = useState(null);
   const [ playingGameList, setPlayingGameList ] = useState(mockData);
+  const [ address, setAddress ] = useState('');
   const dispatch = useDispatch();
-
   const handleJoinWaitingRoom = (id) => dispatch(setRoute(`/games/${id}`));
   const onIntersect = async ([{ isIntersecting }]) => {
     if (isIntersecting && hasNextPage) {
       dispatch(loadMoreGames());
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      const { lat, lng } = await getUserLocation();
+      const geocoder = new kakao.maps.services.Geocoder();
+      const coord = new kakao.maps.LatLng(lat, lng);
+      geocoder.coord2Address(coord.getLng(), coord.getLat(), (result, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+          setAddress(result[0].address.address_name);
+        }
+      });
+    })();
+  }, []);
 
   useEffect(() => {
     if (!target) return;
@@ -54,6 +69,7 @@ const GameListContainer = () => {
               playingGameList={playingGameList}
               setTarget={setTarget}
               joinWaitingRoom={handleJoinWaitingRoom}
+              address={address}
             />
           </Header>}
     </>
