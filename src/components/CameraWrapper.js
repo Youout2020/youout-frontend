@@ -4,19 +4,23 @@ import styles from './CameraWrapper.module.scss';
 import 'react-html5-camera-photo/build/css/index.css';
 
 const CameraWrapper = ({
-  setDataUri,
+  gamePhase,
   setGamePhase,
   setIsCardShowing,
   matchPhotoToKeyword,
+  setResultMessage,
 }) => {
-  const handleTakePhotoAnimationDone = (dataUri) => {
-    setDataUri(dataUri);
-    const result = matchPhotoToKeyword();
+  const handleTakePhotoAnimationDone = async (dataUri) => {
+    if (gamePhase === 'quiz') return;
+    const result = await matchPhotoToKeyword(dataUri);
 
     if (result) {
       setGamePhase('quiz');
+      setIsCardShowing(true);
+      setResultMessage('');
+      return;
     }
-    setIsCardShowing(true);
+    setResultMessage('땡!');
   };
 
   return (
@@ -28,7 +32,6 @@ const CameraWrapper = ({
           isImageMirror={false}
           idealFacingMode={FACING_MODES.ENVIRONMENT}
           imageType={IMAGE_TYPES.JPG}
-          imageCompression={0.5}
         />
       }
     </div>

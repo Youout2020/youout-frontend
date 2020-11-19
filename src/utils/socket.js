@@ -17,6 +17,10 @@ export const joinWaitingRoom = (data) => {
   socket.emit(SOCKET.userJoin, data);
 };
 
+export const updateData = (data) => {
+  socket.emit(SOCKET.gameUpdate, data);
+};
+
 export const listenGameStart = (callback) => {
   socket.on(SOCKET.gameStart, (gameInfo) => {
     callback(gameInfo);

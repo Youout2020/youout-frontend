@@ -28,7 +28,10 @@ const CardWrapper = ({
             onClick={onFindKeyword}
           />
           :
-          <MiniCard keyword={keyword} />
+          <MiniCard
+            keyword={keyword}
+            resultMessage={resultMessage}
+          />
         :
         <Card
           gamePhase={gamePhase}

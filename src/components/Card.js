@@ -1,11 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styles from './Card.module.scss';
 import Button from './Button';
 
-export const MiniCard = ({ keyword }) => {
+export const MiniCard = ({ keyword, resultMessage }) => {
   return (
     <div className={styles.miniCardContainer}>
-      <h3>{keyword}</h3>
+      <span>{keyword}</span>
+      <span>{resultMessage}</span>
+    </div>
+  );
+};
+
+export const HintCard = ({ text, onClick }) => {
+  const handleClick = () => {
+    onClick();
+  };
+
+  return (
+    <div className={styles.hintCardContainer}>
+      <span>{text}</span>
+      <Button text='확인' onClick={handleClick} />
+    </div>
+  );
+};
+
+export const ExitCard = ({ text, onClick }) => {
+  const history = useHistory();
+  const handleClick = () => {
+    onClick();
+    // socket 알림..
+    history.push('/games');
+  };
+
+  return (
+    <div className={styles.exitCardContainer}>
+      <span>{text}</span>
+      <Button text='확인' onClick={handleClick} />
     </div>
   );
 };

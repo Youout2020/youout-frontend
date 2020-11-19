@@ -31,3 +31,17 @@
   justify-content: center;
   align-items: center;
 }
+
+.hintCardContainer,
+.exitCardContainer {
+  width: 90vw;
+  height: 5vh;
+  background-color: red;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
