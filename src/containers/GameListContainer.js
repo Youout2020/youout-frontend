@@ -10,6 +10,7 @@ import {
   loadMoreGames,
   toggleIsSelected,
   loadPlayingGames,
+  joinGame,
 } from '../reducer/game';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { mockData } from '../utils/mock';
@@ -31,7 +32,7 @@ const GameListContainer = () => {
   const [ address, setAddress ] = useState('');
   const dispatch = useDispatch();
 
-  const handleJoinWaitingRoom = (id) => dispatch(setRoute(`/games/${id}`));
+  const handleJoinWaitingRoom = (id) => dispatch(joinGame(id));
   const handleFilter = () => dispatch(toggleIsSelected());
 
   const onIntersect = async ([{ isIntersecting }]) => {
@@ -39,8 +40,7 @@ const GameListContainer = () => {
       dispatch(loadMoreGames());
     }
   };
-  console.log(docs);
-  console.log(playingGameList);
+
   useEffect(() => {
     (async () => {
       const { lat, lng } = await getUserLocation();

@@ -2,6 +2,7 @@ import { createAction, createReducer, createAsyncThunk } from '@reduxjs/toolkit'
 import { getUserLocation } from '../utils';
 import api from '../utils/api';
 import { socket } from '../utils/socket';
+import { setRoute } from '../reducer/route';
 
 export const UPDATE_GAME = 'gameReducer/UPDATE_GAME';
 export const CREATE_NEW_GAME = 'gameReducer/CREATE_NEW_GAME';
@@ -13,6 +14,7 @@ export const SET_HAS_NEXT_PAGE = 'gameReducer/SET_HAS_NEXT_PAGE';
 export const TOGGLE_IS_SELECTED = 'gameReducer/TOGGLE_IS_SELECTED';
 export const LOAD_PLAYING_GAMES = 'gameReducer/LOAD_PLAYING_GAMES';
 export const SET_PLAYING_GAMES = 'gameReducer/SET_PLAYING_GAMES';
+export const JOIN_GAME = 'gameReducer/JOIN_GAME';
 
 export const setDocs = createAction(SET_DOCS);
 export const setNextPage = createAction(SET_NEXT_PAGE);
@@ -72,6 +74,24 @@ export const updateGame = createAsyncThunk(
     const path = `/games/${gameId}/update`;
     await api.put({ path, body });
     window.location.reload();
+  },
+);
+
+export const joinGame = createAsyncThunk(
+  JOIN_GAME,
+  async (id, { dispatch }) => {
+    socket.on('GET_PLAYING_GAMES', (games) => {
+      const filtered = games.filter((game) => game._id === id)[0];
+
+      if (filtered) {
+        filtered.users.length >= 4
+          ? alert('max people')
+          : dispatch(setRoute(`/games/${id}`));
+      } else {
+        dispatch(setRoute(`/games/${id}`));
+      }
+    });
+    socket.emit('GET_PLAYING_GAMES');
   },
 );
 

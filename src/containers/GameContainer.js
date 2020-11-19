@@ -40,6 +40,8 @@ const GameContainer = () => {
 
     setGameIndex(0);
     setMinutes(convertMsToMinutes(timeLimit));
+
+    return () => dispatch(disconnectGame({ gameId: game_id }));
   }, []);
 
   useEffect(() => {
@@ -47,8 +49,6 @@ const GameContainer = () => {
       const target = users.find((user) => user._id === data.userId);
       setUserAlertList([ ...userAlertList, target ]);
     });
-
-    return () => dispatch(disconnectGame({ gameId: game_id }));
   }, [userAlertList]);
 
   useEffect(() => {

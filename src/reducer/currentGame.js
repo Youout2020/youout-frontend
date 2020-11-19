@@ -43,6 +43,7 @@ export const updateCurrentGame = createAction(UPDATE_CURRENT_GAME);
 export const startGame = createAsyncThunk(
   START_GAME,
   async ({ gameId }, extra) => {
+    console.log(gameId);
     socket.emit(SOCKET.gameStart, { gameId });
   },
 );
