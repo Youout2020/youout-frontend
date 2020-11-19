@@ -1,6 +1,7 @@
 import { createAction, createReducer, createAsyncThunk } from '@reduxjs/toolkit';
 import { getUserLocation } from '../utils';
 import api from '../utils/api';
+import { socket } from '../utils/socket';
 
 export const UPDATE_GAME = 'gameReducer/UPDATE_GAME';
 export const CREATE_NEW_GAME = 'gameReducer/CREATE_NEW_GAME';
@@ -9,10 +10,25 @@ export const LOAD_MORE_GAMES = 'gameReducer/LOAD_MORE_GAMES';
 export const SET_DOCS = 'gameReducer/SET_DOCS';
 export const SET_NEXT_PAGE = 'gameReducer/SET_NEXT_PAGE';
 export const SET_HAS_NEXT_PAGE = 'gameReducer/SET_HAS_NEXT_PAGE';
+export const TOGGLE_IS_SELECTED = 'gameReducer/TOGGLE_IS_SELECTED';
+export const LOAD_PLAYING_GAMES = 'gameReducer/LOAD_PLAYING_GAMES';
+export const SET_PLAYING_GAMES = 'gameReducer/SET_PLAYING_GAMES';
 
 export const setDocs = createAction(SET_DOCS);
 export const setNextPage = createAction(SET_NEXT_PAGE);
 export const setHasNextPage = createAction(SET_HAS_NEXT_PAGE);
+export const toggleIsSelected = createAction(TOGGLE_IS_SELECTED);
+export const setPlayingGames = createAction(SET_PLAYING_GAMES);
+
+export const loadPlayingGames = createAsyncThunk(
+  LOAD_PLAYING_GAMES,
+  async (payload, { dispatch }) => {
+    socket.on('GET_PLAYING_GAMES', (games) => {
+      dispatch(setPlayingGames(games));
+    });
+    socket.emit('GET_PLAYING_GAMES');
+  },
+);
 
 export const createNewGame = createAsyncThunk(
   CREATE_NEW_GAME,
@@ -61,10 +77,12 @@ export const updateGame = createAsyncThunk(
 
 const initState = {
   docs: [],
+  playingGameList: [],
   nextPage: 1,
   hasNextPage: true,
   isLoading: false,
   error: '',
+  isSelected: true,
 };
 
 const pending = createNewGame.pending ||
@@ -86,6 +104,8 @@ export default createReducer(initState, {
   [SET_DOCS]: (state, { payload }) => { state.docs = payload; },
   [SET_NEXT_PAGE]: (state, { payload }) => { state.nextPage = payload; },
   [SET_HAS_NEXT_PAGE]: (state, { payload }) => { state.hasNextPage = payload; },
+  [TOGGLE_IS_SELECTED]: (state, action) => { state.isSelected = !state.isSelected; },
+  [SET_PLAYING_GAMES]: (state, { payload }) => { state.playingGameList = payload; },
   [pending]: (state, action) => {
     state.isLoading = true;
   },

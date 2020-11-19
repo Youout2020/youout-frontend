@@ -11,20 +11,27 @@ const Address = ({ address }) => {
   );
 };
 
-const GameList = ({ gameList, playingGameList, setTarget, joinWaitingRoom, address }) => {
+const GameList = ({
+  gameList,
+  playingGameList,
+  setTarget,
+  joinWaitingRoom,
+  address
+}) => {
   const [ isSelected, setIsSelected ] = useState(false);
-  const [ playingGameIds, setPlayingGameIds ] = useState([]);
+  const [ playingGameData, setPlayingGameData ] = useState([]);
   const dispatch = useDispatch();
   const handleFilter = () => {
     setIsSelected(!isSelected);
   };
 
   useEffect(() => {
-    const playingGameIds = playingGameList.map((game) => {
-      return game.isPlaying ? game._id : null;
+    const temp = {};
+    playingGameList.forEach((game) => {
+      temp[game._id] = game.users;
     });
 
-    setPlayingGameIds(playingGameIds);
+    setPlayingGameData(temp);
   }, [playingGameList]);
 
   return (
@@ -47,14 +54,16 @@ const GameList = ({ gameList, playingGameList, setTarget, joinWaitingRoom, addre
                 : gameList
             ).map((game, index) => {
               const lastGame = index === gameList.length - 1;
+              const users = playingGameData[game._id];
+
               return (
                 <GameRoom
                   key={game._id}
                   id={game._id}
-                  isPlaying={playingGameIds.includes(game._id)}
+                  isPlaying={!!users}
                   name={game.name || game.gameInfo.name}
                   setTarget={lastGame ? setTarget : null}
-                  userCount={game.users?.length || 0}
+                  userCount={users?.length || 0}
                   joinWaitingRoom={joinWaitingRoom}
                 />
               );

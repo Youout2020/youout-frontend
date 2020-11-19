@@ -79,7 +79,7 @@ export const countdown = createAsyncThunk(
 
 export const disconnectGame = createAsyncThunk(
   DISCONNECT_GAME,
-  async ({ gameId }, { dispatch }) => {
+  async ({ gameId }, { dispatch, getState }) => {
     socket.off(SOCKET.userJoin);
     socket.off(SOCKET.gameStart);
     socket.off(SOCKET.gameUpdate);
@@ -88,7 +88,9 @@ export const disconnectGame = createAsyncThunk(
     socket.emit(SOCKET.userLeave, { gameId });
 
     dispatch(setGameInfo(initGameInfo));
-    dispatch(toggleIsPlaying());
+
+    const { isPlaying } = getState().currentGame;
+    if (isPlaying) dispatch(toggleIsPlaying());
     dispatch(setCount(-1));
     dispatch(setUsers([]));
   }
