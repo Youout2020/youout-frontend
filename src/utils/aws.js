@@ -1,11 +1,11 @@
-// const AWS = require('aws-sdk');
+const AWS = require('aws-sdk');
 
-// const config = new AWS.Config({
-//   accessKeyId: '<AWS_ACCESS_KEY>',
-//   secretAccessKey: '<AWS_SECRET_ACCESS_KEY>',
-//   region: '<REGION>', //seoul: ap-northeast-2
-// });
-// const client = new AWS.Rekognition(config);
+const config = new AWS.Config({
+  accessKeyId: process.env.REACT_APP_AWS_accessKeyId,
+  secretAccessKey: process.env.REACT_APP_AWS_secretAccessKey,
+  region: 'ap-northeast-2', //seoul: ap-northeast-2
+});
+const client = new AWS.Rekognition(config);
 
 const mockResponse = {
   Labels: [
@@ -73,11 +73,11 @@ const mockResponse = {
   LabelModelVersion: '2.0'
 };
 
-const compareLabels = ({ answer, response }) => {
-  if (typeof answer !== 'string') throw Error(`${answer} should be string`);
-
+const compareLabels = ({ keyword, response }) => {
+  if (typeof keyword !== 'string') throw Error(`${keyword} should be string`);
+  console.log(keyword, response); // 나중에 지우기
   return response.Labels.some((label) => (
-    label.Name.toLowerCase() === answer.toLowerCase()
+    label.Name.toLowerCase() === keyword.toLowerCase()
   ));
 };
 
@@ -89,19 +89,17 @@ const detectLabels = (datauri) => {
     //   Image: {
     //     Bytes: buffer
     //   },
-    //   MaxLabels: 5,
+    //   MaxLabels: 10,
     //   MinConfidence: 70,
     // };
 
     // client.detectLabels(params, function (err, response) {
     //   if (err) return reject(err);
-
-    //   resolve(mockResponse);
+    //   console.log(response);
+    //   resolve(response);
     // });
   });
 };
-
-
 
 export default {
   compareLabels,

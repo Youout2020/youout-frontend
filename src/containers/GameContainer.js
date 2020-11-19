@@ -1,88 +1,123 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
-import Header from '../components/Header';
-import GameList from '../components/GameList';
-import api from '../utils/api';
-import ROUTE from '../constants/route';
-import PATH from '../constants/path';
-import HEADER_TITLE from '../constants/headerTitle';
-import { getUserLocation } from '../utils';
-import { initGame, addNextGame } from '../reducer/game';
-import { joinWaitingRoom } from '../utils/socket';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import { mockData } from '../utils/mock';
+import { disconnectRoom, listenUpdateData } from '../utils/socket';
+import { updateCurrentGame } from '../reducer/currentGame';
+import CameraWrapper from '../components/CameraWrapper';
+import GameHeader from '../components/GameHeader';
+import { convertMsToMinutes } from '../utils/index';
+import CardWrapper from '../components/CardWrapper';
+import awsRekognition from '../utils/aws';
+import { updateData } from '../utils/socket';
 
 const GameContainer = () => {
-  const [ isLoading, setIsLoading ] = useState(true);
-  const [ errMessage, setErrMessage ] = useState('');
-  const [ target, setTarget ] = useState(null);
-
-  // 1. DB에서 전체 GameList 가져옴
-  // 2. Socket에서 현재 playing 중인 게임 리스트 useState로 저장
-  const [ playingGameList, setPlayingGameList ] = useState(mockData);
-  const games = useSelector((state) => state.game);
-  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const history = useHistory();
+  const gameInfo = useSelector((state) => state.currentGame);
+  const { gameInfo: { quizList, timeLimit }, users } = gameInfo;
+  const { id: userId } = useSelector((state) => state.user);
+  const { game_id } = useParams();
 
-  // infinite Loading
-  const onIntersect = async ([{ isIntersecting }]) => {
-    if (isIntersecting && games.hasNextPage) {
-      const { lat, lng } = await getUserLocation();
-      const path = PATH.gamesLocation({ lat, lng, page: games.nextPage});
-      const { docs, nextPage, hasNextPage } = await api.get({ path });
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(59);
 
-      dispatch(addNextGame({ docs, nextPage, hasNextPage }));
-    }
-  };
-
-  const handleJoinWaitingRoom = (id) => {
-    history.push(`/games/${id}`);
-  };
-
-  // infinite Loading
-  useEffect(() => {
-    if (!target) return;
-
-    let observer;
-    if (target) {
-      observer = new IntersectionObserver(onIntersect, { threshold: [0.1] });
-      observer.observe(target);
-    }
-
-    return () => observer.unobserve(target);
-  }, [target]);
+  const [gameIndex, setGameIndex] = useState(-1);
+  const [gamePhase, setGamePhase] = useState('keyword');
+  const [userAnswer, setUserAnswer] = useState('');
+  const [isCardShowing, setIsCardShowing] = useState(true);
+  const [resultMessage, setResultMessage] = useState('');
+  const [userAlertList, setUserAlertList] = useState([]);
 
   useEffect(() => {
-    if (games.docs.length) return setIsLoading(false);
+    listenUpdateData((data) => {
+      dispatch(updateCurrentGame(data.game));
+    });
 
-    (async () => {
-      try {
-        const { lat, lng } = await getUserLocation();
-        const path = PATH.gamesLocation({ lat, lng });
-        const { docs, nextPage, hasNextPage } = await api.get({ path });
-        dispatch(initGame({ docs, nextPage, hasNextPage }));
-        setIsLoading(false);
-      } catch (err) {
-        setErrMessage(err.message);
-        history.push(ROUTE.error);
-      }
-    })();
+    setGameIndex(0);
+    setMinutes(convertMsToMinutes(timeLimit));
+
+    return () => disconnectRoom({ gameId: game_id });
   }, []);
+
+  useEffect(() => {
+    listenUpdateData((data) => {
+      const target = users.find((user) => user._id === data.userId);
+
+      setUserAlertList([
+        ...userAlertList,
+        target
+      ]);
+    });
+  }, [userAlertList]);
+
+  const handleFindKeyword = () => {
+    setIsCardShowing(false);
+  };
+
+  const matchPhotoToKeyword = async (dataUri) => {
+    const response = await awsRekognition.detectLabels(dataUri);
+    return awsRekognition.compareLabels({
+      keyword: 'Accessories',
+      // keyword: quizList[gameIndex].keyword,
+      response,
+    });
+  };
+
+  const handleSubmitAnswer = () => {
+    const isAnswerCorrect = userAnswer === quizList[gameIndex].answer;
+    if (isAnswerCorrect) {
+      setResultMessage('오~~~ 정답!🙆');
+      updateData({ gameId: game_id, userId });
+
+      setTimeout(() => {
+        setGameIndex((prev) => prev + 1);
+        setGamePhase('keyword');
+        setUserAnswer('');
+        setResultMessage('');
+      }, 2000);
+
+      return;
+    }
+
+    setResultMessage('땡! 다시!🙅‍♀️');
+    setUserAnswer('');
+    setGamePhase('quiz');
+  };
 
   return (
     <>
-      <Header title={HEADER_TITLE.games}>
-        <GameList
-          gameList={games.docs}
-          playingGameList={playingGameList}
-          setTarget={setTarget}
-          isLoading={isLoading}
-          joinWaitingRoom={handleJoinWaitingRoom}
+      <GameHeader
+        minutes={minutes}
+        setMinutes={setMinutes}
+        seconds={seconds}
+        setSeconds={setSeconds}
+        gamePhase={gamePhase}
+        currentHint={quizList[gameIndex]?.hint}
+      />
+      <CameraWrapper
+        gamePhase={gamePhase}
+        setGamePhase={setGamePhase}
+        setIsCardShowing={setIsCardShowing}
+        matchPhotoToKeyword={matchPhotoToKeyword}
+        setResultMessage={setResultMessage}
+      />
+      {
+        quizList[gameIndex]
+        &&
+        <CardWrapper
+          currentQuiz={quizList[gameIndex]}
+          gamePhase={gamePhase}
+          onFindKeyword={handleFindKeyword}
+          onSubmitAnswer={handleSubmitAnswer}
+          isCardShowing={isCardShowing}
+          userAnswer={userAnswer}
+          setUserAnswer={setUserAnswer}
+          resultMessage={resultMessage}
+          setResultMessage={setResultMessage}
+          userAlertList={userAlertList}
+          setUserAlertList={setUserAlertList}
         />
-      </Header>
+      }
     </>
   );
 };

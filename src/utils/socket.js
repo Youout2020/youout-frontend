@@ -5,8 +5,9 @@ const socket = io.connect('', { secure: true });
 const SOCKET = {
   userJoin: 'USER_JOIN',
   userLeave: 'USER_LEAVE',
-  gameUpdate: 'GAME_UPDATE',
   gameStart: 'GAME_START',
+  gameUpdate: 'GAME_UPDATE',
+  gameEnd: 'GAME_END',
 };
 
 export const gameStart = (data) => {
@@ -15,6 +16,14 @@ export const gameStart = (data) => {
 
 export const joinWaitingRoom = (data) => {
   socket.emit(SOCKET.userJoin, data);
+};
+
+export const updateData = (data) => {
+  socket.emit(SOCKET.gameUpdate, data);
+};
+
+export const gameEnd = () => {
+  socket.emit(SOCKET.gameEnd);
 };
 
 export const listenGameStart = (callback) => {
@@ -37,5 +46,9 @@ export const listenUpdateData = (callback) => {
 
 export const disconnectRoom = (data) => {
   socket.off(SOCKET.userJoin);
+  socket.off(SOCKET.gameStart);
+  socket.off(SOCKET.gameUpdate);
+  socket.off(SOCKET.userLeave);
+
   socket.emit(SOCKET.userLeave, data);
 };
