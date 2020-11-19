@@ -18,7 +18,8 @@ const DEFAULT_COUNT = 3;
 const WaitingContainer = () => {
   const [ users, setUsers ] = useState([]);
   const [ count, setCount ] = useState(-1);
-  const { name, id } = useSelector((state) => state.user);
+  const { name, id } = useSelector((state) => state.user.info);
+
   const { game_id } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();

@@ -6,4 +6,7 @@ export default {
   gamesLocation: ({ lat, lng, page = 1 }) => (
     `${ROUTE.games}?type=location&lat=${lat}&lng=${lng}&page=${page}`
   ),
+  gameId: (gameId) => (
+    `${ROUTE.games}/${gameId}`
+  ),
 };
