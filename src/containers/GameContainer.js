@@ -18,7 +18,7 @@ const GameContainer = () => {
   const dispatch = useDispatch();
   const gameInfo = useSelector((state) => state.currentGame);
   const { gameInfo: { quizList, timeLimit }, users } = gameInfo;
-  const { id: userId } = useSelector((state) => state.user);
+  const { id: userId } = useSelector((state) => state.user.info);
   const { game_id } = useParams();
   const history = useHistory();
 
@@ -56,11 +56,18 @@ const GameContainer = () => {
     const timerId = setTimeout(() => {
       if (seconds > 0) setSeconds((prev) => prev - 1);
       if (seconds === 0) {
-        minutes === 0
-          ? //TODO: 게임 종료 알림 (socket emit)
-            clearTimeout(timerId)
-          : setMinutes((prev) => prev - 1);
+        switch (minutes) {
+          case 0:
+            //TODO: 게임 종료 알림 (socket emit)
+            clearTimeout(timerId);
+            break;
+          case 1:
+            //TODO: 종료 1분 전 알림
+            break;
+          default:
+            setMinutes((prev) => prev - 1);
             setSeconds(59);
+        }
       }
     }, 1000);
 
