@@ -53,7 +53,7 @@ const WaitingContainer = () => {
       setCount(DEFAULT_COUNT);
     });
 
-    // return () => disconnectRoom({ gameId: game_id });
+    return () => disconnectRoom({ gameId: game_id });
   }, []);
 
   return (

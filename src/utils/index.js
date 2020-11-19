@@ -30,3 +30,7 @@ export const getUserLocation = () => {
 export const convertMsToMinutes = (milliseconds) => {
   return (milliseconds / (1000 * 60)) - 1;
 };
+
+export const convertTimeFormat = (time) => {
+  return time < 10 ? `0${time}` : time;
+};
