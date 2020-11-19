@@ -5,7 +5,13 @@ import styles from './GameList.module.scss';
 import { useDispatch } from 'react-redux';
 import { setRoute } from '../reducer/route';
 
-const GameList = ({ gameList, playingGameList, setTarget, joinWaitingRoom }) => {
+const Address = ({ address }) => {
+  return (
+    <h1>{address}</h1>
+  );
+};
+
+const GameList = ({ gameList, playingGameList, setTarget, joinWaitingRoom, address }) => {
   const [ isSelected, setIsSelected ] = useState(false);
   const [ playingGameIds, setPlayingGameIds ] = useState([]);
   const dispatch = useDispatch();
@@ -23,6 +29,8 @@ const GameList = ({ gameList, playingGameList, setTarget, joinWaitingRoom }) => 
 
   return (
     <div className={styles.container}>
+      <div className={styles.gradient}/>
+      <Address address={address}/>
       <Button
         className='toggleButton'
         text={isSelected ? 'All' : 'Waiting'}

@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 
-import { listenUpdateData } from '../utils/socket';
 import { updateCurrentGame } from '../reducer/currentGame';
 import Camera from '../components/Camera';
 import GameHeader from '../components/GameHeader';
 import { convertMsToMinutes } from '../utils/index';
 import CardWrapper from '../components/CardWrapper';
 import awsRekognition from '../utils/aws';
-import { updateData } from '../utils/socket';
+import { updateData, listenUpdateData } from '../utils/socket';
 import { Popup } from '../components/Card';
 import Button from '../components/Button';
 
