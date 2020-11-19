@@ -110,6 +110,7 @@ const GameContainer = () => {
           onFindKeyword={handleFindKeyword}
           onSubmitAnswer={handleSubmitAnswer}
           isCardShowing={isCardShowing}
+          setIsCardShowing={setIsCardShowing}
           userAnswer={userAnswer}
           setUserAnswer={setUserAnswer}
           resultMessage={resultMessage}

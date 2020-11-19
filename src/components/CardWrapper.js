@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Card from './Card';
 import { MiniCard } from './Card';
 import AlertBubble from './AlertBubble';
@@ -10,15 +10,23 @@ const CardWrapper = ({
   onFindKeyword,
   onSubmitAnswer,
   isCardShowing,
+  setIsCardShowing,
   userAnswer,
   setUserAnswer,
   resultMessage,
   setResultMessage,
   userAlertList,
   setUserAlertList,
-  autoDeleteTime,
 }) => {
   const { keyword, quiz } = currentQuiz;
+
+  // useEffect(() => {
+  //   const timerId = setTimeout(() => {
+  //     setIsCardShowing(false);
+  //   }, 2000);
+
+  //   return () => clearTimeout(timerId);
+  // }, [isCardShowing]);
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -60,6 +68,7 @@ const CardWrapper = ({
           setResultMessage={setResultMessage}
         />
       }
+
       <div className={styles.bubbleContainer}>
         {
           userAlertList.length > 0

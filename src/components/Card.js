@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './Card.module.scss';
 import Button from './Button';
@@ -28,7 +28,6 @@ export const HintCard = ({ text, onClick }) => {
 export const ExitCard = ({ text, onClick }) => {
   const history = useHistory();
   const handleClick = () => {
-    onClick();
     // socket 알림..
     history.push('/games');
   };
@@ -37,6 +36,7 @@ export const ExitCard = ({ text, onClick }) => {
     <div className={styles.exitCardContainer}>
       <span>{text}</span>
       <Button text='확인' onClick={handleClick} />
+      <Button text='취소' onClick={onClick} />
     </div>
   );
 };
