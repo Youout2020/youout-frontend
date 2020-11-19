@@ -25,7 +25,6 @@ const AppContainer = () => {
   const handleCreateNewGame = (body) => dispatch(createNewGame(body));
 
   useEffect(() => {
-    console.log(isInitialized);
     if (isInitialized) return;
 
     findCookie('token')

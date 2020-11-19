@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 
-import { disconnectRoom, listenUpdateData } from '../utils/socket';
+import { listenUpdateData } from '../utils/socket';
 import { updateCurrentGame } from '../reducer/currentGame';
 import Camera from '../components/Camera';
 import GameHeader from '../components/GameHeader';
@@ -18,7 +18,7 @@ const GameContainer = () => {
   const dispatch = useDispatch();
   const gameInfo = useSelector((state) => state.currentGame);
   const { gameInfo: { quizList, timeLimit }, users } = gameInfo;
-  const { id: userId } = useSelector((state) => state.user);
+  const { id: userId } = useSelector((state) => state.user.info);
   const { game_id } = useParams();
   const history = useHistory();
 
@@ -41,8 +41,6 @@ const GameContainer = () => {
 
     setGameIndex(0);
     setMinutes(convertMsToMinutes(timeLimit));
-
-    return () => disconnectRoom({ gameId: game_id });
   }, []);
 
   useEffect(() => {

@@ -14,7 +14,7 @@ const Game = ({ id, name, onUpdate }) => {
       {name}
       <button onClick={() => onUpdate(id)}>Update</button>
     </li>
-  )
+  );
 };
 
 const Games = ({ games, onUpdate }) => {
