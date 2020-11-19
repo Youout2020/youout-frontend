@@ -10,7 +10,6 @@ import { convertMsToMinutes } from '../utils/index';
 import CardWrapper from '../components/CardWrapper';
 import awsRekognition from '../utils/aws';
 import { updateData } from '../utils/socket';
-import AlertBubble from '../components/AlertBubble';
 
 const GameContainer = () => {
   const dispatch = useDispatch();
@@ -115,20 +114,9 @@ const GameContainer = () => {
           setUserAnswer={setUserAnswer}
           resultMessage={resultMessage}
           setResultMessage={setResultMessage}
+          userAlertList={userAlertList}
+          setUserAlertList={setUserAlertList}
         />
-      }
-      {
-        userAlertList.length > 0
-        &&
-        userAlertList.map((user, index) => {
-          return (
-            <AlertBubble
-              key={index}
-              username={user.username}
-              gameIndex={user.gameIndex + 1}
-            />
-          );
-        })
       }
     </>
   );

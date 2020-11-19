@@ -7,6 +7,7 @@ const SOCKET = {
   userLeave: 'USER_LEAVE',
   gameStart: 'GAME_START',
   gameUpdate: 'GAME_UPDATE',
+  gameEnd: 'GAME_END',
 };
 
 export const gameStart = (data) => {
@@ -19,6 +20,10 @@ export const joinWaitingRoom = (data) => {
 
 export const updateData = (data) => {
   socket.emit(SOCKET.gameUpdate, data);
+};
+
+export const gameEnd = () => {
+  socket.emit(SOCKET.gameEnd);
 };
 
 export const listenGameStart = (callback) => {

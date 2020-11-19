@@ -1,6 +1,8 @@
 import React from 'react';
 import Card from './Card';
 import { MiniCard } from './Card';
+import AlertBubble from './AlertBubble';
+import styles from './CardWrapper.module.scss';
 
 const CardWrapper = ({
   currentQuiz,
@@ -12,6 +14,8 @@ const CardWrapper = ({
   setUserAnswer,
   resultMessage,
   setResultMessage,
+  userAlertList,
+  setUserAlertList,
 }) => {
   const { keyword, quiz } = currentQuiz;
   return (
@@ -44,6 +48,22 @@ const CardWrapper = ({
           setResultMessage={setResultMessage}
         />
       }
+      <div className={styles.bubbleContainer}>
+        {
+          userAlertList?.length
+          &&
+          userAlertList.map((user, index) => {
+            return (
+              <AlertBubble
+                key={index}
+                username={user.username}
+                gameIndex={user.gameIndex + 1}
+                setUserAlertList={setUserAlertList}
+              />
+            );
+          })
+        }
+      </div>
     </>
   );
 };

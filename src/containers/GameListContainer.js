@@ -10,7 +10,6 @@ import PATH from '../constants/path';
 import HEADER_TITLE from '../constants/headerTitle';
 import { getUserLocation } from '../utils';
 import { initGame, addNextGame } from '../reducer/game';
-import { joinWaitingRoom } from '../utils/socket';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { mockData } from '../utils/mock';
 
