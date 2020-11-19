@@ -6,7 +6,6 @@ import Login from '../components/Login';
 import Loading from '../components/Loading';
 import NewGameForm from '../components/NewGameForm';
 import UserContainer from './UserContainer';
-import GameContainer from './GameContainer';
 import WaitingContainer from './WaitingContainer';
 import GameListContainer from './GameListContainer';
 import { loadUser } from '../reducer/user';
@@ -50,9 +49,6 @@ const AppContainer = () => {
             </Route>
             <Route exact path={'/games/new'}>
               <NewGameForm onCreateNewGame={handleCreateNewGame} />
-            </Route>
-            <Route exact path={'/games/:game_id/camera'}>
-              <GameContainer />
             </Route>
             <Route path={'/games/:game_id'}>
               <WaitingContainer />

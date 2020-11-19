@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-const socket = io.connect('', { secure: true });
+export const socket = io.connect('', { secure: true });
 
 const SOCKET = {
   userJoin: 'USER_JOIN',

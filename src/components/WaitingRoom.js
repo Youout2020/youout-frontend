@@ -9,11 +9,15 @@ const Counter = ({ count }) => {
   );
 };
 
-const Users = ({ users }) => {
+const Users = ({ users, isMaster }) => {
   return (
     <ul className={styles.users}>
       {users.map((user) => (
-        <li key={user.socketId}>{user.username}{user.isMaster ? '(방장)' : ''}</li>
+        <li key={user.socketId}>
+          <img src={user.image} className={styles.userIcon}/>
+          {user.username}
+          {isMaster ? '(방장)' : ''}
+        </li>
       ))}
     </ul>
   );
@@ -34,7 +38,7 @@ const WaitingRoom = ({ users, isMaster, onStart, count }) => {
     <Header title='대기방'>
       <div className={styles.waitingRoom}>
         <Counter count={count}/>
-        <Users users={users}/>
+        <Users users={users} isMaster={isMaster}/>
         <StartButton isMaster={isMaster} onStart={onStart} />
       </div>
     </Header>

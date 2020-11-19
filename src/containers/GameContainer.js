@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 
-import { disconnectRoom, listenUpdateData } from '../utils/socket';
 import { updateCurrentGame } from '../reducer/currentGame';
 import Camera from '../components/Camera';
 import GameHeader from '../components/GameHeader';
 import { convertMsToMinutes } from '../utils/index';
 import CardWrapper from '../components/CardWrapper';
 import awsRekognition from '../utils/aws';
-import { updateData } from '../utils/socket';
+import { updateData, listenUpdateData } from '../utils/socket';
 import { Popup } from '../components/Card';
 import Button from '../components/Button';
-
+import { disconnectGame } from '../reducer/currentGame';
+import { setRoute } from '../reducer/route';
 
 const GameContainer = () => {
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ const GameContainer = () => {
     setGameIndex(0);
     setMinutes(convertMsToMinutes(timeLimit));
 
-    return () => disconnectRoom({ gameId: game_id });
+    // return () => dispatch(disconnectGame({ gameId: game_id }));
   }, []);
 
   useEffect(() => {
@@ -127,7 +127,7 @@ const GameContainer = () => {
   const handleFindKeyword = () => setIsCardShowing(false);
   const handleHintToggle = () => setIsHintShowing(!isHintShowing);
   const handleCancelToggle = () => setIsExitShowing(!isExitShowing);
-  const handleExitClick = () => history.push('/games');
+  const handleExitClick = () => dispatch(setRoute('/games'));
   const handleAnswerChange = ({ target }) => {
     setResultMessage('');
     setUserAnswer(target.value);

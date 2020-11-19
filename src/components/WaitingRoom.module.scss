@@ -35,13 +35,19 @@
     li {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-around;
       background: $blue;
       color: $white;
       height: 50px;
       width: 300px;
       margin: 10px;
       border-radius: 20px;
+
+      .userIcon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+      }
     }
   }
 
