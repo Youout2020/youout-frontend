@@ -1,106 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Error from '../components/Error';
 import Login from '../components/Login';
 import Loading from '../components/Loading';
-import api from '../utils/api';
-import firebase from '../utils/firebase';
-import { findCookie } from '../utils';
-import { initUser } from '../reducer/user';
-import ROUTE from '../constants/route';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import NewGameForm from '../components/NewGameForm';
 import UserContainer from './UserContainer';
-import GameContainer from './GameContainer';
-import NewGame from '../components/NewGame';
-import { addNewGame } from '../reducer/game';
 import WaitingContainer from './WaitingContainer';
+import GameListContainer from './GameListContainer';
+import { loadUser } from '../reducer/user';
+import { createNewGame } from '../reducer/game';
+import { findCookie } from '../utils';
+import firebase from '../utils/firebase';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const AppContainer = () => {
-  const [ isLoading, setIsLoading ] = useState(true);
-  const [ errMessage, setErrMessage ] = useState('');
-
+  const { isLoading, isInitialized, error } = useSelector((state) => state.user);
+  const route = useSelector((state) => state.route);
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const handleLogin = () => {
-    history.push(ROUTE.home);
-    firebase.googleLogin();
-  };
-
-  const createNewGame = async (body) => {
-    try {
-      const response = await api.post({ path: ROUTE.games, body });
-      dispatch(addNewGame(response));
-      history.push(ROUTE.games);
-    } catch (err) {
-      setErrMessage(err.message);
-      history.push(ROUTE.error);
-    }
-  };
+  const handleLogin = () => firebase.googleLogin();
+  const handleCreateNewGame = (body) => dispatch(createNewGame(body));
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { user } = await firebase.listenRedirect();
-        setIsLoading(false);
+    if (isInitialized) return;
 
-        if (findCookie('token')) {
-          const response = await api.get({ path: ROUTE.user.main });
-          dispatch(initUser(response.user));
-          history.push(ROUTE.games);
-          return;
-        }
-
-        if (!user) {
-          history.push(ROUTE.login);
-          return;
-        }
-
-        const { email, displayName, photoURL } = user;
-        const body = { email, name: displayName, image: photoURL };
-        const response = await api.post({ path: ROUTE.login, body });
-
-        document.cookie = `token=${response.token}`;
-        dispatch(initUser(response.user));
-
-        history.push(ROUTE.games);
-      } catch (err) {
-        setErrMessage(err.message);
-        history.push(ROUTE.error);
-      }
-    })();
+    findCookie('token')
+      ? dispatch(loadUser({ hasToken: true }))
+      : dispatch(loadUser({ hasToken: false }));
   }, []);
+
+  useEffect(() => {
+    history.push(route);
+  }, [route]);
 
   return (
     <div>
-      {
-        isLoading
-        ?
-        <Loading />
-        :
-        <Switch>
-          <Route path={ROUTE.login}>
+      {error}
+      {isLoading
+        ? <Loading />
+        : <Switch>
+            <Route path={'/login'}>
             <Login onLogin={handleLogin} />
-          </Route>
-          <Route exact path={ROUTE.games}>
-            <GameContainer />
-          </Route>
-          <Route exact path={`${ROUTE.games}/new`}>
-            <NewGame onCreateNewGame={createNewGame} />
-          </Route>
-          <Route path={`${ROUTE.games}/:game_id`}>
-            <WaitingContainer />
-          </Route>
-          <Route path={ROUTE.user.main}>
-            <UserContainer />
-          </Route>
-          <Route path={ROUTE.error}>
-            <Error message={errMessage} />
-          </Route>
-        </Switch>
-      }
+            </Route>
+            <Route exact path={'/games'}>
+              <GameListContainer />
+            </Route>
+            <Route exact path={'/games/new'}>
+              <NewGameForm onCreateNewGame={handleCreateNewGame} />
+            </Route>
+            <Route path={'/games/:game_id'}>
+              <WaitingContainer />
+            </Route>
+            <Route path={'/user'}>
+              <UserContainer />
+            </Route>
+          </Switch>}
     </div>
   );
 };

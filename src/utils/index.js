@@ -12,13 +12,25 @@ export const findCookie = (key) => {
 
 export const getUserLocation = () => {
   return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition((position, err) => {
-      if (err) reject(err);
-
-      resolve({
-        lat: 126.8719347,
-        lng: 33.3765812,
-      });
+    resolve({
+      lat: 37.5058543,
+      lng: 127.0569843
     });
+    // navigator.geolocation.getCurrentPosition((position, err) => {
+    //   if (err) reject(err);
+
+    //   resolve({
+    //     lat: position.coords.latitude,
+    //     lng: position.coords.longitude,
+    //   });
+    // });
   });
+};
+
+export const convertMsToMinutes = (milliseconds) => {
+  return (milliseconds / (1000 * 60)) - 1;
+};
+
+export const convertTimeFormat = (time) => {
+  return time < 10 ? `0${time}` : time;
 };

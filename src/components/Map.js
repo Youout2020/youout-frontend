@@ -5,7 +5,7 @@ import Button from './Button';
 import { pageName } from '../constants/page';
 
 const Map = ({ setPage, gameInfo, setGameInfo }) => {
-  // user redux에서 가져오기 (최초)
+  // user 정보 다시 가져오기
   const [ currentCoords, setCurrentCoords ] = useState({
     lat: 37.5058543,
     lng: 127.0569843,

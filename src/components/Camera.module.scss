@@ -1,0 +1,9 @@
+@import '../styles/theme.module.scss';
+
+.container {
+  position: relative;
+
+  .captureImage {
+    width: 100%;
+  }
+}

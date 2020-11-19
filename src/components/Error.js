@@ -8,7 +8,7 @@ const Error = ({ message }) => {
   const histoty = useHistory();
 
   const handleRenderHome = () => {
-    histoty.push(ROUTE.home);
+    histoty.push(ROUTE.error);
   };
 
   return (

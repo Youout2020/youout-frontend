@@ -6,17 +6,48 @@
   justify-content: center;
   flex-direction: column;
 
+  @keyframes pulse {
+    0% {
+      opacity: 100%;
+    }
+
+    33% {
+      opacity: 0%;
+    }
+
+    66% {
+      opacity: 100%;
+    }
+
+    100% {
+      opacity: 0%;
+    }
+  }
+
+  .counter {
+    position: fixed;
+    top: 40%;
+    font-size: $font-size-6;
+    animation: pulse 1s infinite;
+  }
+
   .users {
     li {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-around;
       background: $blue;
       color: $white;
       height: 50px;
       width: 300px;
       margin: 10px;
       border-radius: 20px;
+
+      .userIcon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+      }
     }
   }
 

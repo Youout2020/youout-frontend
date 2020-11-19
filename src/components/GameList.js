@@ -1,65 +1,81 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import GameRoom from './GameRoom';
 import Button from './Button';
-import Loading from './Loading';
-import ROUTE from '../constants/route';
 import styles from './GameList.module.scss';
+import { useDispatch } from 'react-redux';
+import { setRoute } from '../reducer/route';
 
-//TODO: '방 만들기' button onClick event 컴포넌트로 이동시키기
-const GameList = ({ isLoading, list, setTarget, joinWaitingRoom }) => {
-  const history = useHistory();
-  const [ isSelected, setIsSelected ] = useState(false);
+const Address = ({ address }) => {
+  return (
+    <h1>{address}</h1>
+  );
+};
+
+const GameList = ({
+  gameList,
+  playingGameList,
+  setTarget,
+  joinWaitingRoom,
+  address,
+}) => {
+  const [ isSelected, setIsSelected ] = useState(true);
+  const [ playingGameData, setPlayingGameData ] = useState([]);
+  const dispatch = useDispatch();
   const handleFilter = () => {
     setIsSelected(!isSelected);
   };
 
+  useEffect(() => {
+    const temp = {};
+    playingGameList.forEach((game) => {
+      temp[game._id] = game.users;
+    });
+
+    setPlayingGameData(temp);
+  }, [playingGameList]);
+
   return (
-    isLoading
-    ?
-    <Loading />
-    :
     <div className={styles.container}>
+      <div className={styles.gradient}/>
+      <Address address={address}/>
       <Button
         className='toggleButton'
         text={isSelected ? 'All' : 'Waiting'}
         onClick={handleFilter}
       />
       {
-        !list.length
-        ?
-        <div className={styles.message}>
-          <span>방 없음🤐</span>
-          <Button
-            className='filterButton'
-            text='방 만들기'
-            onClick={() => '방 만들기로 이동'}
-          />
-        </div>
-        :
-        (
-          isSelected
-          ? list = list.filter((item) => !item.status.isPlaying)
-          : list
-        ).map((item, index) => {
-          const lastItem = index === list.length - 1;
-          return (
-            <GameRoom
-              isPlaying={item.status.isPlaying}
-              name={item.name}
-              users={item.status.users.length}
-              key={item._id}
-              setTarget={lastItem ? setTarget : null}
-              id={item._id}
-              joinWaitingRoom={joinWaitingRoom}
-            />
-          );
-        })
+        !gameList.length
+          ? <div className={styles.message}>
+              <span>방 없음🤐</span>
+            </div>
+          : (
+              isSelected
+                ? gameList
+                : gameList = gameList.reduce((acc, cur) => {
+                    if (!playingGameData[cur._id]) acc.push(cur);
+                    return acc;
+                  }, [])
+            ).map((game, index) => {
+              const lastGame = index === gameList.length - 1;
+              const users = playingGameData[game._id];
+
+              return (
+                <GameRoom
+                  key={game._id}
+                  id={game._id}
+                  isPlaying={!!users}
+                  name={game.name || game.gameInfo.name}
+                  setTarget={lastGame ? setTarget : null}
+                  userCount={users?.length || 0}
+                  joinWaitingRoom={joinWaitingRoom}
+                />
+              );
+            })
       }
       <Button
         className='fixedButton'
         text='방 만들기'
-        onClick={() => history.push(`${ROUTE.games}/new`)}
+        onClick={() => dispatch(setRoute('/games/new'))}
       />
     </div>
   );
