@@ -49,8 +49,8 @@ export const startGame = createAsyncThunk(
 
 export const initGameSetting = createAsyncThunk(
   INIT_GAME_SETTING,
-  async ({ gameId, userId, username }, { dispatch }) => {
-    socket.emit(SOCKET.userJoin, { gameId, userId, username });
+  async ({ gameId, userId, username, image }, { dispatch }) => {
+    socket.emit(SOCKET.userJoin, { gameId, userId, username, image });
     socket.on(SOCKET.userJoin, ({ users }) => {
       dispatch(setUsers(users));
     });

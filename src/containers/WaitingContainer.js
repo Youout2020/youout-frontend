@@ -10,7 +10,7 @@ const MASTER_INDEX = 0;
 
 const WaitingContainer = () => {
   const { users, count, isPlaying } = useSelector((state) => state.currentGame);
-  const { name, id } = useSelector((state) => state.user.info);
+  const { name, id, image } = useSelector((state) => state.user.info);
   const { game_id } = useParams();
   const dispatch = useDispatch();
   const isMaster = users[MASTER_INDEX] && users[MASTER_INDEX]._id === id;
@@ -21,7 +21,8 @@ const WaitingContainer = () => {
     dispatch(initGameSetting({
       gameId: game_id,
       userId: id,
-      username: name
+      username: name,
+      image,
     }));
 
     return () => dispatch(disconnectGame({ gameId: game_id }));
