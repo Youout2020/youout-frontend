@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import GameRoom from './GameRoom';
 import Button from './Button';
-import Loading from './Loading';
-import ROUTE from '../constants/route';
 import styles from './GameList.module.scss';
+import { useDispatch } from 'react-redux';
+import { setRoute } from '../reducer/route';
 
-const GameList = ({ isLoading, gameList, playingGameList, setTarget, joinWaitingRoom }) => {
-  const history = useHistory();
+const GameList = ({ gameList, playingGameList, setTarget, joinWaitingRoom }) => {
   const [ isSelected, setIsSelected ] = useState(false);
   const [ playingGameIds, setPlayingGameIds ] = useState([]);
+  const dispatch = useDispatch();
   const handleFilter = () => {
     setIsSelected(!isSelected);
   };
@@ -23,10 +22,6 @@ const GameList = ({ isLoading, gameList, playingGameList, setTarget, joinWaiting
   }, [playingGameList]);
 
   return (
-    isLoading
-    ?
-    <Loading />
-    :
     <div className={styles.container}>
       <Button
         className='toggleButton'
@@ -63,7 +58,7 @@ const GameList = ({ isLoading, gameList, playingGameList, setTarget, joinWaiting
       <Button
         className='fixedButton'
         text='방 만들기'
-        onClick={() => history.push(`${ROUTE.games}/new`)}
+        onClick={() => dispatch(setRoute('/games/new'))}
       />
     </div>
   );

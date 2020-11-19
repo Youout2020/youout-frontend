@@ -1,5 +1,3 @@
-const SERVER_URI = process.env.REACT_APP_SERVER_URI;
-
 const logger = (errorMessage) => {
   if (process.env.NODE_ENV === 'development') {
     console.log(errorMessage);
@@ -78,7 +76,7 @@ const put = async ({ path, body, options = {} }) => {
 
     return data;
   } catch (err) {
-    logger('🔥 Error fired: business -> api -> post');
+    logger('🔥 Error fired: business -> api -> put');
     throw (err);
   }
 };
@@ -104,7 +102,7 @@ const remove = async ({ path, body, options = {} }) => {
 
     return data;
   } catch (err) {
-    logger('🔥 Error fired: business -> api -> post');
+    logger('🔥 Error fired: business -> api -> remove');
     throw (err);
   }
 };
