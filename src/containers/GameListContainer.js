@@ -14,7 +14,7 @@ import { joinWaitingRoom } from '../utils/socket';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { mockData } from '../utils/mock';
 
-const GameContainer = () => {
+const GameListContainer = () => {
   const [ isLoading, setIsLoading ] = useState(true);
   const [ errMessage, setErrMessage ] = useState('');
   const [ target, setTarget ] = useState(null);
@@ -83,4 +83,4 @@ const GameContainer = () => {
   );
 };
 
-export default GameContainer;
+export default GameListContainer;
