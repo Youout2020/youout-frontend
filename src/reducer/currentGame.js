@@ -28,22 +28,23 @@ export const SET_GAME_INFO = 'currentGameReducer/SET_GAME_INFO';
 export const COUNTDOWN = 'currentGameReducer/COUNTDOWN';
 export const SET_COUNT = 'currentGameReducer/SET_COUNT';
 export const SET_GAME_ID = 'currentGameReducer/SET_GAME_ID';
-export const TOGGLE_IS_PLAYING = 'currentGameReducer/TOGGLE_IS_PLAYING';
 export const START_GAME = 'currentGameReducer/START_GAME';
 export const DISCONNECT_GAME = 'currentGameReducer/DISCONNECT_GAME';
 export const UPDATE_CURRENT_GAME = 'currentGameReducer/UPDATE_CURRENT_GAME';
+export const SET_IS_PLAYING_TRUE = 'currentGameReducer/SET_IS_PLAYING_TRUE';
+export const SET_IS_PLAYING_FALSE = 'currentGameReducer/SET_IS_PLAYING_FALSE';
 
 export const setUsers = createAction(SET_USERS);
 export const setGameInfo = createAction(SET_GAME_INFO);
 export const setCount = createAction(SET_COUNT);
 export const setGameId = createAction(SET_GAME_ID);
-export const toggleIsPlaying = createAction(TOGGLE_IS_PLAYING);
 export const updateCurrentGame = createAction(UPDATE_CURRENT_GAME);
+export const setIsPlayingTrue = createAction(SET_IS_PLAYING_TRUE);
+export const setIsPlayingFalse = createAction(SET_IS_PLAYING_FALSE);
 
 export const startGame = createAsyncThunk(
   START_GAME,
   async ({ gameId }, extra) => {
-    console.log(gameId);
     socket.emit(SOCKET.gameStart, { gameId });
   },
 );
@@ -55,8 +56,8 @@ export const initGameSetting = createAsyncThunk(
     socket.on(SOCKET.userJoin, ({ users }) => {
       dispatch(setUsers(users));
     });
-    socket.on(SOCKET.gameStart, (gameInfo) => {
-      setGameInfo(gameInfo);
+    socket.on(SOCKET.gameStart, ({gameInfo, users, _id}) => {
+      dispatch(setGameInfo({ gameInfo, users, _id }));
       dispatch(countdown(3));
     });
 
@@ -73,7 +74,7 @@ export const countdown = createAsyncThunk(
         dispatch(countdown(countNumber - 1));
       }, 1000);
     } else {
-      dispatch(toggleIsPlaying());
+      dispatch(setIsPlayingTrue());
     }
   },
 );
@@ -89,9 +90,7 @@ export const disconnectGame = createAsyncThunk(
     socket.emit(SOCKET.userLeave, { gameId });
 
     dispatch(setGameInfo(initGameInfo));
-
-    const { isPlaying } = getState().currentGame;
-    if (isPlaying) dispatch(toggleIsPlaying());
+    dispatch(setIsPlayingFalse());
     dispatch(setCount(-1));
     dispatch(setUsers([]));
   }
@@ -108,8 +107,13 @@ const initState = {
 export default createReducer(initState, {
   [UPDATE_CURRENT_GAME]: (state, action) => action.payload,
   [SET_USERS]: (state, { payload }) => { state.users = payload; },
-  [SET_GAME_INFO]: (state, { payload }) => { state.gameInfo = payload; },
+  [SET_GAME_INFO]: (state, { payload }) => {
+    state.gameInfo = payload.gameInfo;
+    state.users = payload.users;
+    state.gameId = payload.gameInfo._id;
+  },
   [SET_COUNT]: (state, { payload }) => { state.count = payload; },
   [SET_GAME_ID]: (state, { payload }) => { state.gameId = payload; },
-  [TOGGLE_IS_PLAYING]: (state, payload) => { state.isPlaying = !state.isPlaying; },
+  [SET_IS_PLAYING_TRUE]: (state, payload) => { state.isPlaying = true; },
+  [SET_IS_PLAYING_FALSE]: (state, payload) => { state.isPlaying = false; },
 });
