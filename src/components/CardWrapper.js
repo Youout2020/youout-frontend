@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from './Card';
 import { MiniCard } from './Card';
 import AlertBubble from './AlertBubble';
@@ -16,8 +16,20 @@ const CardWrapper = ({
   setResultMessage,
   userAlertList,
   setUserAlertList,
+  autoDeleteTime,
 }) => {
   const { keyword, quiz } = currentQuiz;
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setUserAlertList((prev) => {
+        return prev.filter((item, index) => index !== 0);
+      });
+    }, 3000);
+
+    return () => clearInterval(timerId);
+  }, [userAlertList]);
+
   return (
     <>
       {
@@ -50,7 +62,7 @@ const CardWrapper = ({
       }
       <div className={styles.bubbleContainer}>
         {
-          userAlertList?.length
+          userAlertList.length > 0
           &&
           userAlertList.map((user, index) => {
             return (
@@ -58,7 +70,6 @@ const CardWrapper = ({
                 key={index}
                 username={user.username}
                 gameIndex={user.gameIndex + 1}
-                setUserAlertList={setUserAlertList}
               />
             );
           })

@@ -26,7 +26,6 @@ const AppContainer = () => {
   const dispatch = useDispatch();
 
   const handleLogin = () => {
-    history.push(ROUTE.games);
     firebase.googleLogin();
   };
 

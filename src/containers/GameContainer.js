@@ -45,7 +45,7 @@ const GameContainer = () => {
 
       setUserAlertList([
         ...userAlertList,
-        target
+        target,
       ]);
     });
   }, [userAlertList]);
