@@ -10,6 +10,7 @@ import PATH from '../constants/path';
 import { useParams } from 'react-router-dom';
 import api from '../utils/api';
 import { validateLength } from '../utils/validation';
+import { convertMsToMinutes } from '../utils';
 
 const NewGameForm = ({
   onCreateNewGame,
@@ -26,6 +27,14 @@ const NewGameForm = ({
   const [ page, setPage ] = useState(1);
   const [ currentIndex, setCurrentIndex ] = useState(-1);
   const { game_id } = useParams();
+  const [ validationMessage, setValidationMessage ] = useState({
+    name: '',
+    addressDetail: '',
+    keyword: '',
+    quiz: '',
+    answer: '',
+    hint: '',
+  });
 
   useEffect(() => {
     if (!game_id) return;
@@ -45,18 +54,6 @@ const NewGameForm = ({
     })();
   }, []);
 
-  // validation 항목
-  // 게임 이름 (최소 3글자 최대 30글자)
-  // 상세 주소는 최대 50글자
-  const [ validationMessage, setValidationMessage ] = useState({
-    name: '',
-    addressDetail: '',
-    keyword: '',
-    quiz: '',
-    answer: '',
-    hint: '',
-  });
-
   const handleInputsChange = ({ target }) => {
     const { name, value } = target;
 
@@ -74,7 +71,6 @@ const NewGameForm = ({
           addressDetail: validateLength(3, 30, 'Address', value),
         });
         break;
-      // default 처리 방식 확인
       default:
         break;
     }
@@ -244,7 +240,7 @@ const NewGameForm = ({
             </div>
             <div className={styles.gameInfoContainer}>
               <h5 className={styles.title}>제한시간</h5>
-              <div className={styles.content}>{gameInfo.timeLimit}</div>
+              <div className={styles.content}>{`${convertMsToMinutes(gameInfo.timeLimit) + 1}분`}</div>
             </div>
             <div className={styles.gameInfoContainer}>
               <h5 className={styles.title}>문제 리스트</h5>

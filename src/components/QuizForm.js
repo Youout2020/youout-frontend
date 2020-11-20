@@ -24,7 +24,6 @@ const QuizForm = ({
   const handleQuizInputsChange = ({ target }) => {
     const { name, value } = target;
 
-    //TODO: default 처리 방식 확인 && util 처리
     switch (name) {
       case 'keyword':
         setValidationMessage({

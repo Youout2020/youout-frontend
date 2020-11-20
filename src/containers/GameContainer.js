@@ -101,6 +101,7 @@ const GameContainer = () => {
       setRecognizedKeywordList([]);
       return;
     }
+
     setResultMessage('땡!');
     setRecognizedKeywordList(response.Labels.slice(0, 3).map((item) => item.Name));
   };
