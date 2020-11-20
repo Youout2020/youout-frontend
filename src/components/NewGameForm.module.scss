@@ -9,11 +9,22 @@
 
     .quizCounter {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
 
+      .counterName {
+        margin-top: 2vh;
+      }
+
+      .counter {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
       .quizCount {
-        margin: 5vh 5vw;
+        margin: 2vh 5vw;
         font-size: $font-size-3;
       }
     }
@@ -62,5 +73,10 @@
     Button {
       margin: 0 10px;
     }
+  }
+
+  .validationMessage {
+    font-size: $font-size-1;
+    color: red;
   }
 }

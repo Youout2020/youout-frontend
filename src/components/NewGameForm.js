@@ -9,6 +9,7 @@ import { pageName, pageNavigation } from '../constants/page';
 import PATH from '../constants/path';
 import { useParams } from 'react-router-dom';
 import api from '../utils/api';
+import { validateLength } from '../utils/validation';
 
 const NewGameForm = ({
   onCreateNewGame,
@@ -44,8 +45,40 @@ const NewGameForm = ({
     })();
   }, []);
 
+  // validation 항목
+  // 게임 이름 (최소 3글자 최대 30글자)
+  // 상세 주소는 최대 50글자
+  const [ validationMessage, setValidationMessage ] = useState({
+    name: '',
+    addressDetail: '',
+    keyword: '',
+    quiz: '',
+    answer: '',
+    hint: '',
+  });
+
   const handleInputsChange = ({ target }) => {
     const { name, value } = target;
+
+    //TODO: default 처리 방식 확인 && util 처리
+    switch (name) {
+      case 'name':
+        setValidationMessage({
+          ...validationMessage,
+          name: validateLength(3, 30, 'Name', value),
+        });
+        break;
+      case 'addressDetail':
+        setValidationMessage({
+          ...validationMessage,
+          addressDetail: validateLength(3, 30, 'Address', value),
+        });
+        break;
+      // default 처리 방식 확인
+      default:
+        break;
+    }
+
     setGameInfo({
       ...gameInfo,
       [name]: value,
@@ -112,8 +145,12 @@ const NewGameForm = ({
               placeholder='게임 이름'
               onChange={handleInputsChange}
             />
+            {
+              validationMessage.name &&
+              <div className={styles.validationMessage}>{validationMessage.name}</div>
+            }
             <Button
-              text='현 위치로 주소 설정'
+              text='현 위치 확인하기'
               onClick={() => setPage(pageName.MAP)}
             />
             <Input
@@ -135,6 +172,10 @@ const NewGameForm = ({
               placeholder='상세 주소'
               onChange={handleInputsChange}
             />
+            {
+              validationMessage.addressDetail &&
+              <div className={styles.validationMessage}>{validationMessage.addressDetail}</div>
+            }
             <Input
               type='select'
               labelName='제한 시간'
@@ -143,19 +184,22 @@ const NewGameForm = ({
               onChange={handleInputsChange}
             />
             <div className={styles.quizCounter}>
-              <Button
-                name='decrease'
-                className='circleButton'
-                onClick={handleCounter}
-                text='-'
-              />
-              <span className={styles.quizCount}>{quizCount}</span>
-              <Button
-                name='increase'
-                className='circleButton'
-                onClick={handleCounter}
-                text='+'
-              />
+              <span className={styles.counterName}>문제 개수</span>
+              <div className={styles.counter}>
+                <Button
+                  name='decrease'
+                  className='circleButton'
+                  onClick={handleCounter}
+                  text='-'
+                />
+                <span className={styles.quizCount}>{quizCount}</span>
+                <Button
+                  name='increase'
+                  className='circleButton'
+                  onClick={handleCounter}
+                  text='+'
+                />
+              </div>
             </div>
             <Button name={pageNavigation.NEXT} text='Next' onClick={handlePageNavigation} />
           </div>
@@ -227,6 +271,8 @@ const NewGameForm = ({
             setPage={setPage}
             quizList={quizList}
             setQuizList={setQuizList}
+            validationMessage={validationMessage}
+            setValidationMessage={setValidationMessage}
           />
         }
         {

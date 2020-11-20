@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
 import Input from './Input';
 import Button from './Button';
+import { validateLength, validateType } from '../utils/validation';
+import styles from './NewGameForm.module.scss';
 
-const QuizForm = ({ index, setPage, quizList, setQuizList }) => {
+const QuizForm = ({
+  index,
+  setPage,
+  quizList,
+  setQuizList,
+  validationMessage,
+  setValidationMessage,
+}) => {
   const memo = quizList[index];
   const [ quiz, setQuiz ] = useState(memo || {
     index,
@@ -12,8 +21,39 @@ const QuizForm = ({ index, setPage, quizList, setQuizList }) => {
     hint: '',
   });
 
-  const handleQuizInputsChange = (event) => {
-    const { name, value } = event.target;
+  const handleQuizInputsChange = ({ target }) => {
+    const { name, value } = target;
+
+    //TODO: default 처리 방식 확인 && util 처리
+    switch (name) {
+      case 'keyword':
+        setValidationMessage({
+          ...validationMessage,
+          keyword: validateLength(3, 20, 'Keyword', value) || validateType(value),
+        });
+        break;
+      case 'quiz':
+        setValidationMessage({
+          ...validationMessage,
+          quiz: validateLength(3, 50, 'Quiz', value),
+        });
+        break;
+      case 'answer':
+        setValidationMessage({
+          ...validationMessage,
+          answer: validateLength(3, 50, 'Answer', value),
+        });
+        break;
+      case 'hint':
+        setValidationMessage({
+          ...validationMessage,
+          hint: validateLength(3, 50, 'Hint', value),
+        });
+        break;
+      default:
+        break;
+    }
+
     setQuiz({
       index,
       ...quiz,
@@ -46,6 +86,10 @@ const QuizForm = ({ index, setPage, quizList, setQuizList }) => {
         placeholder='예) 바나나를 찍으세요'
         onChange={handleQuizInputsChange}
       />
+      {
+        validationMessage.keyword &&
+        <div className={styles.validationMessage}>{validationMessage.keyword}</div>
+      }
       <Input
         type='text'
         id='quiz'
@@ -55,6 +99,10 @@ const QuizForm = ({ index, setPage, quizList, setQuizList }) => {
         placeholder='예) 바나나를 먹은 사람은?'
         onChange={handleQuizInputsChange}
       />
+      {
+        validationMessage.quiz &&
+        <div className={styles.validationMessage}>{validationMessage.quiz}</div>
+      }
       <Input
         type='text'
         id='answer'
@@ -64,6 +112,10 @@ const QuizForm = ({ index, setPage, quizList, setQuizList }) => {
         placeholder='예) 나'
         onChange={handleQuizInputsChange}
       />
+      {
+        validationMessage.answer &&
+        <div className={styles.validationMessage}>{validationMessage.answer}</div>
+      }
       <Input
         type='text'
         id='hint'
@@ -73,6 +125,10 @@ const QuizForm = ({ index, setPage, quizList, setQuizList }) => {
         placeholder='예) 그런거 안줘!'
         onChange={handleQuizInputsChange}
       />
+      {
+        validationMessage.hint &&
+        <div className={styles.validationMessage}>{validationMessage.hint}</div>
+      }
       <Button text='완료' onClick={handleQuizSubmitButton} />
     </div>
   );
