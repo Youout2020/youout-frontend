@@ -1,6 +1,7 @@
 import React from 'react';
 import { convertTimeFormat } from '../utils/index';
 import styles from './GameHeader.module.scss';
+import { FaPen, FaDoorOpen } from 'react-icons/fa';
 
 const GameHeader = ({
   minutes,
@@ -12,11 +13,11 @@ const GameHeader = ({
   return (
     <div className={styles.container}>
       <div className={styles.buttons}>
-        <div onClick={onHintToggle}>힌트</div>
+        <div onClick={onHintToggle}><FaPen size={'1.5em'} /></div>
         <div>
-          {convertTimeFormat(minutes)}:{convertTimeFormat(seconds)}
+          {convertTimeFormat(minutes, seconds)}
         </div>
-        <div onClick={onCancelToggle}>종료</div>
+        <div onClick={onCancelToggle}><FaDoorOpen size={'1.5em'} /></div>
       </div>
       <div className={styles.contents}>
         {children}

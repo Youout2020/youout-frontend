@@ -31,6 +31,14 @@ export const convertMsToMinutes = (milliseconds) => {
   return (milliseconds / (1000 * 60)) - 1;
 };
 
-export const convertTimeFormat = (time) => {
-  return time < 10 ? `0${time}` : time;
+export const convertTimeFormat = (minutes, seconds) => {
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+
+  if (seconds < 10) {
+    seconds = `0${seconds}`;
+  }
+
+  return `${minutes}:${seconds}`;
 };
