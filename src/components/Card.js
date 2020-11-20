@@ -17,7 +17,10 @@ const Card = ({ gamePhase, title, buttonText, onClick, children }) => {
       <h4>{gamePhase}</h4>
       <h3>{title}</h3>
       {children}
-      <Button text={buttonText} onClick={() => onClick()} />
+      {
+        buttonText &&
+        <Button text={buttonText} onClick={() => onClick()} />
+      }
     </div>
   );
 };

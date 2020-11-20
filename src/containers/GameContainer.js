@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { updateCurrentGame } from '../reducer/currentGame';
 import Camera from '../components/Camera';
@@ -20,7 +20,6 @@ const GameContainer = () => {
   const { gameInfo: { quizList, timeLimit }, users } = gameInfo;
   const { id: userId } = useSelector((state) => state.user.info);
   const { game_id } = useParams();
-  const history = useHistory();
 
   const [ minutes, setMinutes ] = useState(0);
   const [ seconds, setSeconds ] = useState(59);
@@ -62,7 +61,7 @@ const GameContainer = () => {
             clearTimeout(timerId);
             break;
           case 1:
-            //TODO: 종료 1분 전 알림
+            //TODO: 종료 1분 전 알림 (CSS 시 적용 예정)
             break;
           default:
             setMinutes((prev) => prev - 1);
@@ -104,7 +103,7 @@ const GameContainer = () => {
   };
 
   const handleSubmitAnswer = () => {
-    const isCorrectAnswer = userAnswer === quizList[gameIndex].answer;
+    const isCorrectAnswer = userAnswer.trim() === quizList[gameIndex].answer;
 
     if (!isCorrectAnswer) {
       setResultMessage('땡! 다시!🙅‍♀️');
@@ -119,6 +118,7 @@ const GameContainer = () => {
     setTimeout(() => {
       setGameIndex((prev) => prev + 1);
       setGamePhase('keyword');
+      setIsCardShowing(true);
       setResultMessage('');
       setUserAnswer('');
     }, 2000);
@@ -173,6 +173,7 @@ const GameContainer = () => {
           resultMessage={resultMessage}
           userAlertList={userAlertList}
           isCardShowing={isCardShowing}
+          onSetCardShowing={setIsCardShowing}
           onFindKeyword={handleFindKeyword}
           onSubmitAnswer={handleSubmitAnswer}
           onAnswerChange={handleAnswerChange}

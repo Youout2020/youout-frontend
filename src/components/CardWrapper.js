@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Card, { Popup } from './Card';
 import ToastMessage from './ToastMessage';
 import styles from './CardWrapper.module.scss';
@@ -10,11 +10,20 @@ const CardWrapper = ({
   resultMessage,
   userAlertList,
   isCardShowing,
-  onFindKeyword,
+  onSetCardShowing,
   onSubmitAnswer,
   onAnswerChange,
 }) => {
   const { keyword, quiz } = currentQuiz;
+
+  //FIXME: minor한 effect라 위로 올려야 할지 고민
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      onSetCardShowing(false);
+    }, 4000);
+
+    return () => clearTimeout(timerId);
+  }, [isCardShowing]);
 
   return (
     <div className={styles.container}>
@@ -24,8 +33,6 @@ const CardWrapper = ({
             ? <Card
                 gamePhase={gamePhase}
                 title={keyword}
-                buttonText='찾기'
-                onClick={onFindKeyword}
               />
             : <Popup content={keyword}>
                 <span>{resultMessage}</span>
@@ -36,13 +43,13 @@ const CardWrapper = ({
               buttonText='제출'
               onClick={onSubmitAnswer}
             >
+              <span>{resultMessage}</span>
               <input
                 type='text'
                 placeholder='정답을 입력하세요!'
                 value={userAnswer}
                 onChange={onAnswerChange}
               />
-              <span>{resultMessage}</span>
             </Card>
       }
 
