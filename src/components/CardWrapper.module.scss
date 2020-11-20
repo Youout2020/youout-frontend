@@ -1,5 +1,14 @@
 @import '../styles/theme.module.scss';
 
+.keywordContainer {
+  display: flex;
+
+  .keyword {
+    border: 1px solid $black;
+    border-radius: 20px;
+    margin: 0 1vw;
+  }
+}
 .toastContainer {
   position: absolute;
   top: 10vh;

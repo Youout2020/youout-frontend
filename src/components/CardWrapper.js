@@ -13,6 +13,7 @@ const CardWrapper = ({
   onSetCardShowing,
   onSubmitAnswer,
   onAnswerChange,
+  recognizedKeywordList,
 }) => {
   const { keyword, quiz } = currentQuiz;
 
@@ -36,6 +37,14 @@ const CardWrapper = ({
               />
             : <Popup content={keyword}>
                 <span>{resultMessage}</span>
+                <div className={styles.keywordContainer}>
+                  {
+                    recognizedKeywordList.length > 0 &&
+                    recognizedKeywordList.map((keyword, index) => {
+                      return <div key={index} className={styles.keyword}>{keyword}</div>;
+                    })
+                  }
+                </div>
               </Popup>
           : <Card
               gamePhase={gamePhase}

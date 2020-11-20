@@ -32,6 +32,7 @@ const GameContainer = () => {
   const [ isCardShowing, setIsCardShowing ] = useState(true);
   const [ isHintShowing, setIsHintShowing ] = useState(false);
   const [ isExitShowing, setIsExitShowing ] = useState(false);
+  const [ recognizedKeywordList, setRecognizedKeywordList ] = useState([]);
 
   useEffect(() => {
     listenUpdateData((data) => {
@@ -97,9 +98,11 @@ const GameContainer = () => {
       setGamePhase('quiz');
       setIsCardShowing(true);
       setResultMessage('');
+      setRecognizedKeywordList([]);
       return;
     }
     setResultMessage('땡!');
+    setRecognizedKeywordList(response.Labels.slice(0, 3).map((item) => item.Name));
   };
 
   const handleSubmitAnswer = () => {
@@ -177,6 +180,7 @@ const GameContainer = () => {
           onFindKeyword={handleFindKeyword}
           onSubmitAnswer={handleSubmitAnswer}
           onAnswerChange={handleAnswerChange}
+          recognizedKeywordList={recognizedKeywordList}
         />
       }
     </>
