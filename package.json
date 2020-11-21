@@ -10,7 +10,6 @@
     "aws-sdk": "^2.794.0",
     "date-fns": "^2.16.1",
     "firebase": "^8.0.1",
-    "formik": "^2.2.5",
     "node-sass": "^4.0.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.13.7",
@@ -19,6 +18,7 @@
     "react-html5-camera-photo": "^1.5.4",
     "react-icons": "^3.11.0",
     "react-loader-spinner": "^3.1.14",
+    "react-measure": "^2.5.2",
     "react-query": "^2.26.2",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
@@ -27,10 +27,9 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "socket.io-client": "^2.3.0",
-    "web-vitals": "^0.2.4",
-    "yup": "^0.29.3"
+    "web-vitals": "^0.2.4"
   },
-  "proxy": "https://192.168.0.80:4000",
+  "proxy": "https://192.168.0.57:4000",
   "scripts": {
     "start": "export HTTPS=true&&PORT=3000 react-scripts start",
     "build": "react-scripts build",

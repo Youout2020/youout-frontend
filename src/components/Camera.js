@@ -8,6 +8,7 @@ const Camera = ({ matchPhotoToKeyword }) => {
     <div className={styles.container}>
       {
         <CameraScreen
+          className={styles.cameraScreen}
           onTakePhotoAnimationDone={matchPhotoToKeyword}
           isFullscreen={true}
           isImageMirror={false}

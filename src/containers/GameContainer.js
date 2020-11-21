@@ -12,6 +12,7 @@ import { updateData, listenUpdateData } from '../utils/socket';
 import { Popup } from '../components/Card';
 import Button from '../components/Button';
 import { setRoute } from '../reducer/route';
+import { disconnectGame } from '../reducer/currentGame';
 
 const GameContainer = () => {
   const dispatch = useDispatch();
@@ -31,13 +32,18 @@ const GameContainer = () => {
   const [ isCardShowing, setIsCardShowing ] = useState(true);
   const [ isHintShowing, setIsHintShowing ] = useState(false);
   const [ isExitShowing, setIsExitShowing ] = useState(false);
+  const [ recognizedKeywordList, setRecognizedKeywordList ] = useState([]);
 
   useEffect(() => {
     listenUpdateData((data) => {
       dispatch(updateCurrentGame(data.game));
     });
 
-    setMinutes(convertMsToMinutes(timeLimit));
+    setGameIndex(0);
+    // setMinutes(convertMsToMinutes(timeLimit));
+    setMinutes(1);
+
+    // return () => dispatch(disconnectGame({ gameId: game_id }));
   }, []);
 
   useEffect(() => {
@@ -51,11 +57,22 @@ const GameContainer = () => {
     const timerId = setTimeout(() => {
       if (seconds > 0) setSeconds((prev) => prev - 1);
       if (seconds === 0) {
-        minutes === 0
-          ? //TODO: 게임 종료 알림 (socket emit)
-            clearTimeout(timerId)
-          : setMinutes((prev) => prev - 1);
+        switch (minutes) {
+          case 0 :
+            //FIXME: 임시로 게임 리스트로 연결 (history.push(게임 결과))
+            dispatch(disconnectGame({ gameId: game_id }));
+            history.push('/games');
+            clearTimeout(timerId);
+            break;
+          case 1:
+            //TODO: 종료 1분 전 알림 (CSS 시 적용 예정)
+            setMinutes((prev) => prev - 1);
             setSeconds(59);
+            break;
+          default:
+            setMinutes((prev) => prev - 1);
+            setSeconds(59);
+        }
       }
     }, 1000);
 
@@ -86,13 +103,16 @@ const GameContainer = () => {
       setGamePhase('quiz');
       setIsCardShowing(true);
       setResultMessage('');
+      setRecognizedKeywordList([]);
       return;
     }
+
     setResultMessage('땡!');
+    setRecognizedKeywordList(response.Labels.slice(0, 3).map((item) => item.Name));
   };
 
   const handleSubmitAnswer = () => {
-    const isCorrectAnswer = userAnswer === quizList[gameIndex].answer;
+    const isCorrectAnswer = userAnswer.trim() === quizList[gameIndex].answer;
 
     if (!isCorrectAnswer) {
       setResultMessage('땡! 다시!🙅‍♀️');
@@ -106,12 +126,13 @@ const GameContainer = () => {
 
     setTimeout(() => {
       setGameIndex((prev) => prev + 1);
-
-      if (quizList.length - 1 === gameIndex) {
-        //TODO: complete logic
+      if (gameIndex === quizList.length - 1) {
+        dispatch(disconnectGame({ gameId: game_id }));
+        //FIXME: 임시로 게임 리스트로 연결 (history.push(게임 결과))
+        return history.push('/games');
       }
-
       setGamePhase('keyword');
+      setIsCardShowing(true);
       setResultMessage('');
       setUserAnswer('');
     }, 2000);
@@ -166,9 +187,11 @@ const GameContainer = () => {
           resultMessage={resultMessage}
           userAlertList={userAlertList}
           isCardShowing={isCardShowing}
+          onSetCardShowing={setIsCardShowing}
           onFindKeyword={handleFindKeyword}
           onSubmitAnswer={handleSubmitAnswer}
           onAnswerChange={handleAnswerChange}
+          recognizedKeywordList={recognizedKeywordList}
         />
       }
     </>
