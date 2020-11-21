@@ -2,42 +2,26 @@
 
 .container {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-  padding: 2vw 4vw;
   height: 10vh;
-  border-radius: 10px;
-  background-color: $livid;
+  border-top: 1px solid #cdc9c3;
 
-  .status {
-    border-radius: 10px;
-    font-size: $font-size-1;
-    color: $white;
+  .playingBullet {
+    padding: 0 10px;
+  }
 
-    .playingBullet {
-      background-color: $black;
-      padding: 0 10px;
-      border-radius: 10px;
-    }
-
-    .waitingBullet {
-      background-color: $blue-gray;
-      padding: 0 10px;
-      border-radius: 10px;
-    }
+  .waitingBullet {
+    padding: 0 10px;
   }
 
   .gameInfo {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
-    padding: 0 10px;
+    width: 100%;
 
     .name {
-      font-size: $font-size-2;
-      font-weight: 600;
+      font-size: 1em;
+      font-weight: 400;
       width: 240px;
-      padding: 0 5px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;

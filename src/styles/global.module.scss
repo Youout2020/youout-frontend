@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css");
+
 :global {
   #root {
     margin: 0;
@@ -17,7 +19,8 @@
     width: 100vw;
     height: 100vh;
     overflow-x: hidden;
-    font-family: 'Dokdo', cursive;
+    font-family: 'NanumBarunGothic', cursive;
+    background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
   }
 
   * {

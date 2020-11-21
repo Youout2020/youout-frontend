@@ -134,7 +134,8 @@ const GameContainer = () => {
         });
         dispatch(disconnectGame({ gameId: game_id }));
         //FIXME: 임시로 게임 리스트로 연결 (history.push(게임 결과))
-        return () => dispatch(setRoute('/games'));
+        dispatch(setRoute('/games'));
+        return;
       }
       setGamePhase('keyword');
       setIsCardShowing(true);

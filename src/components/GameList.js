@@ -7,7 +7,7 @@ import { setRoute } from '../reducer/route';
 
 const Address = ({ address }) => {
   return (
-    <h1>{address}</h1>
+    <h4>{address}에서 방탈출🧨</h4>
   );
 };
 
