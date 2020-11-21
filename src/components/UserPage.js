@@ -14,14 +14,14 @@ const ImageBox = ({ name, image, email }) => {
   );
 };
 
-const ContentsBox = ({ boxTitle, contents, loadMore }) => {
+const ContentsBox = ({ boxTitle, contents, loadMore, showDetailGame }) => {
   return (
     <div className={styles.contentsBox}>
       <p className={styles.text}>{boxTitle}</p>
       <ul>
         {contents.map((content) => (
           <li key={content.id}>
-            <button>
+            <button onClick={() => showDetailGame(content.id)}>
               {content.text}
             </button>
           </li>
@@ -43,7 +43,7 @@ const UserPage = ({
   email,
   histories,
   games,
-  navigation: { moreHistories, moreGames },
+  navigation: { moreHistories, moreGames, showDetailGame },
 }) => {
   const nomalizedHistories = histories.map((history) => {
     const { _id: id, game: { name }  } = history;
@@ -71,6 +71,7 @@ const UserPage = ({
         boxTitle='내가 만든 방'
         contents={nomalizedGames}
         loadMore={moreGames}
+        showDetailGame={showDetailGame}
       />
     </>
   );

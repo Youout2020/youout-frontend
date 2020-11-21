@@ -22,7 +22,7 @@ const GameContainer = () => {
   const { game_id } = useParams();
 
   const [ minutes, setMinutes ] = useState(0);
-  const [ seconds, setSeconds ] = useState(59);
+  const [ seconds, setSeconds ] = useState(10);
 
   const [ gameIndex, setGameIndex ] = useState(0);
   const [ gamePhase, setGamePhase ] = useState('keyword');
@@ -61,7 +61,7 @@ const GameContainer = () => {
           case 0 :
             //FIXME: 임시로 게임 리스트로 연결 (history.push(게임 결과))
             dispatch(disconnectGame({ gameId: game_id }));
-            history.push('/games');
+            dispatch(setRoute('/games'));
             clearTimeout(timerId);
             break;
           case 1:
@@ -129,7 +129,7 @@ const GameContainer = () => {
       if (gameIndex === quizList.length - 1) {
         dispatch(disconnectGame({ gameId: game_id }));
         //FIXME: 임시로 게임 리스트로 연결 (history.push(게임 결과))
-        return history.push('/games');
+        return () => dispatch(setRoute('/games'));
       }
       setGamePhase('keyword');
       setIsCardShowing(true);

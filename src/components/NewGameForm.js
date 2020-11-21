@@ -10,7 +10,7 @@ import PATH from '../constants/path';
 import { useParams } from 'react-router-dom';
 import api from '../utils/api';
 import { validateLength } from '../utils/validation';
-import { convertMsToMinutes } from '../utils';
+import DetailGameInfo from './DetailGameInfo';
 
 const NewGameForm = ({
   onCreateNewGame,
@@ -229,36 +229,15 @@ const NewGameForm = ({
         }
         {
           page === pageName.THIRD &&
-          <div className={styles.thirdForm}>
-            <div className={styles.gameInfoContainer}>
-              <h5 className={styles.title}>게임 이름</h5>
-              <div className={styles.content}>{gameInfo.name}</div>
-            </div>
-            <div className={styles.gameInfoContainer}>
-              <h5 className={styles.title}>위치</h5>
-              <div className={styles.content}>{`${gameInfo.address} ${gameInfo.addressDetail}`}</div>
-            </div>
-            <div className={styles.gameInfoContainer}>
-              <h5 className={styles.title}>제한시간</h5>
-              <div className={styles.content}>{`${convertMsToMinutes(gameInfo.timeLimit) + 1}분`}</div>
-            </div>
-            <div className={styles.gameInfoContainer}>
-              <h5 className={styles.title}>문제 리스트</h5>
-              {
-                quizList.map((quiz, index) => {
-                  return (
-                    <div className={styles.content} key={index}>
-                      {quiz.quiz}
-                    </div>
-                  );
-                })
-              }
-            </div>
+          <DetailGameInfo
+            quizList={quizList}
+            gameInfo={gameInfo}
+          >
             <div className={styles.buttonContainer}>
               <Button name={pageNavigation.PREV} text='Prev' onClick={handlePageNavigation} />
               <Button text='만들기 ' onClick={handleSubmitButton} />
             </div>
-          </div>
+          </DetailGameInfo>
         }
         {
           page === pageName.QUIZ_FORM &&

@@ -93,18 +93,17 @@ api.delete = async ({ path, body, options = {} }) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`${path}`, {
+    const response = await fetch(`${path}`, {
       method: 'DELETE',
       credentials: 'include',
       headers,
       body: JSON.stringify(body),
-    }).then((result) => result.json());
+    });
 
-    if (status >= 400) throw Error(errMessage);
-
-    return data;
+    return response;
   } catch (err) {
     logger('🔥 Error fired: business -> api -> remove');
+    console.error(err);
     throw (err);
   }
 };

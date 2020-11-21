@@ -1,0 +1,18 @@
+@import '../styles/theme.module.scss';
+
+.thirdForm {
+  display: flex;
+  flex-direction: column;
+
+  .gameInfoContainer {
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      font-size: $font-size-2;
+    }
+    .content {
+      font-size: $font-size-2;
+    }
+  }
+}

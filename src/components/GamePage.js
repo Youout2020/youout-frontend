@@ -8,31 +8,29 @@ const Text = ({ text }) => {
   );
 };
 
-const Game = ({ id, name, onUpdate, onDelete }) => {
+const Game = ({ id, name, onClick }) => {
   return (
-    <li>
+    <li onClick={() => onClick(id)}>
       {name}
-      <button onClick={() => onUpdate(id)}>Update</button>
-      <button onClick={() => onDelete(id)}>Delete</button>
     </li>
   );
 };
 
-const Games = ({ games, onUpdate, onDelete }) => {
+const Games = ({ games, onClick}) => {
   return (
     <ul className={styles.Games}>
       {games.map(({ _id, name }) => (
-        <Game key={_id} id={_id} name={name} onUpdate={onUpdate} onDelete={onDelete}/>
+        <Game key={_id} id={_id} name={name} onClick={onClick}/>
       ))}
     </ul>
   );
 };
 
-const GamePage = ({ games, onUpdate, onDelete }) => {
+const GamePage = ({ games, onClick }) => {
   return (
     <div className={styles.GamePage}>
       <Text text='내가 만든 방'/>
-      <Games games={games} onUpdate={onUpdate} onDelete={onDelete}/>
+      <Games games={games} onClick={onClick}/>
     </div>
   );
 };
