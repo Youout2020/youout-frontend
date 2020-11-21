@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import { updateCurrentGame } from '../reducer/currentGame';
 import Camera from '../components/Camera';
@@ -20,6 +20,7 @@ const GameContainer = () => {
   const { gameInfo: { quizList, timeLimit }, users } = gameInfo;
   const { id: userId } = useSelector((state) => state.user.info);
   const { game_id } = useParams();
+  const history = useHistory();
 
   const [ minutes, setMinutes ] = useState(0);
   const [ seconds, setSeconds ] = useState(59);
@@ -40,7 +41,8 @@ const GameContainer = () => {
     });
 
     setGameIndex(0);
-    setMinutes(convertMsToMinutes(timeLimit));
+    // setMinutes(convertMsToMinutes(timeLimit));
+    setMinutes(1);
 
     // return () => dispatch(disconnectGame({ gameId: game_id }));
   }, []);
@@ -57,12 +59,16 @@ const GameContainer = () => {
       if (seconds > 0) setSeconds((prev) => prev - 1);
       if (seconds === 0) {
         switch (minutes) {
-          case 0:
-            //TODO: 게임 종료 알림 (socket emit)
+          case 0 :
+            //FIXME: 임시로 게임 리스트로 연결 (history.push(게임 결과))
+            dispatch(disconnectGame({ gameId: game_id }));
+            history.push('/games');
             clearTimeout(timerId);
             break;
           case 1:
             //TODO: 종료 1분 전 알림 (CSS 시 적용 예정)
+            setMinutes((prev) => prev - 1);
+            setSeconds(59);
             break;
           default:
             setMinutes((prev) => prev - 1);
@@ -121,6 +127,11 @@ const GameContainer = () => {
 
     setTimeout(() => {
       setGameIndex((prev) => prev + 1);
+      if (gameIndex === quizList.length - 1) {
+        dispatch(disconnectGame({ gameId: game_id }));
+        //FIXME: 임시로 게임 리스트로 연결 (history.push(게임 결과))
+        return history.push('/games');
+      }
       setGamePhase('keyword');
       setIsCardShowing(true);
       setResultMessage('');
