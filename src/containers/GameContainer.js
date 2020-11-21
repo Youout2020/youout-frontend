@@ -5,10 +5,10 @@ import { useParams, useHistory } from 'react-router-dom';
 import { updateCurrentGame } from '../reducer/currentGame';
 import Camera from '../components/Camera';
 import GameHeader from '../components/GameHeader';
-import { convertMsToMinutes } from '../utils/index';
+import { convertMsToMinutes, convertTimeToMs } from '../utils/index';
 import CardWrapper from '../components/CardWrapper';
 import awsRekognition from '../utils/aws';
-import { updateData, listenUpdateData } from '../utils/socket';
+import { updateData, listenUpdateData, gameComplete } from '../utils/socket';
 import { Popup } from '../components/Card';
 import Button from '../components/Button';
 import { disconnectGame } from '../reducer/currentGame';
@@ -23,7 +23,8 @@ const GameContainer = () => {
   const history = useHistory();
 
   const [ minutes, setMinutes ] = useState(0);
-  const [ seconds, setSeconds ] = useState(59);
+  // const [ seconds, setSeconds ] = useState(59);
+  const [ seconds, setSeconds ] = useState(10);
 
   const [ gameIndex, setGameIndex ] = useState(-1);
   const [ gamePhase, setGamePhase ] = useState('keyword');
@@ -41,8 +42,8 @@ const GameContainer = () => {
     });
 
     setGameIndex(0);
-    // setMinutes(convertMsToMinutes(timeLimit));
     setMinutes(1);
+    // setMinutes(convertMsToMinutes(timeLimit));
 
     // return () => dispatch(disconnectGame({ gameId: game_id }));
   }, []);
@@ -128,6 +129,11 @@ const GameContainer = () => {
     setTimeout(() => {
       setGameIndex((prev) => prev + 1);
       if (gameIndex === quizList.length - 1) {
+        gameComplete({
+          gameId: game_id,
+          userId,
+          clearTime: convertTimeToMs(minutes, seconds),
+        });
         dispatch(disconnectGame({ gameId: game_id }));
         //FIXME: 임시로 게임 리스트로 연결 (history.push(게임 결과))
         return history.push('/games');
