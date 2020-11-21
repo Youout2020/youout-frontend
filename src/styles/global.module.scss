@@ -1,4 +1,6 @@
+@import '../styles/theme.module.scss';
 @import url("https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css");
+@import url('https://fonts.googleapis.com/css2?family=Gugi&display=swap');
 
 :global {
   #root {
@@ -6,6 +8,7 @@
     padding: 0;
     width: 100vw;
     height: 100vh;
+    font-family: 'Gugi', cursive;
   }
 
   html {
@@ -19,8 +22,7 @@
     width: 100vw;
     height: 100vh;
     overflow-x: hidden;
-    font-family: 'NanumBarunGothic', cursive;
-    background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
+    background-color: $yellow;
   }
 
   * {
