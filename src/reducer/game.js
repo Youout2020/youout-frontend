@@ -15,6 +15,7 @@ export const TOGGLE_IS_SELECTED = 'gameReducer/TOGGLE_IS_SELECTED';
 export const LOAD_PLAYING_GAMES = 'gameReducer/LOAD_PLAYING_GAMES';
 export const SET_PLAYING_GAMES = 'gameReducer/SET_PLAYING_GAMES';
 export const JOIN_GAME = 'gameReducer/JOIN_GAME';
+export const DELETE_GAME = 'gameReducer/DELETE_GAME';
 
 export const setDocs = createAction(SET_DOCS);
 export const setNextPage = createAction(SET_NEXT_PAGE);
@@ -73,6 +74,16 @@ export const updateGame = createAsyncThunk(
   async ({ body, gameId }, extra) => {
     const path = `/games/${gameId}/update`;
     await api.put({ path, body });
+    window.location.reload();
+  },
+);
+
+export const deleteGame = createAsyncThunk(
+  DELETE_GAME,
+  async ({ body, gameId }, extra) => {
+    console.log(gameId);
+    const path = `/games/${gameId}/delete`;
+    await api.delete({ path });
     window.location.reload();
   },
 );

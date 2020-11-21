@@ -4,7 +4,9 @@ const logger = (errorMessage) => {
   }
 };
 
-const get = async({ path, options = {} }) => {
+const api = {};
+
+api.get = async({ path, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
@@ -29,7 +31,7 @@ const get = async({ path, options = {} }) => {
   }
 };
 
-const post = async ({ path, body, options = {} }) => {
+api.post = async ({ path, body, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
@@ -55,7 +57,7 @@ const post = async ({ path, body, options = {} }) => {
   }
 };
 
-const put = async ({ path, body, options = {} }) => {
+api.put = async ({ path, body, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
@@ -81,7 +83,7 @@ const put = async ({ path, body, options = {} }) => {
   }
 };
 
-const remove = async ({ path, body, options = {} }) => {
+api.delete = async ({ path, body, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
@@ -107,9 +109,4 @@ const remove = async ({ path, body, options = {} }) => {
   }
 };
 
-export default {
-  get,
-  post,
-  put,
-  remove,
-};
+export default api;

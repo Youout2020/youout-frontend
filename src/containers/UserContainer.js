@@ -9,7 +9,7 @@ import GamePage from '../components/GamePage';
 import ROUTE from '../constants/route';
 import HEADER_TITLE from '../constants/headerTitle';
 import { loadUserPage } from '../reducer/user';
-import { updateGame } from '../reducer/game';
+import { updateGame, deleteGame } from '../reducer/game';
 import { setRoute } from '../reducer/route';
 import NewGameForm from '../components/NewGameForm';
 
@@ -22,7 +22,10 @@ const UserContainer = () => {
   } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const handleUpdateGame = (body, gameId) => dispatch(updateGame({ body, gameId }));
+  const handleDeleteGame = (gameId) => dispatch(deleteGame({ gameId }));
+
   const handleRenderGameForm = (id) => dispatch(setRoute(`/user/games/${id}`));
+
   const navigation = {
     moreHistories: () => dispatch(setRoute('/user/histories')),
     moreGames: () => dispatch(setRoute('/user/games')),
@@ -53,7 +56,7 @@ const UserContainer = () => {
             <HistoryPage histories={histories.docs}/>
           </Route>
           <Route exact path={ROUTE.user.games}>
-            <GamePage games={games.docs} onUpdate={handleRenderGameForm} />
+            <GamePage games={games.docs} onUpdate={handleRenderGameForm} onDelete={handleDeleteGame} />
           </Route>
           <Route path={ROUTE.user.gameId}>
             <NewGameForm onCreateNewGame={handleUpdateGame}/>

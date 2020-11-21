@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { updateCurrentGame } from '../reducer/currentGame';
 import Camera from '../components/Camera';
@@ -11,7 +11,6 @@ import awsRekognition from '../utils/aws';
 import { updateData, listenUpdateData } from '../utils/socket';
 import { Popup } from '../components/Card';
 import Button from '../components/Button';
-import { disconnectGame } from '../reducer/currentGame';
 import { setRoute } from '../reducer/route';
 
 const GameContainer = () => {
@@ -20,12 +19,11 @@ const GameContainer = () => {
   const { gameInfo: { quizList, timeLimit }, users } = gameInfo;
   const { id: userId } = useSelector((state) => state.user.info);
   const { game_id } = useParams();
-  const history = useHistory();
 
   const [ minutes, setMinutes ] = useState(0);
   const [ seconds, setSeconds ] = useState(59);
 
-  const [ gameIndex, setGameIndex ] = useState(-1);
+  const [ gameIndex, setGameIndex ] = useState(0);
   const [ gamePhase, setGamePhase ] = useState('keyword');
   const [ userAnswer, setUserAnswer ] = useState('');
   const [ resultMessage, setResultMessage ] = useState('');
@@ -39,10 +37,7 @@ const GameContainer = () => {
       dispatch(updateCurrentGame(data.game));
     });
 
-    setGameIndex(0);
     setMinutes(convertMsToMinutes(timeLimit));
-
-    // return () => dispatch(disconnectGame({ gameId: game_id }));
   }, []);
 
   useEffect(() => {
@@ -111,6 +106,11 @@ const GameContainer = () => {
 
     setTimeout(() => {
       setGameIndex((prev) => prev + 1);
+
+      if (quizList.length - 1 === gameIndex) {
+        //TODO: complete logic
+      }
+
       setGamePhase('keyword');
       setResultMessage('');
       setUserAnswer('');
