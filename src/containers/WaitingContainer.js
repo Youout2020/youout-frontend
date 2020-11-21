@@ -14,7 +14,6 @@ const WaitingContainer = () => {
   const { game_id } = useParams();
   const dispatch = useDispatch();
   const isMaster = users[MASTER_INDEX] && users[MASTER_INDEX]._id === id;
-
   const handleStart = () => dispatch(startGame({ gameId: game_id }));
 
   useEffect(() => {

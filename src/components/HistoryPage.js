@@ -8,21 +8,21 @@ const Text = ({ text }) => {
   );
 };
 
-const History = ({ histories }) => {
+const History = ({ histories, onClick }) => {
   return (
     <ul className={styles.history}>
       {histories.map((history) => (
-        <li key={history._id}>{history.game.name}</li>
+        <li key={history._id} onClick={() => onClick(history._id)}>{history.game.name}</li>
       ))}
     </ul>
   );
 };
 
-const HistoryPage = ({ histories }) => {
+const HistoryPage = ({ histories, onClick }) => {
   return (
     <div className={styles.HistoryPage}>
       <Text text='내가 플레이한 방'/>
-      <History histories={histories}/>
+      <History histories={histories} onClick={onClick}/>
     </div>
   );
 };

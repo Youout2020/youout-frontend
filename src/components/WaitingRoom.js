@@ -12,11 +12,11 @@ const Counter = ({ count }) => {
 const Users = ({ users, isMaster }) => {
   return (
     <ul className={styles.users}>
-      {users.map((user) => (
+      {users.map((user, index) => (
         <li key={user.socketId}>
           <img src={user.image} className={styles.userIcon}/>
           {user.username}
-          {isMaster ? '(방장)' : ''}
+          {index === 0 ? '(방장)' : ''}
         </li>
       ))}
     </ul>

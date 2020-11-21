@@ -17,7 +17,7 @@ import { disconnectGame } from '../reducer/currentGame';
 const GameContainer = () => {
   const dispatch = useDispatch();
   const gameInfo = useSelector((state) => state.currentGame);
-  const { gameInfo: { quizList, timeLimit }, users } = gameInfo;
+  const { gameInfo: { quizList }, users } = gameInfo;
   const { id: userId } = useSelector((state) => state.user.info);
   const { game_id } = useParams();
 

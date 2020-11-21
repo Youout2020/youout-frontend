@@ -67,7 +67,7 @@ export const initGameSetting = createAsyncThunk(
 
 export const countdown = createAsyncThunk(
   COUNTDOWN,
-  async (countNumber, { dispatch, getState }) => {
+  async (countNumber, { dispatch }) => {
     if (countNumber > 0) {
       dispatch(setCount(countNumber));
       setTimeout(() => {
@@ -81,19 +81,17 @@ export const countdown = createAsyncThunk(
 
 export const disconnectGame = createAsyncThunk(
   DISCONNECT_GAME,
-  async ({ gameId }, { dispatch, getState }) => {
+  async ({ gameId }, { dispatch }) => {
     socket.off(SOCKET.userJoin);
     socket.off(SOCKET.gameStart);
     socket.off(SOCKET.gameUpdate);
     socket.off(SOCKET.userLeave);
-
     socket.emit(SOCKET.userLeave, { gameId });
 
-    dispatch(setGameInfo(initGameInfo));
+    dispatch(setGameInfo({ gameInfo: initGameInfo, users: [], _id: '' }));
     dispatch(setIsPlayingFalse());
     dispatch(setCount(-1));
-    dispatch(setUsers([]));
-  }
+  },
 );
 
 const initState = {
@@ -110,10 +108,10 @@ export default createReducer(initState, {
   [SET_GAME_INFO]: (state, { payload }) => {
     state.gameInfo = payload.gameInfo;
     state.users = payload.users;
-    state.gameId = payload.gameInfo._id;
+    state.gameId = payload._id;
   },
   [SET_COUNT]: (state, { payload }) => { state.count = payload; },
   [SET_GAME_ID]: (state, { payload }) => { state.gameId = payload; },
-  [SET_IS_PLAYING_TRUE]: (state, payload) => { state.isPlaying = true; },
-  [SET_IS_PLAYING_FALSE]: (state, payload) => { state.isPlaying = false; },
+  [SET_IS_PLAYING_TRUE]: (state, action) => { state.isPlaying = true; },
+  [SET_IS_PLAYING_FALSE]: (state, action) => { state.isPlaying = false; },
 });

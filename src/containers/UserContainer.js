@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route, useParams } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import Header from '../components/Header';
 import Button from '../components/Button';
@@ -35,6 +35,7 @@ const UserContainer = () => {
     location: {},
     timeLimit: '',
   });
+  const [historyInfo, setHistoryInfo] = useState({ game: { name: '' }, users: [] });
 
   const navigation = {
     moreHistories: () => dispatch(setRoute('/user/histories')),
@@ -46,6 +47,12 @@ const UserContainer = () => {
       setGameInfo(response);
       setQuizList(response.quizList);
       dispatch(setRoute(`/user/games/${gameId}`));
+    },
+    showDetailHistory: async (historyId) => {
+      const path = `/histories/${historyId}`;
+      const response = await api.get({ path });
+      setHistoryInfo(response);
+      dispatch(setRoute(`/user/histories/${historyId}`));
     },
   };
 
@@ -70,8 +77,8 @@ const UserContainer = () => {
               navigation={navigation}
             />
           </Route>
-          <Route path='/user/histories'>
-            <HistoryPage histories={histories.docs}/>
+          <Route exact path='/user/histories'>
+            <HistoryPage histories={histories.docs} onClick={navigation.showDetailHistory}/>
           </Route>
           <Route exact path='/user/games'>
             <GamePage games={games.docs} onClick={navigation.showDetailGame}/>
@@ -86,6 +93,22 @@ const UserContainer = () => {
                 <Button text='Delete ' onClick={handleDeleteGame} />
               </div>
             </DetailGameInfo>
+          </Route>
+          <Route exact path='/user/histories/:history_id'>
+            <div>
+              <h5>게임 이름</h5>
+              <div>{historyInfo.game.name}</div>
+              <h5>같이 플레이한 유저들</h5>
+              <ul>
+              {historyInfo.users.map((user) => (
+                  <li key={user._id}>
+                    <img src={user.id.image}/>
+                    {user.id.name}/
+                    {user.clearTime}ms
+                  </li>
+              ))}
+              </ul>
+            </div>
           </Route>
           <Route path='/user/games/:game_id/update'>
             <NewGameForm onCreateNewGame={handleUpdateGame}/>
