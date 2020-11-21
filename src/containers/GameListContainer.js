@@ -13,7 +13,6 @@ import {
   joinGame,
 } from '../reducer/game';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import { mockData } from '../utils/mock';
 import { setRoute } from '../reducer/route';
 import Loading from '../components/Loading';
 import { getUserLocation } from '../utils';
@@ -42,6 +41,18 @@ const GameListContainer = () => {
   };
 
   useEffect(() => {
+    if (!target) return;
+
+    let observer;
+    if (target) {
+      observer = new IntersectionObserver(onIntersect, { threshold: [0.1] });
+      observer.observe(target);
+    }
+
+    return () => observer.unobserve(target);
+  }, [target, hasNextPage]);
+
+  useEffect(() => {
     (async () => {
       const { lat, lng } = await getUserLocation();
       const geocoder = new kakao.maps.services.Geocoder();
@@ -53,18 +64,6 @@ const GameListContainer = () => {
       });
     })();
   }, []);
-
-  useEffect(() => {
-    if (!target) return;
-
-    let observer;
-    if (target) {
-      observer = new IntersectionObserver(onIntersect, { threshold: [0.1] });
-      observer.observe(target);
-    }
-
-    return () => observer.unobserve(target);
-  }, [target, hasNextPage]);
 
   useEffect(() => {
     if (!info) return dispatch(setRoute('/'));

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { updateCurrentGame } from '../reducer/currentGame';
 import Camera from '../components/Camera';
 import GameHeader from '../components/GameHeader';
 import { convertMsToMinutes, convertTimeToMs } from '../utils/index';
@@ -17,7 +16,7 @@ import { disconnectGame } from '../reducer/currentGame';
 const GameContainer = () => {
   const dispatch = useDispatch();
   const gameInfo = useSelector((state) => state.currentGame);
-  const { gameInfo: { quizList }, users } = gameInfo;
+  const { gameInfo: { quizList, timeLimit }, users } = gameInfo;
   const { id: userId } = useSelector((state) => state.user.info);
   const { game_id } = useParams();
 
@@ -35,15 +34,9 @@ const GameContainer = () => {
   const [ recognizedKeywordList, setRecognizedKeywordList ] = useState([]);
 
   useEffect(() => {
-    listenUpdateData((data) => {
-      dispatch(updateCurrentGame(data.game));
-    });
-
     setGameIndex(0);
-    setMinutes(1);
+    setMinutes(5);
     // setMinutes(convertMsToMinutes(timeLimit));
-
-    // return () => dispatch(disconnectGame({ gameId: game_id }));
   }, []);
 
   useEffect(() => {
@@ -59,7 +52,6 @@ const GameContainer = () => {
       if (seconds === 0) {
         switch (minutes) {
           case 0 :
-            //FIXME: 임시로 게임 리스트로 연결 (history.push(게임 결과))
             dispatch(disconnectGame({ gameId: game_id }));
             dispatch(setRoute('/games'));
             clearTimeout(timerId);
@@ -132,9 +124,7 @@ const GameContainer = () => {
           userId,
           clearTime: convertTimeToMs(minutes, seconds),
         });
-        dispatch(disconnectGame({ gameId: game_id }));
-        //FIXME: 임시로 게임 리스트로 연결 (history.push(게임 결과))
-        dispatch(setRoute('/games'));
+        dispatch(setRoute(`/games/${game_id}/result`));
         return;
       }
       setGamePhase('keyword');

@@ -36,7 +36,6 @@ const UserContainer = () => {
     timeLimit: '',
   });
   const [historyInfo, setHistoryInfo] = useState({ game: { name: '' }, users: [] });
-
   const navigation = {
     moreHistories: () => dispatch(setRoute('/user/histories')),
     moreGames: () => dispatch(setRoute('/user/games')),

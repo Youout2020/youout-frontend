@@ -38,7 +38,7 @@ export const createNewGame = createAsyncThunk(
   async (body, extra) => {
     await api.post({ path: '/games', body });
     window.location.reload();
-  }
+  },
 );
 
 export const loadGames = createAsyncThunk(
@@ -52,7 +52,7 @@ export const loadGames = createAsyncThunk(
     dispatch(setDocs([...docs, ...newDocs]));
     dispatch(setNextPage(nextPage));
     dispatch(setHasNextPage(hasNextPage));
-  }
+  },
 );
 
 export const loadMoreGames = createAsyncThunk(
@@ -81,7 +81,6 @@ export const updateGame = createAsyncThunk(
 export const deleteGame = createAsyncThunk(
   DELETE_GAME,
   async ({ body, gameId }, extra) => {
-    console.log(gameId);
     const path = `/games/${gameId}/delete`;
     await api.delete({ path });
     window.location.reload();
