@@ -1,9 +1,12 @@
+@import './theme.module.scss';
+
 :global {
   #root {
     margin: 0;
     padding: 0;
     width: 100vw;
     height: 100vh;
+    font-family: 'Gugi', cursive;
   }
 
   html {
@@ -17,7 +20,6 @@
     width: 100vw;
     height: 100vh;
     overflow-x: hidden;
-    font-family: 'Dokdo', cursive;
   }
 
   * {

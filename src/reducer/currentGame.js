@@ -1,5 +1,6 @@
 import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 import { socket } from '../utils/socket';
+import { setRoute } from './route';
 
 const SOCKET = {
   userJoin: 'USER_JOIN',
@@ -67,14 +68,15 @@ export const initGameSetting = createAsyncThunk(
 
 export const countdown = createAsyncThunk(
   COUNTDOWN,
-  async (countNumber, { dispatch }) => {
+  async (countNumber, { dispatch, getState }) => {
     if (countNumber > 0) {
       dispatch(setCount(countNumber));
       setTimeout(() => {
         dispatch(countdown(countNumber - 1));
       }, 1000);
     } else {
-      dispatch(setIsPlayingTrue());
+      const { gameId } = getState().currentGame;
+      dispatch(setRoute(`/games/${gameId}/playing`));
     }
   },
 );
@@ -89,7 +91,7 @@ export const disconnectGame = createAsyncThunk(
     socket.emit(SOCKET.userLeave, { gameId });
 
     dispatch(setGameInfo({ gameInfo: initGameInfo, users: [], _id: '' }));
-    dispatch(setIsPlayingFalse());
+    dispatch(setRoute('/games'));
     dispatch(setCount(-1));
   },
 );
@@ -103,7 +105,9 @@ const initState = {
 };
 
 export default createReducer(initState, {
-  [UPDATE_CURRENT_GAME]: (state, action) => action.payload,
+  [UPDATE_CURRENT_GAME]: (state, action) => {
+    state.users = action.payload.users;
+  },
   [SET_USERS]: (state, { payload }) => { state.users = payload; },
   [SET_GAME_INFO]: (state, { payload }) => {
     state.gameInfo = payload.gameInfo;
