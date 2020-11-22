@@ -10,10 +10,16 @@
   img {
     margin-top: 20px;
     border-radius: 100px;
+    margin-bottom: 10px;
   }
 
   p {
     text-align: center;
+    font-size: $font-size-1;
+
+    b {
+      font-size: $font-size-2;
+    }
   }
 }
 
@@ -44,7 +50,8 @@
       border: none;
       border-radius: 5px;
       background: $main-color;
-      color: $white;
+      color: $black;
+      font-size: $font-size-1;
     }
   }
 
@@ -53,5 +60,6 @@
     border: none;
     color: $main-color;
     margin-top: 10px;
+    font-size: $font-size-1;
   }
 }

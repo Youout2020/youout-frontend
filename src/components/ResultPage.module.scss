@@ -1,0 +1,36 @@
+@import '../styles/theme.module.scss';
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: $font-size-3;
+
+  .title {
+    font-size: $font-size-4;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    background: $yellow;
+  }
+
+  .players {
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: $font-size-2;
+      border-bottom: 2px dashed $origin-blue;
+
+      img {
+        width: 40px;
+        border-radius: 20px;
+        margin: 10px;
+      }
+    }
+  }
+
+  Button {
+    margin-top: 10px;
+  }
+}

@@ -7,8 +7,9 @@ const ImageBox = ({ name, image, email }) => {
     <div className={styles.imageBox}>
       <img src={image} alt='user-image' />
       <p>
-        {name}
-        ({email})
+        <b>{name}</b>
+        <br/>
+        {email}
       </p>
     </div>
   );

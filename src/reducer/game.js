@@ -93,14 +93,15 @@ export const joinGame = createAsyncThunk(
     socket.on('GET_PLAYING_GAMES', (games) => {
       const filtered = games.filter((game) => game._id === id)[0];
 
-      if (filtered) {
-        filtered.users.length >= 4
-          ? alert('max people')
-          : dispatch(setRoute(`/games/${id}`));
+      if (filtered && filtered.users.length >= 4) {
+        alert('max people');
       } else {
         dispatch(setRoute(`/games/${id}`));
       }
+
+      socket.off('GET_PLAYING_GAMES');
     });
+
     socket.emit('GET_PLAYING_GAMES');
   },
 );
