@@ -3,22 +3,28 @@
 .container {
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
 
   label {
-    margin-bottom: 10px;
-    font-size: $font-size-1;
-    color: $main-color;
+    font-size: $font-size-2;
+    color: $brown;
+    margin: 3vh 0 2vh;
   }
 
   input {
-    margin-bottom: 10px;
     border: none;
     border-bottom: 1px solid $black;
     font-size: $font-size-2;
+    background-color: $light-beige;
+    margin-bottom: 2vh;
+  }
+
+  input:focus {
+    outline: none;
   }
 
   select {
-    border: 1px solid $black;
+    border: 1px solid $brown;
     border-radius: 20px;
     background-color: $white;
     font-size: $font-size-2;

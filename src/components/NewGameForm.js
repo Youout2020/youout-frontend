@@ -146,6 +146,7 @@ const NewGameForm = ({
                 <div className={styles.validationMessage}>{validationMessage.name}</div>
               }
               <Button
+                className='formButton'
                 text='현 위치 확인하기'
                 onClick={() => setPage(pageName.MAP)}
               />
@@ -197,7 +198,12 @@ const NewGameForm = ({
                   />
                 </div>
               </div>
-              <Button name={pageNavigation.NEXT} text='Next' onClick={handlePageNavigation} />
+              <Button
+                className='naviButton'
+                name={pageNavigation.NEXT}
+                text='Next'
+                onClick={handlePageNavigation}
+              />
             </div>
           }
           {
@@ -213,7 +219,7 @@ const NewGameForm = ({
                         }
                       </div>
                       <Button
-                        className='quizButton'
+                        className='formButton'
                         text={quizList[index]?.quiz || '문제를 입력하세요.'}
                         onClick={() => handleQuizInputButton(index)}
                       />
@@ -222,8 +228,18 @@ const NewGameForm = ({
                 })
               }
               <div className={styles.buttonContainer}>
-                <Button name={pageNavigation.PREV} text='Prev' onClick={handlePageNavigation} />
-                <Button name={pageNavigation.NEXT} text='Next' onClick={handlePageNavigation} />
+                <Button
+                  className='naviButton'
+                  name={pageNavigation.PREV}
+                  text='Prev'
+                  onClick={handlePageNavigation}
+                />
+                <Button
+                  className='naviButton'
+                  name={pageNavigation.NEXT}
+                  text='Next'
+                  onClick={handlePageNavigation}
+                />
               </div>
             </div>
           }
@@ -234,8 +250,17 @@ const NewGameForm = ({
               gameInfo={gameInfo}
             >
               <div className={styles.buttonContainer}>
-                <Button name={pageNavigation.PREV} text='Prev' onClick={handlePageNavigation} />
-                <Button text='만들기 ' onClick={handleSubmitButton} />
+                <Button
+                  className='naviButton'
+                  name={pageNavigation.PREV}
+                  text='Prev'
+                  onClick={handlePageNavigation}
+                />
+                <Button
+                  className='naviButton'
+                  text='만들기'
+                  onClick={handleSubmitButton}
+                />
               </div>
             </DetailGameInfo>
           }

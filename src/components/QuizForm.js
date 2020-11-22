@@ -75,7 +75,7 @@ const QuizForm = ({
   };
 
   return (
-    <div className='quizForm'>
+    <div className={styles.quizForm}>
       <Input
         type='text'
         id='keyword'
@@ -128,7 +128,11 @@ const QuizForm = ({
         validationMessage.hint &&
         <div className={styles.validationMessage}>{validationMessage.hint}</div>
       }
-      <Button text='완료' onClick={handleQuizSubmitButton} />
+      <Button
+        className='formButton'
+        text='완료'
+        onClick={handleQuizSubmitButton}
+      />
     </div>
   );
 };
