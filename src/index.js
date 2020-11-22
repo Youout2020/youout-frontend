@@ -6,12 +6,15 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import store from './store';
 import AppContainer from './containers/AppContainer';
 import './styles/global.module.scss';
+import ScrollToTop from './components/ScrollToTop';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Provider store={store}>
-        <AppContainer />
+        <ScrollToTop>
+          <AppContainer />
+        </ScrollToTop>
       </Provider>
     </Router>
   </React.StrictMode>,

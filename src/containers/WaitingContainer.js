@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, useParams } from 'react-router-dom';
+import randomcolor from 'randomcolor';
 
 import WaitingRoom from '../components/WaitingRoom';
 import ResultPage from '../components/ResultPage';
@@ -25,6 +26,7 @@ const WaitingContainer = () => {
       userId: id,
       username: name,
       image,
+      color: randomcolor(),
     }));
     listenUpdateData((data) => {
       dispatch(updateCurrentGame(data.game));

@@ -1,65 +1,75 @@
 @import '../styles/theme.module.scss';
 
-.imageBox {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
+.container {
+  height: 90vh;
+  background-color: $main-color;
 
-  img {
-    margin-top: 20px;
-    border-radius: 100px;
-    margin-bottom: 10px;
-  }
-
-  p {
-    text-align: center;
-    font-size: $font-size-1;
-
-    b {
-      font-size: $font-size-2;
-    }
-  }
-}
-
-.contentsBox {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-
-  .text {
-    font-size: $font-size-2;
-    margin-bottom: 20px;
-  }
-
-  ul {
+  .imageBox {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+    height: 26vh;
+    margin-bottom: 1vh;
 
-    & li button {
-      width: 150px;
-      height: 50px;
-      margin: 5px;
-      background: $white;
+    img {
+      margin-top: 20px;
+      margin-bottom: 10px;
+      border-radius: 100px;
+    }
+
+    p {
+      font-size: $font-size-1;
+      text-align: center;
+
+      b {
+        font-size: $font-size-2;
+      }
+    }
+  }
+
+  .contentsBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 32vh;
+    background-color: $light-beige;
+
+    .text {
+      margin-bottom: 20px;
+      font-size: $font-size-2;
+    }
+
+    ul {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      & li button {
+        width: 150px;
+        height: 50px;
+        margin: 5px;
+        border: none;
+        border-radius: 5px;
+        background: $brown;
+        color: $light-beige;
+        font-size: $font-size-1;
+      }
+    }
+
+    .moreButton {
+      margin-top: 10px;
       border: none;
-      border-radius: 5px;
+      border-radius: 10px;
       background: $main-color;
-      color: $black;
+      color: $white;
       font-size: $font-size-1;
     }
   }
 
-  .moreButton {
-    background: $white;
-    border: none;
-    color: $main-color;
-    margin-top: 10px;
-    font-size: $font-size-1;
+  .contentsBox:nth-child(2) {
+    border-radius: 20px 20px 0 0;
   }
 }

@@ -1,23 +1,14 @@
-$white: white;
 $main-color: #b69b7c;
+$white: white;
 $black: #2f3542;
-$yellow: #ffd000;
-$beige: #fffbe0;
-$blue: #1bced4;
-$grey: #474744;
-$black: #2f3542;
-$white-gray: #ced6e0;
 $origin-blue: blue;
-$blue-gray: black;
-$green: rgb(10, 192, 10);
-
-$light-beige: rgb(255, 243, 221);
-$brown: rgb(89, 53, 0);
-$light-brown: rgb(130, 97, 48);
 $yellow: rgb(255, 194, 88);
-$light-yellow: rgb(255, 239, 173);
+$brown: rgb(89, 53, 0);
 $carrot: rgb(220, 139, 0);
 $dark-carrot: #F76D1F;
+$light-beige: rgb(255, 243, 221);
+$light-brown: rgb(130, 97, 48);
+$light-yellow: rgb(255, 239, 173);
 
 $font-size-1: 12px;
 $font-size-2: 16px;
@@ -27,11 +18,20 @@ $font-size-5: 42px;
 $font-size-6: 80px;
 $font-size-7: 150px;
 
+$box-shadow-1:rgba(0, 0, 0, 0.07) 0px 1px 2px,
+              rgba(0, 0, 0, 0.07) 0px 2px 4px,
+              rgba(0, 0, 0, 0.07) 0px 4px 8px,
+              rgba(0, 0, 0, 0.07) 0px 8px 16px,
+              rgba(0, 0, 0, 0.07) 0px 16px 32px,
+              rgba(0, 0, 0, 0.07) 0px 32px 64px;
+$box-shadow-2:rgba(0, 0, 0, 0.15) 0px 15px 25px,
+              rgba(0, 0, 0, 0.05) 0px 5px 10px;
+$box-shadow-3:rgba(67, 35, 6, 0.5) 0px 20px 40px -7px;
 @mixin buttonBase() {
   display: inline;
   background-color: $white;
-  padding: 5px 30px;
-  border: $main-color;
+  padding: 0.5vh;
+  border: none;
   border-radius: 30px;
   color: $black;
   font-size: $font-size-2;

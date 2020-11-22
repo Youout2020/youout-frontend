@@ -6,17 +6,17 @@
   justify-content: space-evenly;
 
   label {
-    font-size: $font-size-2;
-    color: $brown;
     margin: 3vh 0 2vh;
+    color: $brown;
+    font-size: $font-size-2;
   }
 
   input {
+    margin-bottom: 2vh;
     border: none;
     border-bottom: 1px solid $black;
-    font-size: $font-size-2;
     background-color: $light-beige;
-    margin-bottom: 2vh;
+    font-size: $font-size-2;
   }
 
   input:focus {
@@ -24,12 +24,12 @@
   }
 
   select {
+    align-self: center;
+    width: 30vw;
+    padding: 1vh 3vw;
     border: 1px solid $brown;
     border-radius: 20px;
     background-color: $white;
     font-size: $font-size-2;
-    align-self: center;
-    width: 30vw;
-    padding: 1vh 3vw;
   }
 }

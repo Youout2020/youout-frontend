@@ -6,15 +6,16 @@
     padding: 0;
     width: 100vw;
     height: 100vh;
-    font-family: 'Gugi';
+    font-family: 'Gugi', sans-serif;
   }
 
   button {
-    font-family: 'Gugi', cursive;
+    font-family: 'Gugi', sans-serif;
   }
 
   html {
     overflow-x: hidden;
+    height: -webkit-fill-available;
   }
 
   body {
@@ -23,6 +24,8 @@
     padding: 0;
     width: 100vw;
     height: 100vh;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
     overflow-x: hidden;
   }
 
@@ -31,7 +34,7 @@
   }
 
   button {
-    font-family: 'Gugi';
+    font-family: 'Gugi', sans-serif;
   }
 
   ul {
@@ -48,6 +51,6 @@
   }
 
   input {
-    font-family: 'Gugi';
+    font-family: 'Gugi', sans-serif;
   }
 }

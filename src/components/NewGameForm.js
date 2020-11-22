@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import api from '../utils/api';
 import { validateLength } from '../utils/validation';
 import DetailGameInfo from './DetailGameInfo';
+import { AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai';
 
 const NewGameForm = ({
   onCreateNewGame,
@@ -57,7 +58,6 @@ const NewGameForm = ({
   const handleInputsChange = ({ target }) => {
     const { name, value } = target;
 
-    //TODO: default 처리 방식 확인 && util 처리
     switch (name) {
       case 'name':
         setValidationMessage({
@@ -81,19 +81,16 @@ const NewGameForm = ({
     });
   };
 
-  const handleCounter = ({ target }) => {
-    const { name } = target;
-    name === 'increase'
-     ? setQuizCount((prev) => {
-       return prev + 1 > 10
-        ? prev
-        : prev + 1;
-     })
-     : setQuizCount((prev) => {
-       return prev - 1 < 2
-        ? prev
-        : prev - 1;
-     });
+  const handleIncreaseCounter = () => {
+    setQuizCount((prev) => {
+      return prev + 1 > 10 ? prev : prev + 1;
+    });
+  };
+
+  const handleDecreaseCounter = () => {
+    setQuizCount((prev) => {
+      return prev - 1 < 2 ? prev : prev - 1;
+    });
   };
 
   const handlePageNavigation = ({ target }) => {
@@ -146,7 +143,7 @@ const NewGameForm = ({
                 <div className={styles.validationMessage}>{validationMessage.name}</div>
               }
               <Button
-                className='formButton'
+                className='basicButton'
                 text='현 위치 확인하기'
                 onClick={() => setPage(pageName.MAP)}
               />
@@ -184,17 +181,15 @@ const NewGameForm = ({
                 <span className={styles.counterName}>문제 개수</span>
                 <div className={styles.counter}>
                   <Button
-                    name='decrease'
                     className='circleButton'
-                    onClick={handleCounter}
-                    text='-'
+                    onClick={handleDecreaseCounter}
+                    text={<AiFillMinusCircle size='3em' />}
                   />
                   <span className={styles.quizCount}>{quizCount}</span>
                   <Button
-                    name='increase'
                     className='circleButton'
-                    onClick={handleCounter}
-                    text='+'
+                    onClick={handleIncreaseCounter}
+                    text={<AiFillPlusCircle size='3em' />}
                   />
                 </div>
               </div>
@@ -219,7 +214,7 @@ const NewGameForm = ({
                         }
                       </div>
                       <Button
-                        className='formButton'
+                        className='basicButton'
                         text={quizList[index]?.quiz || '문제를 입력하세요.'}
                         onClick={() => handleQuizInputButton(index)}
                       />

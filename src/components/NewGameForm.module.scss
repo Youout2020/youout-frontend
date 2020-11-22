@@ -2,7 +2,7 @@
 
 .container {
   height: 90vh;
-  padding: 7vh 5vw;
+  padding: 5vw;
   background-color: $main-color;
 
   .firstForm {
@@ -32,8 +32,8 @@
 
       .quizCount {
         margin: 2vh 5vw;
-        font-size: $font-size-3;
         color: $brown;
+        font-size: $font-size-3;
       }
     }
   }
@@ -60,26 +60,6 @@
     }
   }
 
-  .thirdForm {
-    display: flex;
-    flex-direction: column;
-    padding: 10vw;
-    border-radius: 20px;
-    background-color: $light-beige;
-
-    .gameInfoContainer {
-      display: flex;
-      flex-direction: column;
-
-      .title {
-        font-size: $font-size-2;
-      }
-      .content {
-        font-size: $font-size-2;
-      }
-    }
-  }
-
   .quizForm {
     display: flex;
     flex-direction: column;
@@ -89,17 +69,18 @@
   }
 
   .buttonContainer {
+    align-self: center;
     display: flex;
     width: 100%;
-    align-self: center;
-    margin-top: 5vh;
+    margin: 2vh 0;
+
     Button {
       margin: 0 10px;
     }
   }
 
   .validationMessage {
-    font-size: $font-size-1;
     color: $dark-carrot;
+    font-size: $font-size-1;
   }
 }

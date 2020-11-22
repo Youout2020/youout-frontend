@@ -129,7 +129,7 @@ const QuizForm = ({
         <div className={styles.validationMessage}>{validationMessage.hint}</div>
       }
       <Button
-        className='formButton'
+        className='basicButton'
         text='완료'
         onClick={handleQuizSubmitButton}
       />

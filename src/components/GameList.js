@@ -25,9 +25,7 @@ const GameList = ({
   const [ isSelected, setIsSelected ] = useState(true);
   const [ playingGameData, setPlayingGameData ] = useState([]);
   const dispatch = useDispatch();
-  const handleFilter = () => {
-    setIsSelected(!isSelected);
-  };
+  const handleFilter = () => setIsSelected(!isSelected);
 
   useEffect(() => {
     const temp = {};
@@ -52,8 +50,7 @@ const GameList = ({
             ? <div className={styles.message}>
                 <span>방 없음🤐</span>
               </div>
-            :
-              (
+            : (
                 isSelected
                   ? gameList
                   : gameList = gameList.reduce((acc, cur) => {
@@ -78,11 +75,11 @@ const GameList = ({
               })
             }
       </div>
-      <Button
-        className='fixedButton'
-        text='방 만들기'
-        onClick={() => dispatch(setRoute('/games/new'))}
-      />
+            <Button
+              className='fixedButton'
+              text='방 만들기'
+              onClick={() => dispatch(setRoute('/games/new'))}
+            />
     </div>
   );
 };

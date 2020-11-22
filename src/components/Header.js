@@ -12,7 +12,7 @@ const Header = ({ title, children }) => {
     <>
       <div className={styles.container}>
         <div onClick={() => dispatch(setRoute('/games'))}><FaHamburger size={'1.5em'}/></div>
-        <h1>{ title }</h1>
+        <h1>{title}</h1>
         <div onClick={() => dispatch(setRoute('/user'))}><RiUser5Fill size={'1.5em'}/></div>
       </div>
       <div className={styles.contents}>

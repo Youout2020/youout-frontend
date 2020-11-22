@@ -9,7 +9,7 @@ const Counter = ({ count }) => {
   );
 };
 
-const Users = ({ users, isMaster }) => {
+const Users = ({ users }) => {
   return (
     <ul className={styles.users}>
       <p>게임이 시작되길 마냥 기다리는 중👀</p>

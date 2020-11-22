@@ -16,8 +16,8 @@ const GameDetail = ({
         gameInfo={gameInfo}
       >
         <div className={style.buttonContainer}>
-          <Button text='Update' onClick={handleRenderGameForm} />
-          <Button text='Delete ' onClick={handleDeleteGame} />
+          <Button className='basicButton' text='Update' onClick={handleRenderGameForm} />
+          <Button className='basicButton' text='Delete' onClick={handleDeleteGame} />
         </div>
       </DetailGameInfo>
     </div>

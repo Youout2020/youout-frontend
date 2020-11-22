@@ -60,7 +60,6 @@ const CardWrapper = ({
               />
             </Card>
       }
-
       <div className={styles.toastContainer}>
         {
           userAlertList.length > 0 &&
@@ -70,6 +69,7 @@ const CardWrapper = ({
                 key={index}
                 username={user.username}
                 gameIndex={user.gameIndex + 1}
+                color={user.color}
               />
             );
           })
