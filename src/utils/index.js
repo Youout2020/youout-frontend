@@ -28,7 +28,11 @@ export const getUserLocation = () => {
 };
 
 export const convertMsToMinutes = (milliseconds) => {
-  return (milliseconds / (1000 * 60)) - 1;
+  return Math.floor((milliseconds / (1000 * 60)) - 1);
+};
+
+export const convertMsToSeconds = (milliseconds) => {
+  return (milliseconds % 60000) / 1000;
 };
 
 export const convertTimeToMs = (minutes, seconds) => {

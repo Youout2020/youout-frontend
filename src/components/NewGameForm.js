@@ -127,138 +127,139 @@ const NewGameForm = ({
 
   return (
     <>
-      <Header title='게임 만들기'/>
-      <form className={styles.container}>
-        {
-          page === pageName.FIRST &&
-          <div className={styles.firstForm}>
-            <Input
-              type='text'
-              id='name'
-              labelName='게임 이름'
-              value={gameInfo['name']}
-              name='name'
-              placeholder='게임 이름'
-              onChange={handleInputsChange}
-            />
-            {
-              validationMessage.name &&
-              <div className={styles.validationMessage}>{validationMessage.name}</div>
-            }
-            <Button
-              text='현 위치 확인하기'
-              onClick={() => setPage(pageName.MAP)}
-            />
-            <Input
-              type='text'
-              id='address'
-              labelName='위치'
-              value={gameInfo['address']}
-              name='address'
-              placeholder='예) 바코동'
-              onChange={handleInputsChange}
-              disabled
-            />
-            <Input
-              type='text'
-              id='address'
-              labelName=''
-              value={gameInfo['addressDetail']}
-              name='addressDetail'
-              placeholder='상세 주소'
-              onChange={handleInputsChange}
-            />
-            {
-              validationMessage.addressDetail &&
-              <div className={styles.validationMessage}>{validationMessage.addressDetail}</div>
-            }
-            <Input
-              type='select'
-              labelName='제한 시간'
-              name='timeLimit'
-              id='timeLimit'
-              onChange={handleInputsChange}
-            />
-            <div className={styles.quizCounter}>
-              <span className={styles.counterName}>문제 개수</span>
-              <div className={styles.counter}>
-                <Button
-                  name='decrease'
-                  className='circleButton'
-                  onClick={handleCounter}
-                  text='-'
-                />
-                <span className={styles.quizCount}>{quizCount}</span>
-                <Button
-                  name='increase'
-                  className='circleButton'
-                  onClick={handleCounter}
-                  text='+'
-                />
+      <Header title='게임 만들기'>
+        <form className={styles.container}>
+          {
+            page === pageName.FIRST &&
+            <div className={styles.firstForm}>
+              <Input
+                type='text'
+                id='name'
+                labelName='게임 이름'
+                value={gameInfo['name']}
+                name='name'
+                placeholder='게임 이름'
+                onChange={handleInputsChange}
+              />
+              {
+                validationMessage.name &&
+                <div className={styles.validationMessage}>{validationMessage.name}</div>
+              }
+              <Button
+                text='현 위치 확인하기'
+                onClick={() => setPage(pageName.MAP)}
+              />
+              <Input
+                type='text'
+                id='address'
+                labelName='위치'
+                value={gameInfo['address']}
+                name='address'
+                placeholder='예) 바코동'
+                onChange={handleInputsChange}
+                disabled
+              />
+              <Input
+                type='text'
+                id='address'
+                labelName=''
+                value={gameInfo['addressDetail']}
+                name='addressDetail'
+                placeholder='상세 주소'
+                onChange={handleInputsChange}
+              />
+              {
+                validationMessage.addressDetail &&
+                <div className={styles.validationMessage}>{validationMessage.addressDetail}</div>
+              }
+              <Input
+                type='select'
+                labelName='제한 시간'
+                name='timeLimit'
+                id='timeLimit'
+                onChange={handleInputsChange}
+              />
+              <div className={styles.quizCounter}>
+                <span className={styles.counterName}>문제 개수</span>
+                <div className={styles.counter}>
+                  <Button
+                    name='decrease'
+                    className='circleButton'
+                    onClick={handleCounter}
+                    text='-'
+                  />
+                  <span className={styles.quizCount}>{quizCount}</span>
+                  <Button
+                    name='increase'
+                    className='circleButton'
+                    onClick={handleCounter}
+                    text='+'
+                  />
+                </div>
               </div>
-            </div>
-            <Button name={pageNavigation.NEXT} text='Next' onClick={handlePageNavigation} />
-          </div>
-        }
-        {
-          page === pageName.SECOND &&
-          <div className={styles.secondForm}>
-            {
-              Array(quizCount).fill(0).map((quiz, index) => {
-                return (
-                  <div className={styles.quizContainer} key={index}>
-                    <div className={styles.quizDone}>
-                      {
-                        quizList[index]?.quiz ? '✓' : '✕'
-                      }
-                    </div>
-                    <Button
-                      className='quizButton'
-                      text={quizList[index]?.quiz || '문제를 입력하세요.'}
-                      onClick={() => handleQuizInputButton(index)}
-                    />
-                  </div>
-                );
-              })
-            }
-            <div className={styles.buttonContainer}>
-              <Button name={pageNavigation.PREV} text='Prev' onClick={handlePageNavigation} />
               <Button name={pageNavigation.NEXT} text='Next' onClick={handlePageNavigation} />
             </div>
-          </div>
-        }
-        {
-          page === pageName.THIRD &&
-          <DetailGameInfo
-            quizList={quizList}
-            gameInfo={gameInfo}
-          >
-            <div className={styles.buttonContainer}>
-              <Button name={pageNavigation.PREV} text='Prev' onClick={handlePageNavigation} />
-              <Button text='만들기 ' onClick={handleSubmitButton} />
+          }
+          {
+            page === pageName.SECOND &&
+            <div className={styles.secondForm}>
+              {
+                Array(quizCount).fill(0).map((quiz, index) => {
+                  return (
+                    <div className={styles.quizContainer} key={index}>
+                      <div className={styles.quizDone}>
+                        {
+                          quizList[index]?.quiz ? '✓' : '✕'
+                        }
+                      </div>
+                      <Button
+                        className='quizButton'
+                        text={quizList[index]?.quiz || '문제를 입력하세요.'}
+                        onClick={() => handleQuizInputButton(index)}
+                      />
+                    </div>
+                  );
+                })
+              }
+              <div className={styles.buttonContainer}>
+                <Button name={pageNavigation.PREV} text='Prev' onClick={handlePageNavigation} />
+                <Button name={pageNavigation.NEXT} text='Next' onClick={handlePageNavigation} />
+              </div>
             </div>
-          </DetailGameInfo>
-        }
-        {
-          page === pageName.QUIZ_FORM &&
-          <QuizForm
-            index={currentIndex}
-            setPage={setPage}
-            quizList={quizList}
-            setQuizList={setQuizList}
-            validationMessage={validationMessage}
-            setValidationMessage={setValidationMessage}
-          />
-        }
-        {
-          page === pageName.MAP &&
-          <Map
-            setPage={setPage}
-            gameInfo={gameInfo}
-            setGameInfo={setGameInfo}
-          />
-        }
-      </form>
+          }
+          {
+            page === pageName.THIRD &&
+            <DetailGameInfo
+              quizList={quizList}
+              gameInfo={gameInfo}
+            >
+              <div className={styles.buttonContainer}>
+                <Button name={pageNavigation.PREV} text='Prev' onClick={handlePageNavigation} />
+                <Button text='만들기 ' onClick={handleSubmitButton} />
+              </div>
+            </DetailGameInfo>
+          }
+          {
+            page === pageName.QUIZ_FORM &&
+            <QuizForm
+              index={currentIndex}
+              setPage={setPage}
+              quizList={quizList}
+              setQuizList={setQuizList}
+              validationMessage={validationMessage}
+              setValidationMessage={setValidationMessage}
+            />
+          }
+          {
+            page === pageName.MAP &&
+            <Map
+              setPage={setPage}
+              gameInfo={gameInfo}
+              setGameInfo={setGameInfo}
+            />
+          }
+        </form>
+      </Header>
     </>
   );
 };

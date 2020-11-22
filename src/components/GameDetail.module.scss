@@ -1,0 +1,11 @@
+@import '../styles/theme.module.scss';
+
+.container {
+  padding: 10vh 10vw;
+
+  .buttonContainer {
+    width : 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+}

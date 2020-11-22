@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 
 import Header from '../components/Header';
+import HistoryDetail from '../components/HistoryDetail';
 import Button from '../components/Button';
 import UserPage from '../components/UserPage';
 import HistoryPage from '../components/HistoryPage';
 import GamePage from '../components/GamePage';
+import GameDetail from '../components/GameDetail';
 import HEADER_TITLE from '../constants/headerTitle';
 import { loadUserPage } from '../reducer/user';
 import { updateGame, deleteGame } from '../reducer/game';
@@ -83,31 +85,15 @@ const UserContainer = () => {
             <GamePage games={games.docs} onClick={navigation.showDetailGame}/>
           </Route>
           <Route exact path='/user/games/:game_id'>
-            <DetailGameInfo
+            <GameDetail
               quizList={quizList}
               gameInfo={gameInfo}
-            >
-              <div>
-                <Button text='Update' onClick={handleRenderGameForm} />
-                <Button text='Delete ' onClick={handleDeleteGame} />
-              </div>
-            </DetailGameInfo>
+              handleRenderGameForm={handleRenderGameForm}
+              handleDeleteGame={handleDeleteGame}
+            />
           </Route>
           <Route exact path='/user/histories/:history_id'>
-            <div>
-              <h5>게임 이름</h5>
-              <div>{historyInfo.game.name}</div>
-              <h5>같이 플레이한 유저들</h5>
-              <ul>
-              {historyInfo.users.map((user) => (
-                  <li key={user._id}>
-                    <img src={user.id.image}/>
-                    {user.id.name}/
-                    {user.clearTime}ms
-                  </li>
-              ))}
-              </ul>
-            </div>
+            <HistoryDetail historyInfo={historyInfo}/>
           </Route>
           <Route path='/user/games/:game_id/update'>
             <NewGameForm onCreateNewGame={handleUpdateGame}/>
