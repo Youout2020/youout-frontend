@@ -12,11 +12,12 @@ const Counter = ({ count }) => {
 const Users = ({ users, isMaster }) => {
   return (
     <ul className={styles.users}>
+      <p>게임이 시작되길 마냥 기다리는 중👀</p>
       {users.map((user, index) => (
         <li key={user.socketId}>
           <img src={user.image} className={styles.userIcon}/>
           {user.username}
-          {index === 0 ? '(방장)' : ''}
+          {index === 0 ? ' (방장)' : ''}
         </li>
       ))}
     </ul>
@@ -26,10 +27,8 @@ const Users = ({ users, isMaster }) => {
 const StartButton = ({ isMaster, onStart }) => {
   return (
     isMaster
-      ?
-      <button className={styles.startButton} onClick={onStart}>시작</button>
-      :
-      <button className={styles.startButton}>대기</button>
+      ? <button className={styles.startButton} onClick={onStart}>시작</button>
+      : <button className={styles.startButton}>대기</button>
   );
 };
 

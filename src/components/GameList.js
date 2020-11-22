@@ -7,7 +7,11 @@ import { setRoute } from '../reducer/route';
 
 const Address = ({ address }) => {
   return (
-    <h4>{address}에서 방탈출🧨</h4>
+    <div className={styles.addressContainer}>
+      <p>바로 지금 여기</p>
+      <h4>{address}</h4>
+      <p>에서 방탈출할 사람✋</p>
+    </div>
   );
 };
 
@@ -36,42 +40,44 @@ const GameList = ({
 
   return (
     <div className={styles.container}>
-      <div className={styles.gradient}/>
       <Address address={address}/>
       <Button
         className='toggleButton'
         text={isSelected ? 'All' : 'Waiting'}
         onClick={handleFilter}
       />
-      {
-        !gameList.length
-          ? <div className={styles.message}>
-              <span>방 없음🤐</span>
-            </div>
-          : (
-              isSelected
-                ? gameList
-                : gameList = gameList.reduce((acc, cur) => {
-                    if (!playingGameData[cur._id]) acc.push(cur);
-                    return acc;
-                  }, [])
-            ).map((game, index) => {
-              const lastGame = index === gameList.length - 1;
-              const users = playingGameData[game._id];
+      <div className={styles.gameContainer}>
+        {
+          !gameList.length
+            ? <div className={styles.message}>
+                <span>방 없음🤐</span>
+              </div>
+            :
+              (
+                isSelected
+                  ? gameList
+                  : gameList = gameList.reduce((acc, cur) => {
+                      if (!playingGameData[cur._id]) acc.push(cur);
+                      return acc;
+                    }, [])
+              ).map((game, index) => {
+                const lastGame = index === gameList.length - 1;
+                const users = playingGameData[game._id];
 
-              return (
-                <GameRoom
-                  key={game._id}
-                  id={game._id}
-                  isPlaying={!!users}
-                  name={game.name || game.gameInfo.name}
-                  setTarget={lastGame ? setTarget : null}
-                  userCount={users?.length || 0}
-                  joinWaitingRoom={joinWaitingRoom}
-                />
-              );
-            })
-      }
+                return (
+                  <GameRoom
+                    key={game._id}
+                    id={game._id}
+                    isPlaying={!!users}
+                    name={game.name || game.gameInfo.name}
+                    setTarget={lastGame ? setTarget : null}
+                    userCount={users?.length || 0}
+                    joinWaitingRoom={joinWaitingRoom}
+                  />
+                );
+              })
+            }
+      </div>
       <Button
         className='fixedButton'
         text='방 만들기'

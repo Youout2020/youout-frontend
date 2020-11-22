@@ -6,7 +6,7 @@
     padding: 0;
     width: 100vw;
     height: 100vh;
-    font-family: 'Gugi', cursive;
+    font-family: 'Gugi';
   }
 
   html {
@@ -24,6 +24,10 @@
 
   * {
     box-sizing: border-box;
+  }
+
+  button {
+    font-family: 'Gugi';
   }
 
   ul {

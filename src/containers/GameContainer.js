@@ -154,20 +154,21 @@ const GameContainer = () => {
         {
           isHintShowing &&
           <Popup
+            className='hintPopup'
             content={
               gamePhase === 'quiz'
                 ? quizList[gameIndex]?.hint
                 : '아직 기다려요!'
             }
           >
-            <Button text='확인' onClick={handleHintToggle} />
+            <Button className='popupButton' text='확인' onClick={handleHintToggle} />
           </Popup>
         }
         {
           isExitShowing &&
-          <Popup content='정말 종료할건가요?🧨'>
-            <Button text='확인' onClick={handleExitClick} />
-            <Button text='취소' onClick={handleCancelToggle} />
+          <Popup className='exitPopup' content='정말 종료할건가요?🧨'>
+            <Button className='popupButton' text='확인' onClick={handleExitClick} />
+            <Button className='popupButton' text='취소' onClick={handleCancelToggle} />
           </Popup>
         }
       </GameHeader>

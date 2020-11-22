@@ -17,7 +17,6 @@ const CardWrapper = ({
 }) => {
   const { keyword, quiz } = currentQuiz;
 
-  //FIXME: minor한 effect라 위로 올려야 할지 고민
   useEffect(() => {
     const timerId = setTimeout(() => {
       onSetCardShowing(false);
@@ -35,7 +34,7 @@ const CardWrapper = ({
                 gamePhase={gamePhase}
                 title={keyword}
               />
-            : <Popup content={keyword}>
+            : <Popup className='keywordPopup' content={keyword}>
                 <span>{resultMessage}</span>
                 <div className={styles.keywordContainer}>
                   {
@@ -49,13 +48,13 @@ const CardWrapper = ({
           : <Card
               gamePhase={gamePhase}
               title={quiz}
-              buttonText='제출'
+              buttonText='도전'
               onClick={onSubmitAnswer}
             >
               <span>{resultMessage}</span>
               <input
                 type='text'
-                placeholder='정답을 입력하세요!'
+                placeholder='요기에 정답✍️'
                 value={userAnswer}
                 onChange={onAnswerChange}
               />

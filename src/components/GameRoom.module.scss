@@ -2,29 +2,39 @@
 
 .container {
   display: flex;
-  height: 10vh;
-  border-top: 1px solid #cdc9c3;
+  justify-content: space-between;
+  align-items: center;
+  height: 12vh;
+  margin: 1vh 5vw;
+  padding: 5vw;
+  border-bottom: 5px solid $main-color;
+  background-color: $white;
+  color: $brown;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
 
   .playingBullet {
-    padding: 0 10px;
+    margin-right: 5vw;
+    padding: 0.5vh 2vw;
+    border-radius: 50px;
+    background-color: $dark-carrot;
+    color: $white;
+    font-size: $font-size-1;
+    text-transform: uppercase;
   }
 
   .waitingBullet {
-    padding: 0 10px;
+    margin-right: 5vw;
+    padding: 0.5vh 2vw;
+    border-radius: 50px;
+    background-color: $main-color;
+    color: $white;
+    font-size: $font-size-1;
+    text-transform: uppercase;
   }
 
   .gameInfo {
     display: flex;
     justify-content: space-between;
     width: 100%;
-
-    .name {
-      font-size: 1em;
-      font-weight: 400;
-      width: 240px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
   }
 }
