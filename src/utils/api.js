@@ -7,18 +7,20 @@ const logger = (errorMessage) => {
 const api = {};
 
 api.get = async({ path, options = {} }) => {
+  const token = localStorage.getItem('token');
+
   try {
     const headers = {
       'content-type': 'application/json',
+      token,
     };
 
     Object.keys(options).forEach((key) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`https://api.youout.site/${path}`, {
+    const { data, errMessage, status } = await fetch(`https://api.youout.site${path}`, {
       method: 'GET',
-      credentials: 'include',
       headers,
     }).then((result) => result.json());
 
@@ -32,16 +34,19 @@ api.get = async({ path, options = {} }) => {
 };
 
 api.post = async ({ path, body, options = {} }) => {
+  const token = localStorage.getItem('token');
+
   try {
     const headers = {
       'content-type': 'application/json',
+      token,
     };
 
     Object.keys(options).forEach((key) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`https://api.youout.site/${path}`, {
+    const { data, errMessage, status } = await fetch(`https://api.youout.site${path}`, {
       method: 'POST',
       headers,
       body: JSON.stringify(body),
@@ -57,18 +62,20 @@ api.post = async ({ path, body, options = {} }) => {
 };
 
 api.put = async ({ path, body, options = {} }) => {
+  const token = localStorage.getItem('token');
+
   try {
     const headers = {
       'content-type': 'application/json',
+      token,
     };
 
     Object.keys(options).forEach((key) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`https://api.youout.site/${path}`, {
+    const { data, errMessage, status } = await fetch(`https://api.youout.site${path}`, {
       method: 'PUT',
-      credentials: 'include',
       headers,
       body: JSON.stringify(body),
     }).then((result) => result.json());
@@ -83,18 +90,20 @@ api.put = async ({ path, body, options = {} }) => {
 };
 
 api.delete = async ({ path, body, options = {} }) => {
+  const token = localStorage.getItem('token');
+
   try {
     const headers = {
       'content-type': 'application/json',
+      token,
     };
 
     Object.keys(options).forEach((key) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const response = await fetch(`https://api.youout.site/${path}`, {
+    const response = await fetch(`https://api.youout.site${path}`, {
       method: 'DELETE',
-      credentials: 'include',
       headers,
       body: JSON.stringify(body),
     });
