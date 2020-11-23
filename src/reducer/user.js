@@ -21,7 +21,7 @@ export const loadUser = createAsyncThunk(
     } else {
       const { user } = await firebase.listenRedirect();
 
-      if (!user) return dispatch(setRoute('/login'));
+      if (!user) return dispatch(setRoute('/'));
 
       const { email, displayName, photoURL } = user;
       const body = { email, name: displayName, image: photoURL };

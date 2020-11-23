@@ -41,7 +41,7 @@ const AppContainer = () => {
       {isLoading
         ? <Loading />
         : <Switch>
-            <Route exact path={'/login'}>
+            <Route exact path={'/'}>
               <Login onLogin={handleLogin} />
             </Route>
             <Route exact path={'/games'}>
