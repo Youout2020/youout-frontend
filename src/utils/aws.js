@@ -1,3 +1,5 @@
+import { translate } from './kakao';
+
 const AWS = require('aws-sdk');
 
 const config = new AWS.Config({
@@ -73,11 +75,12 @@ const mockResponse = {
   LabelModelVersion: '2.0'
 };
 
-const compareLabels = ({ keyword, response }) => {
+const compareLabels = async ({ keyword, response }) => {
   if (typeof keyword !== 'string') throw Error(`${keyword} should be string`);
+  const translatedKeyword = await translate(keyword);
   console.log(keyword, response); // 나중에 지우기
   return response.Labels.some((label) => (
-    label.Name.toLowerCase() === keyword.toLowerCase()
+    label.Name.toLowerCase() === translatedKeyword.toLowerCase()
   ));
 };
 
@@ -95,7 +98,6 @@ const detectLabels = (datauri) => {
 
     // client.detectLabels(params, function (err, response) {
     //   if (err) return reject(err);
-    //   console.log(response);
     //   resolve(response);
     // });
   });
