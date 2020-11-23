@@ -43,7 +43,6 @@ api.post = async ({ path, body, options = {} }) => {
 
     const { data, errMessage, status } = await fetch(`https://api.youout.site/${path}`, {
       method: 'POST',
-      credentials: 'include',
       headers,
       body: JSON.stringify(body),
     }).then((result) => result.json());
