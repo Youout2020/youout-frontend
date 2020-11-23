@@ -8,7 +8,11 @@ const Login = ({ onLogin }) => {
   return (
     <div className={styles.container}>
       <Splash>
-        <Button text='Login with Google' onClick={onLogin} />
+        <Button
+          className='loginButton'
+          text='Login with Google'
+          onClick={onLogin}
+        />
       </Splash>
     </div>
   );

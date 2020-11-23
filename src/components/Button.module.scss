@@ -4,6 +4,14 @@
   @include buttonBase();
 }
 
+.loginButton {
+  @include buttonBase();
+  width: 60vw;
+  padding: 1vh 5vw;
+  text-transform: uppercase;
+  box-shadow: $box-shadow-1;
+}
+
 .toggleButton {
   @include buttonBase();
   margin: 0 5vw 2vw 75vw;
