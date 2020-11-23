@@ -16,7 +16,7 @@ api.get = async({ path, options = {} }) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`${path} `, {
+    const { data, errMessage, status } = await fetch(`https://api.youout.site${path}`, {
       method: 'GET',
       credentials: 'include',
       headers,
@@ -41,7 +41,7 @@ api.post = async ({ path, body, options = {} }) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`${path}`, {
+    const { data, errMessage, status } = await fetch(`https://api.youout.site${path}`, {
       method: 'POST',
       credentials: 'include',
       headers,
@@ -67,7 +67,7 @@ api.put = async ({ path, body, options = {} }) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`${path}`, {
+    const { data, errMessage, status } = await fetch(`https://api.youout.site${path}`, {
       method: 'PUT',
       credentials: 'include',
       headers,
@@ -93,7 +93,7 @@ api.delete = async ({ path, body, options = {} }) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const response = await fetch(`${path}`, {
+    const response = await fetch(`https://api.youout.site${path}`, {
       method: 'DELETE',
       credentials: 'include',
       headers,
