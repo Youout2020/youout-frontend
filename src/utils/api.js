@@ -39,7 +39,7 @@ api.post = async ({ path, body, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
-      token,
+      Authorization: token,
     };
 
     Object.keys(options).forEach((key) => {
@@ -67,7 +67,7 @@ api.put = async ({ path, body, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
-      token,
+      Authorization: token,
     };
 
     Object.keys(options).forEach((key) => {
@@ -95,7 +95,7 @@ api.delete = async ({ path, body, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
-      token,
+      Authorization: token,
     };
 
     Object.keys(options).forEach((key) => {
