@@ -12,7 +12,7 @@ api.get = async({ path, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
-      token,
+      Authorization: token,
     };
 
     Object.keys(options).forEach((key) => {
