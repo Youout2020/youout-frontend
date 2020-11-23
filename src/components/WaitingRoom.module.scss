@@ -9,20 +9,6 @@
   background-color: $main-color;
   box-shadow: $box-shadow-1;
 
-  @keyframes pulse {
-    0% {
-      opacity: 100%;
-    }
-
-    50% {
-      opacity: 0%;
-    }
-
-    100% {
-      opacity: 100%;
-    }
-  }
-
   .counter {
     position: fixed;
     top: 40%;
@@ -31,7 +17,6 @@
     font-size: $font-size-7;
     text-shadow: 2px 2px 2px gray;
     animation: pulse 1s infinite;
-    -webkit-animation: pulse 1s infinite;
   }
 
   .users {
