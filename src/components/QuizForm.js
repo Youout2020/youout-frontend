@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Input from './Input';
 import Button from './Button';
-import { validateLength, validateType } from '../utils/validation';
+import { validateLength, validateSpace } from '../utils/validation';
 import styles from './NewGameForm.module.scss';
 
 const QuizForm = ({
@@ -28,7 +28,7 @@ const QuizForm = ({
       case 'keyword':
         setValidationMessage({
           ...validationMessage,
-          keyword: validateLength(3, 20, 'Keyword', value) || validateType(value),
+          keyword: validateLength(1, 20, 'Keyword', value) || validateSpace(value),
         });
         break;
       case 'quiz':
@@ -40,7 +40,7 @@ const QuizForm = ({
       case 'answer':
         setValidationMessage({
           ...validationMessage,
-          answer: validateLength(3, 50, 'Answer', value),
+          answer: validateLength(1, 50, 'Answer', value),
         });
         break;
       case 'hint':
