@@ -12,10 +12,10 @@ const Error = ({ message }) => {
   };
 
   return (
-    <>
+    <div>
       <div>{message}</div>
       <button onClick={handleRenderHome}>Go Home</button>
-    </>
+    </div>
   );
 };
 

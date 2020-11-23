@@ -1,13 +1,21 @@
+@import './theme.module.scss';
+
 :global {
   #root {
     margin: 0;
     padding: 0;
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
+    font-family: 'Gugi';
+  }
+
+  button {
+    font-family: 'Gugi', sans-serif;
   }
 
   html {
     overflow-x: hidden;
+    height: -webkit-fill-available;
   }
 
   body {
@@ -16,8 +24,9 @@
     padding: 0;
     width: 100vw;
     height: 100vh;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
     overflow-x: hidden;
-    font-family: 'Dokdo', cursive;
   }
 
   * {
@@ -35,5 +44,9 @@
 
   p {
     margin: 0;
+  }
+
+  input {
+    font-family: 'Gugi', sans-serif;
   }
 }

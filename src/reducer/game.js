@@ -15,6 +15,7 @@ export const TOGGLE_IS_SELECTED = 'gameReducer/TOGGLE_IS_SELECTED';
 export const LOAD_PLAYING_GAMES = 'gameReducer/LOAD_PLAYING_GAMES';
 export const SET_PLAYING_GAMES = 'gameReducer/SET_PLAYING_GAMES';
 export const JOIN_GAME = 'gameReducer/JOIN_GAME';
+export const DELETE_GAME = 'gameReducer/DELETE_GAME';
 
 export const setDocs = createAction(SET_DOCS);
 export const setNextPage = createAction(SET_NEXT_PAGE);
@@ -37,7 +38,7 @@ export const createNewGame = createAsyncThunk(
   async (body, extra) => {
     await api.post({ path: '/games', body });
     window.location.reload();
-  }
+  },
 );
 
 export const loadGames = createAsyncThunk(
@@ -51,7 +52,7 @@ export const loadGames = createAsyncThunk(
     dispatch(setDocs([...docs, ...newDocs]));
     dispatch(setNextPage(nextPage));
     dispatch(setHasNextPage(hasNextPage));
-  }
+  },
 );
 
 export const loadMoreGames = createAsyncThunk(
@@ -77,20 +78,30 @@ export const updateGame = createAsyncThunk(
   },
 );
 
+export const deleteGame = createAsyncThunk(
+  DELETE_GAME,
+  async ({ body, gameId }, extra) => {
+    const path = `/games/${gameId}/delete`;
+    await api.delete({ path });
+    window.location.reload();
+  },
+);
+
 export const joinGame = createAsyncThunk(
   JOIN_GAME,
   async (id, { dispatch }) => {
     socket.on('GET_PLAYING_GAMES', (games) => {
       const filtered = games.filter((game) => game._id === id)[0];
 
-      if (filtered) {
-        filtered.users.length >= 4
-          ? alert('max people')
-          : dispatch(setRoute(`/games/${id}`));
+      if (filtered && filtered.users.length >= 4) {
+        alert('max people');
       } else {
         dispatch(setRoute(`/games/${id}`));
       }
+
+      socket.off('GET_PLAYING_GAMES');
     });
+
     socket.emit('GET_PLAYING_GAMES');
   },
 );

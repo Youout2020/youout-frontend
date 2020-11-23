@@ -1,25 +1,16 @@
 @import '../styles/theme.module.scss';
 
 .container {
+  position: relative;
   display: flex;
   flex-direction: column;
-  margin: 5vw;
-  margin-bottom: 20vw;
+  background-color: $main-color;
 
-  .gradient {
-    position: fixed;
-    width: 100vw;
-    height: 100%;
-    background: linear-gradient(
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0.63),
-      rgb(255, 255, 255),
-    );
-    z-index: 0;
-    pointer-events: none;
+  .gameContainer {
+    padding-top: 3vh;
+    padding-bottom: 10vh;
+    border-radius: 20px 20px 0 0;
+    background-color: $light-beige;
   }
 
   .message {
@@ -32,10 +23,23 @@
     span {
       font-size: $font-size-2;
     }
+  }
+}
 
-    Button {
-      z-index: 1;
-      margin-top: 10vh;
-    }
+.addressContainer {
+  margin: 5vh 5vw 3vh 5vw;
+  font-size: $font-size-3;
+
+  h4 {
+    margin: 1vh 0;
+    width: 90%;
+    border-radius: 20px;
+    background-color: $yellow;
+    color: $brown;
+    text-align: center;
+  }
+
+  p {
+    color: $light-yellow;
   }
 }

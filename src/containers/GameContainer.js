@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-import { updateCurrentGame } from '../reducer/currentGame';
 import Camera from '../components/Camera';
 import GameHeader from '../components/GameHeader';
-import { convertMsToMinutes } from '../utils/index';
+import { convertMsToMinutes, convertTimeToMs } from '../utils/index';
 import CardWrapper from '../components/CardWrapper';
 import awsRekognition from '../utils/aws';
-import { updateData, listenUpdateData } from '../utils/socket';
+import { updateData, listenUpdateData, gameComplete } from '../utils/socket';
 import { Popup } from '../components/Card';
 import Button from '../components/Button';
-import { disconnectGame } from '../reducer/currentGame';
 import { setRoute } from '../reducer/route';
+import { disconnectGame } from '../reducer/currentGame';
 
 const GameContainer = () => {
   const dispatch = useDispatch();
@@ -20,12 +19,11 @@ const GameContainer = () => {
   const { gameInfo: { quizList, timeLimit }, users } = gameInfo;
   const { id: userId } = useSelector((state) => state.user.info);
   const { game_id } = useParams();
-  const history = useHistory();
 
   const [ minutes, setMinutes ] = useState(0);
-  const [ seconds, setSeconds ] = useState(59);
+  const [ seconds, setSeconds ] = useState(10);
 
-  const [ gameIndex, setGameIndex ] = useState(-1);
+  const [ gameIndex, setGameIndex ] = useState(0);
   const [ gamePhase, setGamePhase ] = useState('keyword');
   const [ userAnswer, setUserAnswer ] = useState('');
   const [ resultMessage, setResultMessage ] = useState('');
@@ -33,16 +31,12 @@ const GameContainer = () => {
   const [ isCardShowing, setIsCardShowing ] = useState(true);
   const [ isHintShowing, setIsHintShowing ] = useState(false);
   const [ isExitShowing, setIsExitShowing ] = useState(false);
+  const [ recognizedKeywordList, setRecognizedKeywordList ] = useState([]);
 
   useEffect(() => {
-    listenUpdateData((data) => {
-      dispatch(updateCurrentGame(data.game));
-    });
-
     setGameIndex(0);
-    setMinutes(convertMsToMinutes(timeLimit));
-
-    // return () => dispatch(disconnectGame({ gameId: game_id }));
+    setMinutes(5);
+    // setMinutes(convertMsToMinutes(timeLimit));
   }, []);
 
   useEffect(() => {
@@ -51,21 +45,6 @@ const GameContainer = () => {
       setUserAlertList([ ...userAlertList, target ]);
     });
   }, [userAlertList]);
-
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      if (seconds > 0) setSeconds((prev) => prev - 1);
-      if (seconds === 0) {
-        minutes === 0
-          ? //TODO: 게임 종료 알림 (socket emit)
-            clearTimeout(timerId)
-          : setMinutes((prev) => prev - 1);
-            setSeconds(59);
-      }
-    }, 1000);
-
-    return () => clearTimeout(timerId);
-  }, [seconds]);
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -77,11 +56,36 @@ const GameContainer = () => {
     return () => clearInterval(timerId);
   }, [userAlertList]);
 
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      if (seconds > 0) setSeconds((prev) => prev - 1);
+      if (seconds === 0) {
+        switch (minutes) {
+          case 0 :
+            dispatch(disconnectGame({ gameId: game_id }));
+            dispatch(setRoute('/games'));
+            clearTimeout(timerId);
+            break;
+          case 1:
+            //TODO: 종료 1분 전 알림 (CSS 시 적용 예정)
+            setMinutes((prev) => prev - 1);
+            setSeconds(59);
+            break;
+          default:
+            setMinutes((prev) => prev - 1);
+            setSeconds(59);
+        }
+      }
+    }, 1000);
+
+    return () => clearTimeout(timerId);
+  }, [seconds]);
+
   const matchPhotoToKeyword = async (dataUri) => {
     if (gamePhase === 'quiz') return;
 
     const response = await awsRekognition.detectLabels(dataUri);
-    const result = awsRekognition.compareLabels({
+    const result = await awsRekognition.compareLabels({
       keyword: 'Accessories',
       // keyword: quizList[gameIndex].keyword,
       response,
@@ -91,13 +95,16 @@ const GameContainer = () => {
       setGamePhase('quiz');
       setIsCardShowing(true);
       setResultMessage('');
+      setRecognizedKeywordList([]);
       return;
     }
+
     setResultMessage('땡!');
+    setRecognizedKeywordList(response.Labels.slice(0, 3).map((item) => item.Name));
   };
 
   const handleSubmitAnswer = () => {
-    const isCorrectAnswer = userAnswer === quizList[gameIndex].answer;
+    const isCorrectAnswer = userAnswer.trim() === quizList[gameIndex].answer;
 
     if (!isCorrectAnswer) {
       setResultMessage('땡! 다시!🙅‍♀️');
@@ -111,7 +118,17 @@ const GameContainer = () => {
 
     setTimeout(() => {
       setGameIndex((prev) => prev + 1);
+      if (gameIndex === quizList.length - 1) {
+        gameComplete({
+          gameId: game_id,
+          userId,
+          clearTime: convertTimeToMs(minutes, seconds),
+        });
+        dispatch(setRoute(`/games/${game_id}/result`));
+        return;
+      }
       setGamePhase('keyword');
+      setIsCardShowing(true);
       setResultMessage('');
       setUserAnswer('');
     }, 2000);
@@ -137,20 +154,21 @@ const GameContainer = () => {
         {
           isHintShowing &&
           <Popup
+            className='hintPopup'
             content={
               gamePhase === 'quiz'
                 ? quizList[gameIndex]?.hint
                 : '아직 기다려요!'
             }
           >
-            <Button text='확인' onClick={handleHintToggle} />
+            <Button className='popupButton' text='확인' onClick={handleHintToggle} />
           </Popup>
         }
         {
           isExitShowing &&
-          <Popup content='정말 종료할건가요?🧨'>
-            <Button text='확인' onClick={handleExitClick} />
-            <Button text='취소' onClick={handleCancelToggle} />
+          <Popup className='exitPopup' content='정말 종료할건가요?🧨'>
+            <Button className='popupButton' text='확인' onClick={handleExitClick} />
+            <Button className='popupButton' text='취소' onClick={handleCancelToggle} />
           </Popup>
         }
       </GameHeader>
@@ -166,9 +184,11 @@ const GameContainer = () => {
           resultMessage={resultMessage}
           userAlertList={userAlertList}
           isCardShowing={isCardShowing}
+          onSetCardShowing={setIsCardShowing}
           onFindKeyword={handleFindKeyword}
           onSubmitAnswer={handleSubmitAnswer}
           onAnswerChange={handleAnswerChange}
+          recognizedKeywordList={recognizedKeywordList}
         />
       }
     </>

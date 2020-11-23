@@ -4,7 +4,9 @@ const logger = (errorMessage) => {
   }
 };
 
-const get = async({ path, options = {} }) => {
+const api = {};
+
+api.get = async({ path, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
@@ -29,7 +31,7 @@ const get = async({ path, options = {} }) => {
   }
 };
 
-const post = async ({ path, body, options = {} }) => {
+api.post = async ({ path, body, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
@@ -55,7 +57,7 @@ const post = async ({ path, body, options = {} }) => {
   }
 };
 
-const put = async ({ path, body, options = {} }) => {
+api.put = async ({ path, body, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
@@ -81,7 +83,7 @@ const put = async ({ path, body, options = {} }) => {
   }
 };
 
-const remove = async ({ path, body, options = {} }) => {
+api.delete = async ({ path, body, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
@@ -91,25 +93,19 @@ const remove = async ({ path, body, options = {} }) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`${path}`, {
+    const response = await fetch(`${path}`, {
       method: 'DELETE',
       credentials: 'include',
       headers,
       body: JSON.stringify(body),
-    }).then((result) => result.json());
+    });
 
-    if (status >= 400) throw Error(errMessage);
-
-    return data;
+    return response;
   } catch (err) {
     logger('🔥 Error fired: business -> api -> remove');
+    console.error(err);
     throw (err);
   }
 };
 
-export default {
-  get,
-  post,
-  put,
-  remove,
-};
+export default api;

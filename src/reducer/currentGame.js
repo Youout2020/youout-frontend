@@ -1,5 +1,6 @@
 import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 import { socket } from '../utils/socket';
+import { setRoute } from './route';
 
 const SOCKET = {
   userJoin: 'USER_JOIN',
@@ -51,8 +52,8 @@ export const startGame = createAsyncThunk(
 
 export const initGameSetting = createAsyncThunk(
   INIT_GAME_SETTING,
-  async ({ gameId, userId, username, image }, { dispatch }) => {
-    socket.emit(SOCKET.userJoin, { gameId, userId, username, image });
+  async ({ gameId, userId, username, image, color }, { dispatch }) => {
+    socket.emit(SOCKET.userJoin, { gameId, userId, username, image, color });
     socket.on(SOCKET.userJoin, ({ users }) => {
       dispatch(setUsers(users));
     });
@@ -74,26 +75,25 @@ export const countdown = createAsyncThunk(
         dispatch(countdown(countNumber - 1));
       }, 1000);
     } else {
-      dispatch(setIsPlayingTrue());
+      const { gameId } = getState().currentGame;
+      dispatch(setRoute(`/games/${gameId}/playing`));
     }
   },
 );
 
 export const disconnectGame = createAsyncThunk(
   DISCONNECT_GAME,
-  async ({ gameId }, { dispatch, getState }) => {
+  async ({ gameId }, { dispatch }) => {
     socket.off(SOCKET.userJoin);
     socket.off(SOCKET.gameStart);
     socket.off(SOCKET.gameUpdate);
     socket.off(SOCKET.userLeave);
-
     socket.emit(SOCKET.userLeave, { gameId });
 
-    dispatch(setGameInfo(initGameInfo));
-    dispatch(setIsPlayingFalse());
+    dispatch(setGameInfo({ gameInfo: initGameInfo, users: [], _id: '' }));
+    dispatch(setRoute('/games'));
     dispatch(setCount(-1));
-    dispatch(setUsers([]));
-  }
+  },
 );
 
 const initState = {
@@ -105,15 +105,17 @@ const initState = {
 };
 
 export default createReducer(initState, {
-  [UPDATE_CURRENT_GAME]: (state, action) => action.payload,
+  [UPDATE_CURRENT_GAME]: (state, action) => {
+    state.users = action.payload.users;
+  },
   [SET_USERS]: (state, { payload }) => { state.users = payload; },
   [SET_GAME_INFO]: (state, { payload }) => {
     state.gameInfo = payload.gameInfo;
     state.users = payload.users;
-    state.gameId = payload.gameInfo._id;
+    state.gameId = payload._id;
   },
   [SET_COUNT]: (state, { payload }) => { state.count = payload; },
   [SET_GAME_ID]: (state, { payload }) => { state.gameId = payload; },
-  [SET_IS_PLAYING_TRUE]: (state, payload) => { state.isPlaying = true; },
-  [SET_IS_PLAYING_FALSE]: (state, payload) => { state.isPlaying = false; },
+  [SET_IS_PLAYING_TRUE]: (state, action) => { state.isPlaying = true; },
+  [SET_IS_PLAYING_FALSE]: (state, action) => { state.isPlaying = false; },
 });

@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './ToastMessage.module.scss';
 
-const ToastMessage = ({ username, gameIndex }) => {
+const ToastMessage = ({ username, gameIndex, color }) => {
   return (
-    <div className={styles.container}>
-      {username}님이 {gameIndex + 1}번을 풀었습니다!
+    <div className={styles.container} style={{ backgroundColor: color }}>
+      {username}님, {gameIndex + 1}번 문제 클리어!😈
     </div>
   );
 };
