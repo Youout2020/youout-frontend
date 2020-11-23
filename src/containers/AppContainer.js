@@ -26,7 +26,7 @@ const AppContainer = () => {
   useEffect(() => {
     if (isInitialized) return;
 
-    findCookie('token')
+    localStorage.getItem('token')
       ? dispatch(loadUser({ hasToken: true }))
       : dispatch(loadUser({ hasToken: false }));
   }, []);

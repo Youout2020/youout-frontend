@@ -4,6 +4,7 @@ const logger = (errorMessage) => {
   }
 };
 
+const { REACT_APP_SERVER_URI } = process.env;
 const api = {};
 
 api.get = async({ path, options = {} }) => {
@@ -12,14 +13,14 @@ api.get = async({ path, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
-      Authorization: token,
+      authorization: token,
     };
 
     Object.keys(options).forEach((key) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`https://api.youout.site${path}`, {
+    const { data, errMessage, status } = await fetch(`${REACT_APP_SERVER_URI}${path}`, {
       method: 'GET',
       headers,
     }).then((result) => result.json());
@@ -39,14 +40,14 @@ api.post = async ({ path, body, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
-      Authorization: token,
+      authorization: token,
     };
 
     Object.keys(options).forEach((key) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`https://api.youout.site${path}`, {
+    const { data, errMessage, status } = await fetch(`${REACT_APP_SERVER_URI}${path}`, {
       method: 'POST',
       headers,
       body: JSON.stringify(body),
@@ -67,14 +68,14 @@ api.put = async ({ path, body, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
-      Authorization: token,
+      authorization: token,
     };
 
     Object.keys(options).forEach((key) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`https://api.youout.site${path}`, {
+    const { data, errMessage, status } = await fetch(`${REACT_APP_SERVER_URI}${path}`, {
       method: 'PUT',
       headers,
       body: JSON.stringify(body),
@@ -95,14 +96,14 @@ api.delete = async ({ path, body, options = {} }) => {
   try {
     const headers = {
       'content-type': 'application/json',
-      Authorization: token,
+      authorization: token,
     };
 
     Object.keys(options).forEach((key) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const response = await fetch(`https://api.youout.site${path}`, {
+    const response = await fetch(`${REACT_APP_SERVER_URI}${path}`, {
       method: 'DELETE',
       headers,
       body: JSON.stringify(body),
