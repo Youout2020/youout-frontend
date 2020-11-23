@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-export const socket = io('https://api.youout.site', { secure: true });
+export const socket = io('https://api.youout.site');
 
 const SOCKET = {
   userJoin: 'USER_JOIN',
