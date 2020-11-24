@@ -30,12 +30,15 @@ const GameList = ({
   useEffect(() => {
     const temp = {};
     playingGameList.forEach((game) => {
-      temp[game._id] = game.users;
+      temp[game._id] = {
+        users: game.users,
+        isPlaying: game.isPlaying,
+      };
     });
 
     setPlayingGameData(temp);
   }, [playingGameList]);
-
+  console.log(gameList);
   return (
     <div className={styles.container}>
       <Address address={address}/>
@@ -54,21 +57,21 @@ const GameList = ({
                 isSelected
                   ? gameList
                   : gameList = gameList.reduce((acc, cur) => {
-                      if (!playingGameData[cur._id]) acc.push(cur);
+                      if (!playingGameData[cur._id]?.isPlaying) acc.push(cur);
                       return acc;
                     }, [])
               ).map((game, index) => {
                 const lastGame = index === gameList.length - 1;
-                const users = playingGameData[game._id];
+                const data = playingGameData[game?._id];
 
                 return (
                   <GameRoom
                     key={game._id}
                     id={game._id}
-                    isPlaying={!!users}
+                    isPlaying={data ? data.isPlaying : false}
                     name={game.name || game.gameInfo.name}
                     setTarget={lastGame ? setTarget : null}
-                    userCount={users?.length || 0}
+                    userCount={data ? data.users.length : 0}
                     joinWaitingRoom={joinWaitingRoom}
                   />
                 );

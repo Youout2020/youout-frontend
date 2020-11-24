@@ -12,7 +12,7 @@
   color: $brown;
   box-shadow: $box-shadow-2;
 
-  .playingBullet {
+  .bulletPlaying {
     margin-right: 5vw;
     padding: 0.5vh 2vw;
     border-radius: 50px;
@@ -22,7 +22,11 @@
     text-transform: uppercase;
   }
 
-  .waitingBullet {
+  .lineThrough {
+    text-decoration: line-through 2px;
+  }
+
+  .bulletWaiting {
     margin-right: 5vw;
     padding: 0.5vh 2vw;
     border-radius: 50px;
@@ -37,4 +41,9 @@
     justify-content: space-between;
     width: 100%;
   }
+}
+
+.playingRoom {
+  background-color: $light-brown;
+  color: $white;
 }
