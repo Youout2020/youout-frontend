@@ -18,7 +18,7 @@ const ResultPage = ({ users, gameInfo, renderHome }) => {
             const minutes = convertMsToMinutes(user.clearTime);
             const seconds = convertMsToSeconds(user.clearTime);
             const formated = convertTimeFormat(minutes, seconds);
-              console.log(user);
+
             return (
               <li key={user._id}>
                 <img src={user.image} className={style.userIcon} />
