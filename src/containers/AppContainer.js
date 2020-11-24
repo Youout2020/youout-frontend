@@ -39,6 +39,7 @@ const AppContainer = () => {
   useEffect(() => {
     if (!info) return;
     const listenNative = ({ data }) => {
+      log(data);
       if (!data.type) return;
 
       const { type, payload } = JSON.parse(data);
