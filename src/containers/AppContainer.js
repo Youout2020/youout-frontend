@@ -39,11 +39,12 @@ const AppContainer = () => {
   useEffect(() => {
     if (!info) return;
     const listenNative = ({ data }) => {
-      log(data);
-      if (!data.type) return;
-
+      log(data + '1');
+      if (typeof data !== 'string') return;
+      log(data + '2');
       const { type, payload } = JSON.parse(data);
-
+      log(data + '2');
+      log(type);
       switch (type) {
         case TYPE.onNative: {
           emit(TYPE.setUser, info);
