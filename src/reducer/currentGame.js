@@ -1,5 +1,6 @@
 import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
-import { socket } from '../utils/socket';
+import { socket, listenUpdateData } from '../utils/socket';
+import { TYPE, emit } from '../utils/native';
 import { setRoute } from './route';
 
 const SOCKET = {
@@ -76,7 +77,18 @@ export const countdown = createAsyncThunk(
       }, 1000);
     } else {
       const { gameId } = getState().currentGame;
-      dispatch(setRoute(`/games/${gameId}/playing`));
+      const { isNative } = getState().user;
+
+      if (isNative) {
+        const game = getState().currentGame;
+        emit(TYPE.setGame, game);
+        listenUpdateData((data) => {
+          emit(TYPE.updateGame, data);
+        });
+        dispatch(setRoute(`/games/${gameId}/result`));
+      } else {
+        dispatch(setRoute(`/games/${gameId}/playing`));
+      }
     }
   },
 );

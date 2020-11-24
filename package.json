@@ -32,9 +32,10 @@
     "start": "export HTTPS=true&&port=3000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "export NODE_ENV=development HTTPS=true&&port=3000 react-scripts start"
   },
-  "proxy": "NODE_ENV=development https://192.168.0.57:4000",
+  "proxy": "https://192.168.0.57:4000",
   "eslintConfig": {
     "extends": [
       "react-app",
