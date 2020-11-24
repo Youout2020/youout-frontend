@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Switch, Route, useHistory, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Login from '../components/Login';
@@ -56,6 +56,7 @@ const AppContainer = () => {
             <Route path={'/user'}>
               <UserContainer />
             </Route>
+            <Redirect to={'/games'} />
           </Switch>}
     </div>
   );
