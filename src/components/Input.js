@@ -13,7 +13,10 @@ const Input = ({
 }) => {
   return (
     <div className={styles.container}>
-      <label htmlFor={id}>{labelName}</label>
+      {
+        labelName &&
+        <label htmlFor={id}>{labelName}</label>
+      }
       {
         type === 'text' &&
         <input

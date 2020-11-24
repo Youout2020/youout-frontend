@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Switch, Route, useHistory, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Login from '../components/Login';
@@ -10,14 +10,13 @@ import WaitingContainer from './WaitingContainer';
 import GameListContainer from './GameListContainer';
 import { loadUser, setIsNative } from '../reducer/user';
 import { createNewGame } from '../reducer/game';
-import { findCookie } from '../utils';
+import { TYPE, emit, log } from '../utils/native';
+import { updateData, gameComplete } from '../utils/socket';
 import firebase from '../utils/firebase';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import { updateData, gameComplete } from '../utils/socket';
-import { TYPE, emit, log } from '../utils/native';
 
 const AppContainer = () => {
-  const { isLoading, isInitialized, info, error, isNative } = useSelector((state) => state.user);
+  const { isLoading, isInitialized, info, error } = useSelector((state) => state.user);
   const route = useSelector((state) => state.route);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -28,7 +27,7 @@ const AppContainer = () => {
   useEffect(() => {
     if (isInitialized) return;
 
-    findCookie('token')
+    localStorage.getItem('token')
       ? dispatch(loadUser({ hasToken: true }))
       : dispatch(loadUser({ hasToken: false }));
   }, []);
@@ -39,8 +38,9 @@ const AppContainer = () => {
 
   useEffect(() => {
     if (!info) return;
-
     const listenNative = ({ data }) => {
+      if (!data.type) return;
+
       const { type, payload } = JSON.parse(data);
 
       switch (type) {
@@ -71,22 +71,23 @@ const AppContainer = () => {
       {isLoading
         ? <Loading />
         : <Switch>
-          <Route path={'/login'}>
-            <Login onLogin={handleLogin} />
-          </Route>
-          <Route exact path={'/games'}>
-            <GameListContainer />
-          </Route>
-          <Route exact path={'/games/new'}>
-            <NewGameForm onCreateNewGame={handleCreateNewGame} />
-          </Route>
-          <Route path={'/games/:game_id'}>
-            <WaitingContainer />
-          </Route>
-          <Route path={'/user'}>
-            <UserContainer />
-          </Route>
-        </Switch>}
+            <Route exact path={'/'}>
+              <Login onLogin={handleLogin} />
+            </Route>
+            <Route exact path={'/games'}>
+              <GameListContainer />
+            </Route>
+            <Route exact path={'/games/new'}>
+              <NewGameForm onCreateNewGame={handleCreateNewGame} />
+            </Route>
+            <Route path={'/games/:game_id'}>
+              <WaitingContainer />
+            </Route>
+            <Route path={'/user'}>
+              <UserContainer />
+            </Route>
+            <Redirect to={'/games'} />
+          </Switch>}
     </div>
   );
 };

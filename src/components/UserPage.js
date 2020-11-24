@@ -57,7 +57,7 @@ const UserPage = ({
   });
 
   return (
-    <>
+    <div className={styles.container}>
       <ImageBox
         name={name}
         image={image}
@@ -75,7 +75,7 @@ const UserPage = ({
         loadMore={moreGames}
         showDetail={showDetailGame}
       />
-    </>
+    </div>
   );
 };
 

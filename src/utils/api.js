@@ -4,21 +4,24 @@ const logger = (errorMessage) => {
   }
 };
 
+const { REACT_APP_SERVER_URI } = process.env;
 const api = {};
 
 api.get = async({ path, options = {} }) => {
+  const token = localStorage.getItem('token');
+
   try {
     const headers = {
       'content-type': 'application/json',
+      authorization: token,
     };
 
     Object.keys(options).forEach((key) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`${path} `, {
+    const { data, errMessage, status } = await fetch(`${REACT_APP_SERVER_URI}${path}`, {
       method: 'GET',
-      credentials: 'include',
       headers,
     }).then((result) => result.json());
 
@@ -32,18 +35,20 @@ api.get = async({ path, options = {} }) => {
 };
 
 api.post = async ({ path, body, options = {} }) => {
+  const token = localStorage.getItem('token');
+
   try {
     const headers = {
       'content-type': 'application/json',
+      authorization: token,
     };
 
     Object.keys(options).forEach((key) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`${path}`, {
+    const { data, errMessage, status } = await fetch(`${REACT_APP_SERVER_URI}${path}`, {
       method: 'POST',
-      credentials: 'include',
       headers,
       body: JSON.stringify(body),
     }).then((result) => result.json());
@@ -58,18 +63,20 @@ api.post = async ({ path, body, options = {} }) => {
 };
 
 api.put = async ({ path, body, options = {} }) => {
+  const token = localStorage.getItem('token');
+
   try {
     const headers = {
       'content-type': 'application/json',
+      authorization: token,
     };
 
     Object.keys(options).forEach((key) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const { data, errMessage, status } = await fetch(`${path}`, {
+    const { data, errMessage, status } = await fetch(`${REACT_APP_SERVER_URI}${path}`, {
       method: 'PUT',
-      credentials: 'include',
       headers,
       body: JSON.stringify(body),
     }).then((result) => result.json());
@@ -84,18 +91,20 @@ api.put = async ({ path, body, options = {} }) => {
 };
 
 api.delete = async ({ path, body, options = {} }) => {
+  const token = localStorage.getItem('token');
+
   try {
     const headers = {
       'content-type': 'application/json',
+      authorization: token,
     };
 
     Object.keys(options).forEach((key) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const response = await fetch(`${path}`, {
+    const response = await fetch(`${REACT_APP_SERVER_URI}${path}`, {
       method: 'DELETE',
-      credentials: 'include',
       headers,
       body: JSON.stringify(body),
     });

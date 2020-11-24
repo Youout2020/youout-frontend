@@ -23,13 +23,13 @@ export const loadUser = createAsyncThunk(
     } else {
       const { user } = await firebase.listenRedirect();
 
-      if (!user) return dispatch(setRoute('/login'));
+      if (!user) return dispatch(setRoute('/'));
 
       const { email, displayName, photoURL } = user;
       const body = { email, name: displayName, image: photoURL };
-      const response = await api.post({ path: 'login', body });
+      const response = await api.post({ path: '/login', body });
 
-      document.cookie = `token=${response.token}; secure`;
+      localStorage.setItem('token', response.token);
       dispatch(initUser(response.user));
       dispatch(setRoute('/games'));
     }

@@ -4,7 +4,6 @@ import { Switch, Route } from 'react-router-dom';
 
 import Header from '../components/Header';
 import HistoryDetail from '../components/HistoryDetail';
-import Button from '../components/Button';
 import UserPage from '../components/UserPage';
 import HistoryPage from '../components/HistoryPage';
 import GamePage from '../components/GamePage';
@@ -14,7 +13,6 @@ import { loadUserPage } from '../reducer/user';
 import { updateGame, deleteGame } from '../reducer/game';
 import { setRoute } from '../reducer/route';
 import NewGameForm from '../components/NewGameForm';
-import DetailGameInfo from '../components/DetailGameInfo';
 import api from '../utils/api';
 
 const UserContainer = () => {
@@ -58,7 +56,7 @@ const UserContainer = () => {
   };
 
   useEffect(() => {
-    if (!info) return dispatch(setRoute('/login'));
+    if (!info) return dispatch(setRoute('/'));
     if (isInitializedUserPage) return;
 
     dispatch(loadUserPage());

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import styles from './Button.module.scss';
 
 const DEFAULT_BUTTON = 'defaultButton';
@@ -26,7 +25,7 @@ const Button = ({
 Button.propTypes = {
   className: PropTypes.string,
   onClick: PropTypes.func.isRequired,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.any.isRequired,
 };
 
 Button.defaultProps = {

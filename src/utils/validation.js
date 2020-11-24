@@ -1,25 +1,20 @@
 export const validateLength = (min, max, name, value) => {
   if (value.length < min) {
-    return `${name} should be at least ${min} characters`;
+    return `${name}은 최소 ${min}자 이상 입력하세요.`;
   }
 
   if (value.length > max) {
-    return `${name} should be under ${max} characters`;
+    return `${name}은 최대 ${max}자까지 입력 가능합니다.`;
   }
 
   return '';
 };
 
-export const validateType = (value) => {
+export const validateSpace = (value) => {
   const spaceRegType = /\s/;
-  const englishRegType = /^[A-Za-z0-9+]*$/;
 
   if (value.search(spaceRegType) !== -1) {
-    return 'Please enter without spaces';
-  }
-
-  if (!englishRegType.test(value)) {
-    return 'Only English can be entered';
+    return '공백을 제외하고 입력하세요.';
   }
 
   return '';

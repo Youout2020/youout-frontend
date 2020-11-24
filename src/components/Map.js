@@ -62,8 +62,9 @@ const Map = ({ setPage, gameInfo, setGameInfo }) => {
   return (
     <div className={styles.container}>
       <div id='map' className={styles.map} />
+      <span className={styles.addressDirection}>게임을 만들고 싶은 위치를 선택하세요.</span>
       <span className={styles.address}>{address}</span>
-      <Button text='선택' onClick={handleSelectButton} />
+      <Button className='basicButton' text='선택' onClick={handleSelectButton} />
     </div>
   );
 };

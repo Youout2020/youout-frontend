@@ -47,6 +47,16 @@ const GameContainer = () => {
   }, [userAlertList]);
 
   useEffect(() => {
+    const timerId = setInterval(() => {
+      setUserAlertList((prev) => {
+        return prev.filter((item, index) => index !== 0);
+      });
+    }, 3000);
+
+    return () => clearInterval(timerId);
+  }, [userAlertList]);
+
+  useEffect(() => {
     const timerId = setTimeout(() => {
       if (seconds > 0) setSeconds((prev) => prev - 1);
       if (seconds === 0) {
@@ -71,21 +81,11 @@ const GameContainer = () => {
     return () => clearTimeout(timerId);
   }, [seconds]);
 
-  useEffect(() => {
-    const timerId = setInterval(() => {
-      setUserAlertList((prev) => {
-        return prev.filter((item, index) => index !== 0);
-      });
-    }, 3000);
-
-    return () => clearInterval(timerId);
-  }, [userAlertList]);
-
   const matchPhotoToKeyword = async (dataUri) => {
     if (gamePhase === 'quiz') return;
 
     const response = await awsRekognition.detectLabels(dataUri);
-    const result = awsRekognition.compareLabels({
+    const result = await awsRekognition.compareLabels({
       keyword: 'Accessories',
       // keyword: quizList[gameIndex].keyword,
       response,
@@ -154,20 +154,21 @@ const GameContainer = () => {
         {
           isHintShowing &&
           <Popup
+            className='hintPopup'
             content={
               gamePhase === 'quiz'
                 ? quizList[gameIndex]?.hint
                 : '아직 기다려요!'
             }
           >
-            <Button text='확인' onClick={handleHintToggle} />
+            <Button className='popupButton' text='확인' onClick={handleHintToggle} />
           </Popup>
         }
         {
           isExitShowing &&
-          <Popup content='정말 종료할건가요?🧨'>
-            <Button text='확인' onClick={handleExitClick} />
-            <Button text='취소' onClick={handleCancelToggle} />
+          <Popup className='exitPopup' content='정말 종료할건가요?🧨'>
+            <Button className='popupButton' text='확인' onClick={handleExitClick} />
+            <Button className='popupButton' text='취소' onClick={handleCancelToggle} />
           </Popup>
         }
       </GameHeader>
