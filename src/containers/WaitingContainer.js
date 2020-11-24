@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, useParams } from 'react-router-dom';
 import randomcolor from 'randomcolor';
@@ -15,10 +15,17 @@ const MASTER_INDEX = 0;
 const WaitingContainer = () => {
   const { users, count, gameInfo } = useSelector((state) => state.currentGame);
   const { name, id, image } = useSelector((state) => state.user.info);
+  const [ isClickedStart, setIsClickedStart ] = useState(false);
   const { game_id } = useParams();
   const dispatch = useDispatch();
   const isMaster = users[MASTER_INDEX] && users[MASTER_INDEX]._id === id;
-  const handleStart = () => dispatch(startGame({ gameId: game_id }));
+
+  const handleStart = () => {
+    if (isClickedStart) return;
+
+    setIsClickedStart(true);
+    dispatch(startGame({ gameId: game_id }));
+  };
 
   useEffect(() => {
     dispatch(initGameSetting({

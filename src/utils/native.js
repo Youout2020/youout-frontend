@@ -8,7 +8,8 @@ export const TYPE = {
 };
 
 export const emit = (type, payload) => {
-  window.ReactNativeWebView.postMessage(JSON.stringify({ type, payload }));
+  window.ReactNativeWebView &&
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type, payload }));
 };
 
 export const log = (payload) => {

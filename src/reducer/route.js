@@ -4,7 +4,7 @@ export const SET_ROUTE = 'routeReducer/SET_ROUTE';
 
 export const setRoute = createAction(SET_ROUTE);
 
-const initState = '/login';
+const initState = '/';
 
 export default createReducer(initState, {
   [SET_ROUTE]: (state, action) => {

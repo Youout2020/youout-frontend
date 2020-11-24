@@ -32,6 +32,7 @@ const GameContainer = () => {
   const [ isHintShowing, setIsHintShowing ] = useState(false);
   const [ isExitShowing, setIsExitShowing ] = useState(false);
   const [ recognizedKeywordList, setRecognizedKeywordList ] = useState([]);
+  const [ isClickedAnswer, setIsClickedAnswer ] = useState(false);
 
   useEffect(() => {
     setGameIndex(0);
@@ -104,6 +105,10 @@ const GameContainer = () => {
   };
 
   const handleSubmitAnswer = () => {
+    if (isClickedAnswer) return;
+
+    setIsClickedAnswer(true);
+
     const isCorrectAnswer = userAnswer.trim() === quizList[gameIndex].answer;
 
     if (!isCorrectAnswer) {
@@ -127,10 +132,12 @@ const GameContainer = () => {
         dispatch(setRoute(`/games/${game_id}/result`));
         return;
       }
+
       setGamePhase('keyword');
       setIsCardShowing(true);
       setResultMessage('');
       setUserAnswer('');
+      setIsClickedAnswer(false);
     }, 2000);
   };
 

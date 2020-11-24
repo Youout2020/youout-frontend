@@ -4,7 +4,14 @@ const logger = (errorMessage) => {
   }
 };
 
-const { REACT_APP_SERVER_URI } = process.env;
+let REACT_APP_SERVER_URI = '';
+
+if (process.env.NODE_ENV === 'development') {
+  REACT_APP_SERVER_URI = '';
+} else {
+  process.env.REACT_APP_SERVER_URI;
+}
+
 const api = {};
 
 api.get = async({ path, options = {} }) => {

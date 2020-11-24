@@ -61,7 +61,9 @@ const AppContainer = () => {
         }
       }
     };
+
     window.addEventListener('message', listenNative);
+
     return () => window.removeEventListener('message', listenNative);
   }, [info]);
 
