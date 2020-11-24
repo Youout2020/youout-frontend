@@ -1,7 +1,7 @@
 import { createAction, createReducer, createAsyncThunk } from '@reduxjs/toolkit';
 import { getUserLocation } from '../utils';
 import api from '../utils/api';
-import { socket } from '../utils/socket';
+import { socket, getPlayingGames, listenGetGames } from '../utils/socket';
 import { setRoute } from '../reducer/route';
 
 export const UPDATE_GAME = 'gameReducer/UPDATE_GAME';
@@ -91,14 +91,21 @@ export const joinGame = createAsyncThunk(
   JOIN_GAME,
   async (id, { dispatch }) => {
     socket.on('GET_PLAYING_GAMES', (games) => {
-      const filtered = games.filter((game) => game._id === id)[0];
+      const game = games.filter((game) => game._id === id)[0];
 
-      if (filtered && filtered.users.length >= 4) {
-        alert('max people');
-      } else {
-        dispatch(setRoute(`/games/${id}`));
+      if (game && game.isPlaying) {
+        alert('게임이 시작했다!');
+        socket.off('GET_PLAYING_GAMES');
+        return;
       }
 
+      if (game && game.users.length >= 4) {
+        alert('사람이 꽉 찼다!');
+        socket.off('GET_PLAYING_GAMES');
+        return;
+      }
+
+      dispatch(setRoute(`/games/${id}`));
       socket.off('GET_PLAYING_GAMES');
     });
 
