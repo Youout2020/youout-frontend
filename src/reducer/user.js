@@ -7,9 +7,11 @@ export const INIT_USER = 'userReducer/INIT_USER';
 export const INIT_USER_PAGE = 'userReducer/INIT_USER_PAGE';
 export const LOAD_USER = 'userReducer/LOAD_USER';
 export const LOAD_USER_PAGE = 'userReducer/LOAD_USER_PAGE';
+export const SET_IS_NATIVE = 'userReducer/SET_IS_NATIVE';
 
 export const initUser = createAction(INIT_USER);
 export const initUserPage = createAction(INIT_USER_PAGE);
+export const setIsNative = createAction(SET_IS_NATIVE);
 
 export const loadUser = createAsyncThunk(
   LOAD_USER,
@@ -65,6 +67,7 @@ const initState = {
   error: '',
   isInitialized: false,
   isInitializedUserPage: false,
+  isNative: false,
 };
 
 const pending = loadUser.pending ||
@@ -85,6 +88,9 @@ export default createReducer(initState, {
     state.games = payload.games;
     state.histories = payload.histories;
     state.isInitializedUserPage = true;
+  },
+  [SET_IS_NATIVE]: (state, action) => {
+    state.isNative = action.payload;
   },
   [pending]: (state, action) => {
     state.isLoading = true;
