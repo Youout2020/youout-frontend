@@ -34,8 +34,11 @@ const CardWrapper = ({
                 gamePhase={gamePhase}
                 title={keyword}
               />
-            : <Popup className='keywordPopup' content={keyword}>
-                <span>{resultMessage}</span>
+            : <Popup
+                className='keywordPopup'
+                content={keyword}
+                resultMessage={resultMessage}
+              >
                 <div className={styles.keywordContainer}>
                   {
                     recognizedKeywordList.length > 0 &&

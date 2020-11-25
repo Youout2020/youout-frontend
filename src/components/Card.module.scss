@@ -83,6 +83,17 @@
   font-size: $font-size-3;
   text-align: center;
 
+  .popupContents {
+    display: flex;
+
+    p {
+      margin-right: 10px;
+
+      &:nth-child(2) {
+        color: $brown;
+      }
+    }
+  }
   .popupChildren {
     display: flex;
   }

@@ -2,10 +2,13 @@ import React from 'react';
 import styles from './Card.module.scss';
 import Button from './Button';
 
-export const Popup = ({ className, content, children }) => {
+export const Popup = ({ className, content, resultMessage, children }) => {
   return (
     <div className={styles[className]}>
-      <p>{content}</p>
+      <div className={styles.popupContents}>
+        <p>{content}</p>
+        <p>{resultMessage}</p>
+      </div>
       <div className={styles.popupChildren}>
         {children}
       </div>
