@@ -35,9 +35,9 @@ const StartButton = ({ isMaster, onStart }) => {
 const WaitingRoom = ({ users, isMaster, onStart, count }) => {
   return (
     <Header title='대기방'>
+      <Counter count={count} />
       <div className={styles.waitingRoom}>
-        <Counter count={count}/>
-        <Users users={users} isMaster={isMaster}/>
+        <Users users={users} isMaster={isMaster} />
         <StartButton isMaster={isMaster} onStart={onStart} />
       </div>
     </Header>
