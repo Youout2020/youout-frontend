@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import GameRoom from './GameRoom';
 import Button from './Button';
-import styles from './GameList.module.scss';
 import { useDispatch } from 'react-redux';
 import { setRoute } from '../reducer/route';
+import PropTypes from 'prop-types';
+import styles from './GameList.module.scss';
 
 const Address = ({ address }) => {
   return (
@@ -85,6 +86,18 @@ const GameList = ({
             />
     </div>
   );
+};
+
+Address.propTypes = {
+  address: PropTypes.string.isRequired,
+};
+
+GameList.propTypes = {
+  gameList: PropTypes.array.isRequired,
+  playingGameList: PropTypes.array.isRequired,
+  setTarget: PropTypes.func.isRequired,
+  joinWaitingRoom: PropTypes.func.isRequired,
+  address: PropTypes.string.isRequired,
 };
 
 export default GameList;

@@ -1,6 +1,6 @@
 import React from 'react';
-
 import Header from './Header';
+import PropTypes from 'prop-types';
 import styles from './WaitingRoom.module.scss';
 
 const Counter = ({ count }) => {
@@ -42,6 +42,26 @@ const WaitingRoom = ({ users, isMaster, onStart, count }) => {
       </div>
     </Header>
   );
+};
+
+Counter.propTypes = {
+  count: PropTypes.number.isRequired,
+};
+
+Users.propTypes = {
+  users: PropTypes.array.isRequired,
+};
+
+StartButton.propTypes = {
+  isMaster: PropTypes.bool.isRequired,
+  onStart: PropTypes.func.isRequired,
+};
+
+WaitingRoom.propTypes = {
+  users: PropTypes.array.isRequired,
+  isMaster: PropTypes.bool.isRequired,
+  onStart: PropTypes.func.isRequired,
+  count: PropTypes.number.isRequired,
 };
 
 export default WaitingRoom;

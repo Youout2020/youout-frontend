@@ -1,6 +1,7 @@
 import React from 'react';
 import CameraScreen, { FACING_MODES, IMAGE_TYPES } from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
+import PropTypes from 'prop-types';
 import styles from './Camera.module.scss';
 
 const Camera = ({ matchPhotoToKeyword }) => {
@@ -18,6 +19,10 @@ const Camera = ({ matchPhotoToKeyword }) => {
       }
     </div>
   );
+};
+
+Camera.propTypes = {
+  matchPhotoToKeyword: PropTypes.string.isRequired,
 };
 
 export default Camera;

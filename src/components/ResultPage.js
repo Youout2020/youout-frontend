@@ -6,6 +6,7 @@ import {
   convertMsToSeconds,
   convertTimeFormat,
 } from '../utils';
+import PropTypes from 'prop-types';
 import style from './ResultPage.module.scss';
 
 const ResultPage = ({ users, renderHome }) => {
@@ -33,6 +34,11 @@ const ResultPage = ({ users, renderHome }) => {
       </div>
     </Header>
   );
+};
+
+ResultPage.propTypes = {
+  users: PropTypes.array.isRequired,
+  renderHome: PropTypes.func.isRequired,
 };
 
 export default ResultPage;

@@ -12,6 +12,7 @@ import api from '../utils/api';
 import { validateLength } from '../utils/validation';
 import DetailGameInfo from './DetailGameInfo';
 import { AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai';
+import PropTypes from 'prop-types';
 
 const NewGameForm = ({
   onCreateNewGame,
@@ -282,6 +283,10 @@ const NewGameForm = ({
       </Header>
     </>
   );
+};
+
+NewGameForm.propTypes = {
+  onCreateNewGame: PropTypes.func.isRequired,
 };
 
 export default NewGameForm;

@@ -1,7 +1,8 @@
 import React from 'react';
-import styles from './DetailGameInfo.module.scss';
 import { convertMsToMinutes } from '../utils';
 import { FaRegCheckCircle } from 'react-icons/fa';
+import PropTypes from 'prop-types';
+import styles from './DetailGameInfo.module.scss';
 
 const DetailGameInfo = ({
   quizList,
@@ -29,6 +30,12 @@ const DetailGameInfo = ({
       {children}
     </div>
   );
+};
+
+DetailGameInfo.propTypes = {
+  quizList: PropTypes.array.isRequired,
+  gameInfo: PropTypes.object.isRequired,
+  children: PropTypes.element,
 };
 
 export default DetailGameInfo;

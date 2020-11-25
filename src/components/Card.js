@@ -1,8 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './Card.module.scss';
 import Button from './Button';
 
-export const Popup = ({ className, content, resultMessage, children }) => {
+export const Popup = ({
+  className,
+  content,
+  resultMessage,
+  children
+}) => {
   return (
     <div className={styles[className]}>
       <div className={styles.popupContents}>
@@ -16,7 +22,13 @@ export const Popup = ({ className, content, resultMessage, children }) => {
   );
 };
 
-const Card = ({ gamePhase, title, buttonText, onClick, children }) => {
+const Card = ({
+  gamePhase,
+  title,
+  buttonText,
+  onClick,
+  children
+}) => {
   return (
     <div className={styles.container}>
       <h4>{gamePhase}</h4>
@@ -28,6 +40,21 @@ const Card = ({ gamePhase, title, buttonText, onClick, children }) => {
       }
     </div>
   );
+};
+
+Popup.propTypes = {
+  className: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  resultMessage: PropTypes.string,
+  children: PropTypes.element,
+};
+
+Card.propTypes = {
+  gamePhase: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  buttonText: PropTypes.string,
+  onClick: PropTypes.func,
+  children: PropTypes.element,
 };
 
 export default Card;

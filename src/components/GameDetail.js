@@ -1,6 +1,7 @@
 import React from 'react';
 import DetailGameInfo from './DetailGameInfo';
 import Button from './Button';
+import PropTypes from 'prop-types';
 import style from './GameDetail.module.scss';
 
 const GameDetail = ({
@@ -22,6 +23,13 @@ const GameDetail = ({
       </DetailGameInfo>
     </div>
   );
+};
+
+GameDetail.propTypes = {
+  quizList: PropTypes.object.isRequired,
+  gameInfo: PropTypes.object.isRequired,
+  handleRenderGameForm: PropTypes.func.isRequired,
+  handleDeleteGame: PropTypes.func.isRequired,
 };
 
 export default GameDetail;
