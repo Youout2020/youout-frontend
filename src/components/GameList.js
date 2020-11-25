@@ -38,7 +38,7 @@ const GameList = ({
 
     setPlayingGameData(temp);
   }, [playingGameList]);
-  console.log(gameList);
+
   return (
     <div className={styles.container}>
       <Address address={address}/>
@@ -50,7 +50,7 @@ const GameList = ({
       <div className={styles.gameContainer}>
         {
           !gameList.length
-            ? <div className={styles.message}>
+            ? <div className={styles.noRoomMessage}>
                 <span>방 없음🤐</span>
               </div>
             : (

@@ -21,7 +21,7 @@ const GameContainer = () => {
   const { game_id } = useParams();
 
   const [ minutes, setMinutes ] = useState(0);
-  const [ seconds, setSeconds ] = useState(10);
+  const [ seconds, setSeconds ] = useState(59);
 
   const [ gameIndex, setGameIndex ] = useState(0);
   const [ gamePhase, setGamePhase ] = useState('keyword');
@@ -36,8 +36,7 @@ const GameContainer = () => {
 
   useEffect(() => {
     setGameIndex(0);
-    setMinutes(5);
-    // setMinutes(convertMsToMinutes(timeLimit));
+    setMinutes(convertMsToMinutes(timeLimit));
   }, []);
 
   useEffect(() => {
@@ -60,21 +59,16 @@ const GameContainer = () => {
   useEffect(() => {
     const timerId = setTimeout(() => {
       if (seconds > 0) setSeconds((prev) => prev - 1);
+
       if (seconds === 0) {
-        switch (minutes) {
-          case 0 :
-            dispatch(disconnectGame({ gameId: game_id }));
-            dispatch(setRoute('/games'));
-            clearTimeout(timerId);
-            break;
-          case 1:
-            //TODO: 종료 1분 전 알림 (CSS 시 적용 예정)
-            setMinutes((prev) => prev - 1);
-            setSeconds(59);
-            break;
-          default:
-            setMinutes((prev) => prev - 1);
-            setSeconds(59);
+        if (minutes === 0) {
+          dispatch(disconnectGame({ gameId: game_id }));
+          dispatch(setRoute('/games'));
+          clearTimeout(timerId);
+          return;
+        } else {
+          setMinutes((prev) => prev - 1);
+          setSeconds(59);
         }
       }
     }, 1000);
@@ -87,8 +81,7 @@ const GameContainer = () => {
 
     const response = await awsRekognition.detectLabels(dataUri);
     const result = await awsRekognition.compareLabels({
-      keyword: 'Accessories',
-      // keyword: quizList[gameIndex].keyword,
+      keyword: quizList[gameIndex].keyword,
       response,
     });
 
@@ -107,8 +100,6 @@ const GameContainer = () => {
   const handleSubmitAnswer = () => {
     if (isClickedAnswer) return;
 
-    setIsClickedAnswer(true);
-
     const isCorrectAnswer = userAnswer.trim() === quizList[gameIndex].answer;
 
     if (!isCorrectAnswer) {
@@ -120,6 +111,7 @@ const GameContainer = () => {
 
     setResultMessage('오~~~ 정답!🙆');
     updateData({ gameId: game_id, userId });
+    setIsClickedAnswer(true);
 
     setTimeout(() => {
       setGameIndex((prev) => prev + 1);
