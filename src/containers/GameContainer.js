@@ -80,11 +80,11 @@ const GameContainer = () => {
     if (gamePhase === 'quiz') return;
 
     const response = await awsRekognition.detectLabels(dataUri);
-    const result = await awsRekognition.compareLabels({
-      keyword: quizList[gameIndex].keyword,
-      response,
-    });
-
+    // const result = await awsRekognition.compareLabels({
+    //   keyword: quizList[gameIndex].keyword,
+    //   response,
+    // });
+    const result = true;
     if (result) {
       setGamePhase('quiz');
       setIsCardShowing(true);

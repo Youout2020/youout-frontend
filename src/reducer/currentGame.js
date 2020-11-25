@@ -79,6 +79,8 @@ export const countdown = createAsyncThunk(
       const { gameId } = getState().currentGame;
       const { isNative } = getState().user;
 
+      dispatch(setCount(3));
+
       if (isNative) {
         const game = getState().currentGame;
         emit(TYPE.setGame, game);
