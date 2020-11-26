@@ -6,7 +6,7 @@ const logger = (errorMessage) => {
 
 let REACT_APP_SERVER_URI = '';
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
   REACT_APP_SERVER_URI = '';
 } else {
   REACT_APP_SERVER_URI = process.env.REACT_APP_SERVER_URI;

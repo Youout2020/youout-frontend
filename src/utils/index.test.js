@@ -18,11 +18,26 @@ describe('utils test', () => {
   });
 
   it('convertMsToMinutes test', () => {
-    const MOCK_MS = 120000;
-    const MOCK_M = 2;
+    expect(convertMsToMinutes(60000)).toEqual(1);
+    expect(convertMsToMinutes(120000)).toEqual(2);
+    expect(convertMsToMinutes(130000)).toEqual(2);
+  });
 
-    const result = convertMsToMinutes(MOCK_MS);
+  it('convertMsToSeconds test', () => {
+    expect(convertMsToSeconds(1000)).toEqual(1);
+    expect(convertMsToSeconds(59000)).toEqual(59);
+    expect(convertMsToSeconds(61000)).toEqual(1);
+  });
 
-    expect(result).toEqual(MOCK_M);
+  it('convertTimeToMs test', () => {
+    const minutes = 1;
+    const seconds = 1;
+    expect(convertTimeToMs(minutes, seconds)).toEqual(61000);
+  });
+
+  it('convertTimeFormat test', () => {
+    const minutes = 1;
+    const seconds = 1;
+    expect(convertTimeFormat(minutes, seconds)).toEqual('01:01');
   });
 });
