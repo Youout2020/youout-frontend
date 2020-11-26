@@ -15,7 +15,7 @@ const HistoryDetail = ({ historyInfo }) => {
       <h5 className={style.title}>같이 플레이한 유저들</h5>
       <ul className={style.players}>
         {historyInfo.users.map((user) => {
-          const minutes = convertMsToMinutes(user.clearTime);
+          const minutes = convertMsToMinutes(user.clearTime) - 1;
           const seconds = convertMsToSeconds(user.clearTime);
           const formated = convertTimeFormat(minutes, seconds);
 

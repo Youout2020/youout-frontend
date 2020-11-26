@@ -40,7 +40,7 @@ const GameContainer = () => {
 
   useEffect(() => {
     setGameIndex(0);
-    setMinutes(convertMsToMinutes(timeLimit));
+    setMinutes(convertMsToMinutes(timeLimit) - 1);
   }, []);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const GameContainer = () => {
       keyword: quizList[gameIndex].keyword,
       data: response,
     });
-
+    console.log(response);
     if (result) {
       setGamePhase(GAME_PHASE.QUIZ);
       setIsCardShowing(true);
