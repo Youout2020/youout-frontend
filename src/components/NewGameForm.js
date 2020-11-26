@@ -10,7 +10,6 @@ import DetailGameInfo from './DetailGameInfo';
 import Map from './Map';
 import api from '../utils/api';
 import { validateLength } from '../utils/validation';
-import PATH from '../constants/path';
 import { pageName, pageNavigation } from '../constants/page';
 import PropTypes from 'prop-types';
 import styles from './NewGameForm.module.scss';
@@ -45,7 +44,7 @@ const NewGameForm = ({
     if (!game_id) return;
 
     (async () => {
-      const path = PATH.gameId(game_id);
+      const path = `/games/${game_id}`;
       const {
         name,
         address,
