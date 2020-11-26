@@ -21,3 +21,6 @@ const mockGeolocation = {
 };
 
 global.navigator.geolocation = mockGeolocation;
+global.EMIT = jest.fn();
+global.ON = jest.fn();
+global.OFF = jest.fn();

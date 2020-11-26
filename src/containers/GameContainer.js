@@ -40,7 +40,7 @@ const GameContainer = () => {
 
   useEffect(() => {
     setGameIndex(0);
-    setMinutes(convertMsToMinutes(timeLimit));
+    setMinutes(convertMsToMinutes(timeLimit) - 1);
   }, []);
 
   useEffect(() => {

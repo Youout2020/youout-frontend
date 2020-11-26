@@ -1,11 +1,10 @@
 import aws from './aws';
 import { translate } from './kakao';
 
-jest.mock('./kakao', () => {
-  return {
+jest.mock('./kakao', () => ({
     translate: jest.fn(),
-  };
-});
+  }
+));
 
 const FAKE_KEYWORD = 'fakeKeyword';
 const FAKE_DATA = {

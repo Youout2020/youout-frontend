@@ -17,7 +17,7 @@ const ResultPage = ({ users, renderHome }) => {
         <ul className={style.players}>
           {
             users.map((user) => {
-              const minutes = convertMsToMinutes(user.clearTime);
+              const minutes = convertMsToMinutes(user.clearTime) - 1;
               const seconds = convertMsToSeconds(user.clearTime);
               const formated = convertTimeFormat(minutes, seconds);
 

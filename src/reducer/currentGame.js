@@ -1,15 +1,14 @@
 import { createAction, createAsyncThunk, createReducer } from '@reduxjs/toolkit';
-import { socket, listenUpdateData } from '../utils/socket';
+import {
+  listenUpdateData,
+  gameStart,
+  joinWaitingRoom,
+  listenJoinUser,
+  listenGameStart,
+  disconnectRoom,
+} from '../utils/socket';
 import { TYPE, emit } from '../utils/native';
 import { setRoute } from './route';
-
-const SOCKET = {
-  userJoin: 'USER_JOIN',
-  userLeave: 'USER_LEAVE',
-  gameStart: 'GAME_START',
-  gameUpdate: 'GAME_UPDATE',
-  gameEnd: 'GAME_END',
-};
 
 const initGameInfo = {
   _id: '',
@@ -47,18 +46,18 @@ export const setIsPlayingFalse = createAction(SET_IS_PLAYING_FALSE);
 export const startGame = createAsyncThunk(
   START_GAME,
   async ({ gameId }, extra) => {
-    socket.emit(SOCKET.gameStart, { gameId });
+    gameStart({ gameId });
   },
 );
 
 export const initGameSetting = createAsyncThunk(
   INIT_GAME_SETTING,
   async ({ gameId, userId, username, image, color }, { dispatch }) => {
-    socket.emit(SOCKET.userJoin, { gameId, userId, username, image, color });
-    socket.on(SOCKET.userJoin, ({ users }) => {
+    joinWaitingRoom({ gameId, userId, username, image, color });
+    listenJoinUser(({ users }) => {
       dispatch(setUsers(users));
     });
-    socket.on(SOCKET.gameStart, ({gameInfo, users, _id}) => {
+    listenGameStart(({ gameInfo, users, _id }) => {
       dispatch(setGameInfo({ gameInfo, users, _id }));
       dispatch(countdown(3));
     });
@@ -98,11 +97,7 @@ export const countdown = createAsyncThunk(
 export const disconnectGame = createAsyncThunk(
   DISCONNECT_GAME,
   async ({ gameId }, { dispatch }) => {
-    socket.off(SOCKET.userJoin);
-    socket.off(SOCKET.gameStart);
-    socket.off(SOCKET.gameUpdate);
-    socket.off(SOCKET.userLeave);
-    socket.emit(SOCKET.userLeave, { gameId });
+    disconnectRoom({ gameId });
 
     dispatch(setGameInfo({ gameInfo: initGameInfo, users: [], _id: '' }));
     dispatch(setRoute('/games'));

@@ -21,7 +21,7 @@ const DetailGameInfo = ({
       </div>
       <h5 className={styles.title}>제한시간</h5>
       <div className={styles.content}>
-        {`${convertMsToMinutes(gameInfo.timeLimit) + 1}분`}
+        {`${convertMsToMinutes(gameInfo.timeLimit)}분`}
       </div>
       <h5 className={styles.title}>문제 리스트</h5>
       <ul>

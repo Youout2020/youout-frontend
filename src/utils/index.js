@@ -12,7 +12,7 @@ export const getUserLocation = () => {
 };
 
 export const convertMsToMinutes = (milliseconds) => {
-  return Math.floor((milliseconds / (1000 * 60)) - 1);
+  return Math.floor((milliseconds / (1000 * 60)));
 };
 
 export const convertMsToSeconds = (milliseconds) => {
