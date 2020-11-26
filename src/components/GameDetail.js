@@ -35,7 +35,12 @@ const GameDetail = ({
 
 GameDetail.propTypes = {
   quizList: PropTypes.array.isRequired,
-  gameInfo: PropTypes.object.isRequired,
+  gameInfo: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired,
+    addressDetail: PropTypes.string.isRequired,
+    timeLimit: PropTypes.number.isRequired,
+  }),
   handleRenderGameForm: PropTypes.func.isRequired,
   handleDeleteGame: PropTypes.func.isRequired,
 };

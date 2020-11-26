@@ -7,10 +7,8 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "aws-sdk": "^2.794.0",
     "firebase": "^8.0.1",
     "node-sass": "^4.0.0",
-    "prop-types": "^15.7.2",
     "query-string": "^6.13.7",
     "randomcolor": "^0.6.2",
     "react": "^17.0.1",
@@ -23,7 +21,6 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "redux": "^4.0.5",
-    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "web-vitals": "^0.2.4"
@@ -55,6 +52,8 @@
     ]
   },
   "devDependencies": {
+    "redux-logger": "^3.0.6",
+    "prop-types": "^15.7.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "eslint": "^7.13.0",

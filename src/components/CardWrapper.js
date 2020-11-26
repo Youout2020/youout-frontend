@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import styles from './CardWrapper.module.scss';
 
 const CardWrapper = ({
-  currentQuiz,
+  keyword,
+  quiz,
   gamePhase,
   userAnswer,
   resultMessage,
@@ -17,8 +18,6 @@ const CardWrapper = ({
   onSetAnswer,
   recognizedKeywordList,
 }) => {
-  const { keyword, quiz } = currentQuiz;
-
   useEffect(() => {
     const timerId = setTimeout(() => {
       onSetCardShowing(false);
@@ -85,7 +84,8 @@ const CardWrapper = ({
 };
 
 CardWrapper.propTypes = {
-  currentQuiz: PropTypes.object.isRequired,
+  keyword: PropTypes.string.isRequired,
+  quiz: PropTypes.string.isRequired,
   gamePhase: PropTypes.string.isRequired,
   userAnswer: PropTypes.string.isRequired,
   resultMessage: PropTypes.string.isRequired,

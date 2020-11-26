@@ -1,10 +1,21 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import Button from './Button';
 
 describe('<Button />', () => {
-  it('renders button text', () => {
-    const wrapper = mount(<Button text='확인' />);
-    expect(wrapper.props().text).toBe('확인');
+  const mockFn = jest.fn();
+  let wrapper;
+
+  beforeEach(() => {
+    wrapper = shallow(<Button text='확인' onClick={mockFn} />);
+  });
+
+  it('should render button text', () => {
+    expect(wrapper.props().children).toBe('확인');
+  });
+
+  it('should call onClick event', () => {
+    wrapper.find('button').simulate('click');
+    expect(mockFn.mock.calls.length).toEqual(1);
   });
 });

@@ -179,7 +179,8 @@ const GameContainer = () => {
       {
         quizList[gameIndex] &&
         <CardWrapper
-          currentQuiz={quizList[gameIndex]}
+          keyword={quizList[gameIndex].keyword}
+          quiz={quizList[gameIndex].quiz}
           gamePhase={gamePhase}
           userAnswer={userAnswer}
           resultMessage={resultMessage}

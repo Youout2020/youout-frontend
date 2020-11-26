@@ -40,7 +40,12 @@ const DetailGameInfo = ({
 
 DetailGameInfo.propTypes = {
   quizList: PropTypes.array.isRequired,
-  gameInfo: PropTypes.object.isRequired,
+  gameInfo: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired,
+    addressDetail: PropTypes.string.isRequired,
+    timeLimit: PropTypes.number.isRequired,
+  }),
   children: PropTypes.element,
 };
 
