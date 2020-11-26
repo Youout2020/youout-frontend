@@ -61,6 +61,10 @@ export const listenUpdateData = (callback) => {
   });
 };
 
+export const offPlayingGames = () => {
+  socket.off(SOCKET.getPlayingGames);
+};
+
 export const disconnectRoom = (data) => {
   socket.off(SOCKET.userJoin);
   socket.off(SOCKET.gameStart);
