@@ -10,6 +10,7 @@ import Button from '../components/Button';
 import { setRoute } from '../reducer/route';
 import { disconnectGame } from '../reducer/currentGame';
 import awsRekognition from '../utils/aws';
+import { translate } from '../utils/kakao';
 import { convertMsToMinutes, convertTimeToMs } from '../utils/index';
 import { updateData, listenUpdateData, gameComplete } from '../utils/socket';
 import { GAME_PHASE, DELAY } from '../constants/game';
@@ -98,7 +99,9 @@ const GameContainer = () => {
     }
 
     setResultMessage('땡!');
-    setRecognizedKeywordList(response.Labels.slice(0, 3).map((item) => item.Name));
+    setRecognizedKeywordList(response.Labels.slice(0, 3).map((item) => {
+      return translate(item.Name);
+    }));
   };
 
   const handleSubmitAnswer = () => {
