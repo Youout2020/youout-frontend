@@ -53,13 +53,13 @@ Users.propTypes = {
 };
 
 StartButton.propTypes = {
-  isMaster: PropTypes.bool.isRequired,
+  isMaster: PropTypes.bool,
   onStart: PropTypes.func.isRequired,
 };
 
 WaitingRoom.propTypes = {
   users: PropTypes.array.isRequired,
-  isMaster: PropTypes.bool.isRequired,
+  isMaster: PropTypes.bool,
   onStart: PropTypes.func.isRequired,
   count: PropTypes.number.isRequired,
 };

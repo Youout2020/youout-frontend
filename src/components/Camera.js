@@ -22,7 +22,7 @@ const Camera = ({ matchPhotoToKeyword }) => {
 };
 
 Camera.propTypes = {
-  matchPhotoToKeyword: PropTypes.string.isRequired,
+  matchPhotoToKeyword: PropTypes.func.isRequired,
 };
 
 export default Camera;
