@@ -38,7 +38,7 @@ const GameList = ({
 
     setPlayingGameData(temp);
   }, [playingGameList]);
-  console.log(gameList);
+
   return (
     <div className={styles.container}>
       <Address address={address}/>
