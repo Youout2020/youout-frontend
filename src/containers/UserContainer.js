@@ -34,7 +34,7 @@ const UserContainer = () => {
     address: '',
     addressDetail: '',
     location: {},
-    timeLimit: '',
+    timeLimit: 0,
   });
   const [historyInfo, setHistoryInfo] = useState({
     game: { name: '' },
