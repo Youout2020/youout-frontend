@@ -11,7 +11,7 @@ import NewGameForm from '../components/NewGameForm';
 import { loadUser, setIsNative } from '../reducer/user';
 import { createNewGame } from '../reducer/game';
 import firebase from '../utils/firebase';
-import { TYPE, emit, log } from '../utils/native';
+import { TYPE, emit } from '../utils/native';
 import { updateData, gameComplete } from '../utils/socket';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 

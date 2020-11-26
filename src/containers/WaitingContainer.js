@@ -40,6 +40,7 @@ const WaitingContainer = () => {
       image,
       color: randomcolor(),
     }));
+
     listenUpdateData((data) => {
       dispatch(updateCurrentGame(data.game));
     });

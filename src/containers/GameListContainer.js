@@ -40,6 +40,7 @@ const GameListContainer = () => {
           dispatch(loadMoreGames());
         }
       }, { threshold: [0.1] });
+
       observer.observe(observedTarget);
     }
 

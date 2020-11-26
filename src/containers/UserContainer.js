@@ -13,8 +13,8 @@ import { loadUserPage } from '../reducer/user';
 import { updateGame, deleteGame } from '../reducer/game';
 import { setRoute } from '../reducer/route';
 import api from '../utils/api';
-import HEADER_TITLE from '../constants/headerTitle';
 import { sliceDocs } from '../utils';
+import HEADER_TITLE from '../constants/headerTitle';
 
 const UserContainer = () => {
   const {
@@ -27,6 +27,7 @@ const UserContainer = () => {
   const handleUpdateGame = (body, gameId) => dispatch(updateGame({ body, gameId }));
   const handleDeleteGame = () => dispatch(deleteGame({ gameId }));
   const handleRenderGameForm = () => dispatch(setRoute(`/user/games/${gameId}/update`));
+
   const [gameId, setGameId] = useState('');
   const [quizList, setQuizList] = useState([]);
   const [gameInfo, setGameInfo] = useState({
