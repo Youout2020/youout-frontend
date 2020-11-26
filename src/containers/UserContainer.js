@@ -4,9 +4,8 @@ import { Switch, Route } from 'react-router-dom';
 
 import Header from '../components/Header';
 import UserPage from '../components/UserPage';
-import HistoryPage from '../components/HistoryPage';
+import DetailPage from '../components/DetailPage';
 import HistoryDetail from '../components/HistoryDetail';
-import GamePage from '../components/GamePage';
 import GameDetail from '../components/GameDetail';
 import NewGameForm from '../components/NewGameForm';
 import { loadUserPage } from '../reducer/user';
@@ -85,15 +84,17 @@ const UserContainer = () => {
             />
           </Route>
           <Route exact path='/user/histories'>
-            <HistoryPage
-              histories={histories.docs}
+            <DetailPage
+              list={histories.docs}
               onClick={navigation.showDetailHistory}
+              title='내가 플레이한 방'
             />
           </Route>
           <Route exact path='/user/games'>
-            <GamePage
-              games={games.docs}
+            <DetailPage
+              list={games.docs}
               onClick={navigation.showDetailGame}
+              title='내가 만든 방'
             />
           </Route>
           <Route exact path='/user/games/:game_id'>
