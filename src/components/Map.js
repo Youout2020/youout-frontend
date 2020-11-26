@@ -24,7 +24,6 @@ const Map = ({ setPage, gameInfo, setGameInfo }) => {
       center: new kakao.maps.LatLng(lat, lng),
       level: 3,
     };
-
     const map = new kakao.maps.Map(container, options);
 
     const markerPosition = new kakao.maps.LatLng(lat, lng);
@@ -67,9 +66,17 @@ const Map = ({ setPage, gameInfo, setGameInfo }) => {
   return (
     <div className={styles.container}>
       <div id='map' className={styles.map} />
-      <span className={styles.addressDirection}>게임을 만들고 싶은 위치를 선택하세요.</span>
-      <span className={styles.address}>{address}</span>
-      <Button className='basicButton' text='선택' onClick={handleSelectButton} />
+      <span className={styles.addressDirection}>
+        게임을 만들고 싶은 위치를 선택하세요.
+      </span>
+      <span className={styles.address}>
+        {address}
+      </span>
+      <Button
+        className='basicButton'
+        text='선택'
+        onClick={handleSelectButton}
+      />
     </div>
   );
 };

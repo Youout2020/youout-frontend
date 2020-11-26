@@ -5,7 +5,9 @@ import styles from './WaitingRoom.module.scss';
 
 const Counter = ({ count }) => {
   return (
-    <div className={styles.counter}>{count >= 0 ? count : ''}</div>
+    <div className={styles.counter}>
+      {count >= 0 ? count : ''}
+    </div>
   );
 };
 
@@ -13,13 +15,15 @@ const Users = ({ users }) => {
   return (
     <ul className={styles.users}>
       <p>게임이 시작되길 마냥 기다리는 중👀</p>
-      {users.map((user, index) => (
-        <li key={user.socketId}>
-          <img src={user.image} className={styles.userIcon}/>
-          {user.username}
-          {index === 0 ? ' (방장)' : ''}
-        </li>
-      ))}
+      {
+        users.map((user, index) => (
+          <li key={user.socketId}>
+            <img src={user.image} className={styles.userIcon}/>
+            {user.username}
+            {index === 0 ? ' (방장)' : ''}
+          </li>
+        ))
+      }
     </ul>
   );
 };

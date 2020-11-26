@@ -12,18 +12,24 @@ const GameRoom = ({
 }) => {
   return (
     <div
-      className={`${styles.container} ${(userCount > 0 && !isPlaying) ? styles.playingRoom : ''} ${isPlaying ? styles.playingRoom : ''}`}
+      className={`
+        ${styles.container}
+        ${(userCount > 0 && !isPlaying) ? styles.playingRoom : ''}
+        ${isPlaying ? styles.playingRoom : ''}
+      `}
       ref={setTarget}
       onClick={() => joinWaitingRoom(id)}
-      >
+    >
       <span className={isPlaying ? styles.bulletPlaying : styles.bulletWaiting}>
-        {
-          isPlaying ? 'Playing' : 'Waiting'
-        }
+        {isPlaying ? 'Playing' : 'Waiting'}
       </span>
       <div className={styles.gameInfo}>
-        <div className={`${styles.name} ${isPlaying ? styles.lineThrough : ''}`}>{name}</div>
-        <div className={`${styles.users} ${isPlaying ? styles.lineThrough : ''}`}>{userCount}/4</div>
+        <div className={`${styles.name} ${isPlaying ? styles.lineThrough : ''}`}>
+          {name}
+        </div>
+        <div className={`${styles.users} ${isPlaying ? styles.lineThrough : ''}`}>
+          {userCount}/4
+        </div>
       </div>
     </div>
   );

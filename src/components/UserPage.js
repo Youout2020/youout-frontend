@@ -6,10 +6,9 @@ const ImageBox = ({ name, image, email }) => {
   return (
     <div className={styles.imageBox}>
       <img src={image} alt='user-image' />
-      <p>
-        <b>{name}</b>
-        <br/>
-        {email}
+      <p className={styles.userInfo}>
+        <span>{name}</span>
+        <span>{email}</span>
       </p>
     </div>
   );

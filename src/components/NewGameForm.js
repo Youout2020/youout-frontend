@@ -15,9 +15,13 @@ import { pageName, pageNavigation } from '../constants/page';
 import PropTypes from 'prop-types';
 import styles from './NewGameForm.module.scss';
 
+const ICON_SIZE = '3em';
+
 const NewGameForm = ({
   onCreateNewGame,
 }) => {
+  const { game_id } = useParams();
+  const [ page, setPage ] = useState(1);
   const [gameInfo, setGameInfo] = useState({
     name: '',
     address: '',
@@ -27,9 +31,7 @@ const NewGameForm = ({
   });
   const [ quizList, setQuizList ] = useState([]);
   const [ quizCount, setQuizCount ] = useState(5);
-  const [ page, setPage ] = useState(1);
-  const [ currentIndex, setCurrentIndex ] = useState(-1);
-  const { game_id } = useParams();
+  const [ currentQuizIndex, setCurrentQuizIndex ] = useState(-1);
   const [ validationMessage, setValidationMessage ] = useState({
     name: '',
     addressDetail: '',
@@ -44,7 +46,15 @@ const NewGameForm = ({
 
     (async () => {
       const path = PATH.gameId(game_id);
-      const { name, address, addressDetail, location, timeLimit, quizList } = await api.get({ path });
+      const {
+        name,
+        address,
+        addressDetail,
+        location,
+        timeLimit,
+        quizList
+      } = await api.get({ path });
+
       setGameInfo({
         name,
         address,
@@ -57,7 +67,7 @@ const NewGameForm = ({
     })();
   }, []);
 
-  const handleInputsChange = ({ target }) => {
+  const handleChangeInputs = ({ target }) => {
     const { name, value } = target;
 
     switch (name) {
@@ -72,8 +82,6 @@ const NewGameForm = ({
           ...validationMessage,
           addressDetail: validateLength(3, 30, 'Address', value),
         });
-        break;
-      default:
         break;
     }
 
@@ -96,8 +104,7 @@ const NewGameForm = ({
   };
 
   const handlePageNavigation = ({ target }) => {
-    const isAllInputsFilled =
-      gameInfo.name
+    const isAllInputsFilled = gameInfo.name
       && gameInfo.address
       && gameInfo.addressDetail
       && gameInfo.timeLimit;
@@ -113,7 +120,7 @@ const NewGameForm = ({
   };
 
   const handleQuizInputButton = (index) => {
-    setCurrentIndex(index);
+    setCurrentQuizIndex(index);
     setPage(pageName.QUIZ_FORM);
   };
 
@@ -138,11 +145,13 @@ const NewGameForm = ({
                 value={gameInfo['name']}
                 name='name'
                 placeholder='게임 이름'
-                onChange={handleInputsChange}
+                onChange={handleChangeInputs}
               />
               {
                 validationMessage.name &&
-                <div className={styles.validationMessage}>{validationMessage.name}</div>
+                <div className={styles.validationMessage}>
+                  {validationMessage.name}
+                </div>
               }
               <Button
                 className='basicButton'
@@ -156,7 +165,7 @@ const NewGameForm = ({
                 value={gameInfo['address']}
                 name='address'
                 placeholder='예) 바코동'
-                onChange={handleInputsChange}
+                onChange={handleChangeInputs}
                 disabled
               />
               <Input
@@ -166,18 +175,20 @@ const NewGameForm = ({
                 value={gameInfo['addressDetail']}
                 name='addressDetail'
                 placeholder='상세 주소'
-                onChange={handleInputsChange}
+                onChange={handleChangeInputs}
               />
               {
                 validationMessage.addressDetail &&
-                <div className={styles.validationMessage}>{validationMessage.addressDetail}</div>
+                <div className={styles.validationMessage}>
+                  {validationMessage.addressDetail}
+                </div>
               }
               <Input
                 type='select'
                 labelName='제한 시간'
                 name='timeLimit'
                 id='timeLimit'
-                onChange={handleInputsChange}
+                onChange={handleChangeInputs}
               />
               <div className={styles.quizCounter}>
                 <span className={styles.counterName}>문제 개수</span>
@@ -185,13 +196,13 @@ const NewGameForm = ({
                   <Button
                     className='circleButton'
                     onClick={handleDecreaseCounter}
-                    text={<AiFillMinusCircle size='3em' />}
+                    text={<AiFillMinusCircle size={ICON_SIZE} />}
                   />
                   <span className={styles.quizCount}>{quizCount}</span>
                   <Button
                     className='circleButton'
                     onClick={handleIncreaseCounter}
-                    text={<AiFillPlusCircle size='3em' />}
+                    text={<AiFillPlusCircle size={ICON_SIZE} />}
                   />
                 </div>
               </div>
@@ -207,22 +218,18 @@ const NewGameForm = ({
             page === pageName.SECOND &&
             <div className={styles.secondForm}>
               {
-                Array(quizCount).fill(0).map((quiz, index) => {
-                  return (
-                    <div className={styles.quizContainer} key={index}>
-                      <div className={styles.quizDone}>
-                        {
-                          quizList[index]?.quiz ? '✓' : '✕'
-                        }
-                      </div>
-                      <Button
-                        className='basicButton'
-                        text={quizList[index]?.quiz || '문제를 입력하세요.'}
-                        onClick={() => handleQuizInputButton(index)}
-                      />
+                Array(quizCount).fill(0).map((quiz, index) => (
+                  <div className={styles.quizContainer} key={index}>
+                    <div className={styles.quizDone}>
+                      { quizList[index]?.quiz ? '✓' : '✕' }
                     </div>
-                  );
-                })
+                    <Button
+                      className='basicButton'
+                      text={quizList[index]?.quiz || '문제를 입력하세요.'}
+                      onClick={() => handleQuizInputButton(index)}
+                    />
+                  </div>
+                ))
               }
               <div className={styles.buttonContainer}>
                 <Button
@@ -264,7 +271,7 @@ const NewGameForm = ({
           {
             page === pageName.QUIZ_FORM &&
             <QuizForm
-              index={currentIndex}
+              index={currentQuizIndex}
               setPage={setPage}
               quizList={quizList}
               setQuizList={setQuizList}

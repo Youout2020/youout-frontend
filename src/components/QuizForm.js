@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Input from './Input';
 import Button from './Button';
 import { validateLength, validateSpace } from '../utils/validation';
+import { pageName } from '../constants/page';
 import PropTypes from 'prop-types';
 import styles from './NewGameForm.module.scss';
 
@@ -22,7 +23,7 @@ const QuizForm = ({
     hint: '',
   });
 
-  const handleQuizInputsChange = ({ target }) => {
+  const handleChangeQuizInputs = ({ target }) => {
     const { name, value } = target;
 
     switch (name) {
@@ -50,8 +51,6 @@ const QuizForm = ({
           hint: validateLength(3, 50, 'Hint', value),
         });
         break;
-      default:
-        break;
     }
 
     setQuiz({
@@ -61,18 +60,18 @@ const QuizForm = ({
     });
   };
 
-  const handleQuizSubmitButton = () => {
-    const isAllInputsFilled =
-      quiz.keyword
+  const handleSubmitQuiz = () => {
+    const isAllInputsFilled = quiz.keyword
       && quiz.quiz
       && quiz.answer
       && quiz.hint;
+
     if (!isAllInputsFilled) return;
 
     const prevQuizList = [...quizList];
     prevQuizList[index] = quiz;
     setQuizList(prevQuizList);
-    setPage(2);
+    setPage(pageName.SECOND);
   };
 
   return (
@@ -83,12 +82,14 @@ const QuizForm = ({
         labelName='다음 문제를 보여줄 사진 키워드'
         value={quiz['keyword']}
         name='keyword'
-        placeholder='예) 바나나를 찍으세요'
-        onChange={handleQuizInputsChange}
+        placeholder='예) 바나나'
+        onChange={handleChangeQuizInputs}
       />
       {
         validationMessage.keyword &&
-        <div className={styles.validationMessage}>{validationMessage.keyword}</div>
+        <div className={styles.validationMessage}>
+          {validationMessage.keyword}
+        </div>
       }
       <Input
         type='text'
@@ -97,11 +98,13 @@ const QuizForm = ({
         value={quiz['quiz']}
         name='quiz'
         placeholder='예) 바나나를 먹은 사람은?'
-        onChange={handleQuizInputsChange}
+        onChange={handleChangeQuizInputs}
       />
       {
         validationMessage.quiz &&
-        <div className={styles.validationMessage}>{validationMessage.quiz}</div>
+        <div className={styles.validationMessage}>
+          {validationMessage.quiz}
+        </div>
       }
       <Input
         type='text'
@@ -110,11 +113,13 @@ const QuizForm = ({
         value={quiz['answer']}
         name='answer'
         placeholder='예) 나'
-        onChange={handleQuizInputsChange}
+        onChange={handleChangeQuizInputs}
       />
       {
         validationMessage.answer &&
-        <div className={styles.validationMessage}>{validationMessage.answer}</div>
+        <div className={styles.validationMessage}>
+          {validationMessage.answer}
+        </div>
       }
       <Input
         type='text'
@@ -123,16 +128,18 @@ const QuizForm = ({
         value={quiz['hint']}
         name='hint'
         placeholder='예) 그런거 안줘!'
-        onChange={handleQuizInputsChange}
+        onChange={handleChangeQuizInputs}
       />
       {
         validationMessage.hint &&
-        <div className={styles.validationMessage}>{validationMessage.hint}</div>
+        <div className={styles.validationMessage}>
+          {validationMessage.hint}
+        </div>
       }
       <Button
         className='basicButton'
         text='완료'
-        onClick={handleQuizSubmitButton}
+        onClick={handleSubmitQuiz}
       />
     </div>
   );
