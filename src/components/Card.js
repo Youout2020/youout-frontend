@@ -1,7 +1,7 @@
 import React from 'react';
+import Button from './Button';
 import PropTypes from 'prop-types';
 import styles from './Card.module.scss';
-import Button from './Button';
 
 export const Popup = ({
   className,
@@ -46,7 +46,7 @@ Popup.propTypes = {
   className: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   resultMessage: PropTypes.string,
-  children: PropTypes.element,
+  children: PropTypes.node,
 };
 
 Card.propTypes = {
@@ -54,7 +54,7 @@ Card.propTypes = {
   title: PropTypes.string.isRequired,
   buttonText: PropTypes.string,
   onClick: PropTypes.func,
-  children: PropTypes.element,
+  children: PropTypes.node,
 };
 
 export default Card;

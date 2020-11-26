@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import Camera from '../components/Camera';
 import GameHeader from '../components/GameHeader';
-import { convertMsToMinutes, convertTimeToMs } from '../utils/index';
+import Camera from '../components/Camera';
 import CardWrapper from '../components/CardWrapper';
-import awsRekognition from '../utils/aws';
-import { updateData, listenUpdateData, gameComplete } from '../utils/socket';
 import { Popup } from '../components/Card';
 import Button from '../components/Button';
 import { setRoute } from '../reducer/route';
 import { disconnectGame } from '../reducer/currentGame';
+import awsRekognition from '../utils/aws';
+import { convertMsToMinutes, convertTimeToMs } from '../utils/index';
+import { updateData, listenUpdateData, gameComplete } from '../utils/socket';
 
 const GameContainer = () => {
   const dispatch = useDispatch();

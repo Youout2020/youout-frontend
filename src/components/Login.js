@@ -1,5 +1,4 @@
 import React from 'react';
-
 import Splash from './Splash';
 import Button from './Button';
 import PropTypes from 'prop-types';

@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai';
 import Header from './Header';
 import Input from './Input';
-import styles from './NewGameForm.module.scss';
 import Button from './Button';
 import QuizForm from './QuizForm';
+import DetailGameInfo from './DetailGameInfo';
 import Map from './Map';
-import { pageName, pageNavigation } from '../constants/page';
-import PATH from '../constants/path';
-import { useParams } from 'react-router-dom';
 import api from '../utils/api';
 import { validateLength } from '../utils/validation';
-import DetailGameInfo from './DetailGameInfo';
-import { AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai';
+import PATH from '../constants/path';
+import { pageName, pageNavigation } from '../constants/page';
 import PropTypes from 'prop-types';
+import styles from './NewGameForm.module.scss';
 
 const NewGameForm = ({
   onCreateNewGame,

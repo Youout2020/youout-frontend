@@ -3,17 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 
 import Header from '../components/Header';
-import HistoryDetail from '../components/HistoryDetail';
 import UserPage from '../components/UserPage';
 import HistoryPage from '../components/HistoryPage';
+import HistoryDetail from '../components/HistoryDetail';
 import GamePage from '../components/GamePage';
 import GameDetail from '../components/GameDetail';
-import HEADER_TITLE from '../constants/headerTitle';
+import NewGameForm from '../components/NewGameForm';
 import { loadUserPage } from '../reducer/user';
 import { updateGame, deleteGame } from '../reducer/game';
 import { setRoute } from '../reducer/route';
-import NewGameForm from '../components/NewGameForm';
 import api from '../utils/api';
+import HEADER_TITLE from '../constants/headerTitle';
 
 const UserContainer = () => {
   const {

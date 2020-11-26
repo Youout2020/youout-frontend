@@ -1,6 +1,6 @@
 import React from 'react';
-import { convertMsToMinutes } from '../utils';
 import { FaRegCheckCircle } from 'react-icons/fa';
+import { convertMsToMinutes } from '../utils';
 import PropTypes from 'prop-types';
 import styles from './DetailGameInfo.module.scss';
 

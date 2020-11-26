@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import GameRoom from './GameRoom';
-import Button from './Button';
 import { useDispatch } from 'react-redux';
+import Button from './Button';
+import GameRoom from './GameRoom';
 import { setRoute } from '../reducer/route';
 import PropTypes from 'prop-types';
 import styles from './GameList.module.scss';

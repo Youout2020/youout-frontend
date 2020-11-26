@@ -2,17 +2,17 @@ import React, { useEffect } from 'react';
 import { Switch, Route, useHistory, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Login from '../components/Login';
-import Loading from '../components/Loading';
-import NewGameForm from '../components/NewGameForm';
 import UserContainer from './UserContainer';
 import WaitingContainer from './WaitingContainer';
 import GameListContainer from './GameListContainer';
+import Login from '../components/Login';
+import Loading from '../components/Loading';
+import NewGameForm from '../components/NewGameForm';
 import { loadUser, setIsNative } from '../reducer/user';
 import { createNewGame } from '../reducer/game';
+import firebase from '../utils/firebase';
 import { TYPE, emit, log } from '../utils/native';
 import { updateData, gameComplete } from '../utils/socket';
-import firebase from '../utils/firebase';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const AppContainer = () => {

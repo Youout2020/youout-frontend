@@ -1,8 +1,8 @@
 /* global kakao */
 import React, { useEffect, useState } from 'react';
 import Button from './Button';
-import { pageName } from '../constants/page';
 import { getUserLocation } from '../utils/index';
+import { pageName } from '../constants/page';
 import PropTypes from 'prop-types';
 import styles from './Map.module.scss';
 

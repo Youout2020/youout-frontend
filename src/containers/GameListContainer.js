@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Header from '../components/Header';
+import Loading from '../components/Loading';
 import GameList from '../components/GameList';
-import HEADER_TITLE from '../constants/headerTitle';
 import {
   loadGames,
   loadMoreGames,
@@ -12,10 +12,9 @@ import {
   loadPlayingGames,
   joinGame,
 } from '../reducer/game';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { setRoute } from '../reducer/route';
-import Loading from '../components/Loading';
 import { getUserLocation } from '../utils';
+import HEADER_TITLE from '../constants/headerTitle';
 
 const GameListContainer = () => {
   const {

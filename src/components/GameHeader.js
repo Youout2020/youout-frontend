@@ -1,7 +1,7 @@
 import React from 'react';
-import { convertTimeFormat } from '../utils/index';
 import { FaDoorClosed } from 'react-icons/fa';
 import { ImKey } from 'react-icons/im';
+import { convertTimeFormat } from '../utils/index';
 import PropTypes from 'prop-types';
 import styles from './GameHeader.module.scss';
 
@@ -33,7 +33,7 @@ GameHeader.propTypes = {
   seconds: PropTypes.number.isRequired,
   onHintToggle: PropTypes.func.isRequired,
   onCancelToggle: PropTypes.func.isRequired,
-  children: PropTypes.element,
+  children: PropTypes.node,
 };
 
 export default GameHeader;
