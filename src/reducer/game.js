@@ -1,7 +1,7 @@
 import { createAction, createReducer, createAsyncThunk } from '@reduxjs/toolkit';
 import { getUserLocation } from '../utils';
 import api from '../utils/api';
-import { getPlayingGames, listenGetGames, disconnectRoom } from '../utils/socket';
+import { getPlayingGames, listenGetGames, offPlayingGames } from '../utils/socket';
 import { setRoute } from '../reducer/route';
 
 export const UPDATE_GAME = 'gameReducer/UPDATE_GAME';
@@ -95,18 +95,18 @@ export const joinGame = createAsyncThunk(
 
       if (game && game.isPlaying) {
         alert('게임이 시작했다!');
-        disconnectRoom();
+        offPlayingGames();
         return;
       }
 
       if (game && game.users.length >= 4) {
         alert('사람이 꽉 찼다!');
-        disconnectRoom();
+        offPlayingGames();
         return;
       }
 
       dispatch(setRoute(`/games/${id}`));
-      disconnectRoom();
+      offPlayingGames();
     });
 
     getPlayingGames();
