@@ -7,7 +7,12 @@ import GameContainer from './GameContainer';
 import WaitingRoom from '../components/WaitingRoom';
 import ResultPage from '../components/ResultPage';
 import { setRoute } from '../reducer/route';
-import { initGameSetting, startGame, disconnectGame, updateCurrentGame } from '../reducer/currentGame';
+import {
+  initGameSetting,
+  startGame,
+  disconnectGame,
+  updateCurrentGame,
+} from '../reducer/currentGame';
 import { listenUpdateData } from '../utils/socket';
 
 const MASTER_INDEX = 0;
@@ -15,9 +20,9 @@ const MASTER_INDEX = 0;
 const WaitingContainer = () => {
   const { users, count, gameInfo } = useSelector((state) => state.currentGame);
   const { name, id, image } = useSelector((state) => state.user.info);
-  const [ isClickedStart, setIsClickedStart ] = useState(false);
   const { game_id } = useParams();
   const dispatch = useDispatch();
+  const [ isClickedStart, setIsClickedStart ] = useState(false);
   const isMaster = users[MASTER_INDEX] && users[MASTER_INDEX]._id === id;
 
   const handleStart = () => {
@@ -56,13 +61,11 @@ const WaitingContainer = () => {
         <GameContainer />
       </Route>
       <Route exact path='/games/:game_id/result'>
-        <div>
-          <ResultPage
-            users={users}
-            gameInfo={gameInfo}
-            renderHome={() => dispatch(setRoute('/games'))}
-          />
-        </div>
+        <ResultPage
+          users={users}
+          gameInfo={gameInfo}
+          renderHome={() => dispatch(setRoute('/games'))}
+        />
       </Route>
     </>
   );
