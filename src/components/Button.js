@@ -25,7 +25,6 @@ const Button = ({
 Button.propTypes = {
   className: PropTypes.string,
   onClick: PropTypes.func.isRequired,
-  text: PropTypes.any.isRequired,
 };
 
 Button.defaultProps = {
