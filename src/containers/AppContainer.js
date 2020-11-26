@@ -18,8 +18,8 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 const AppContainer = () => {
   const { isLoading, isInitialized, info, error } = useSelector((state) => state.user);
   const route = useSelector((state) => state.route);
-  const history = useHistory();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleLogin = () => firebase.googleLogin();
   const handleCreateNewGame = (body) => dispatch(createNewGame(body));
@@ -38,6 +38,7 @@ const AppContainer = () => {
 
   useEffect(() => {
     if (!info) return;
+
     const listenNative = ({ data }) => {
       if (typeof data !== 'string') return;
 
@@ -68,26 +69,28 @@ const AppContainer = () => {
   return (
     <div>
       {error}
-      {isLoading
-        ? <Loading />
-        : <Switch>
-            <Route exact path={'/'}>
-              <Login onLogin={handleLogin} />
-            </Route>
-            <Route exact path={'/games'}>
-              <GameListContainer />
-            </Route>
-            <Route exact path={'/games/new'}>
-              <NewGameForm onCreateNewGame={handleCreateNewGame} />
-            </Route>
-            <Route path={'/games/:game_id'}>
-              <WaitingContainer />
-            </Route>
-            <Route path={'/user'}>
-              <UserContainer />
-            </Route>
-            <Redirect to={'/games'} />
-          </Switch>}
+      {
+        isLoading
+          ? <Loading />
+          : <Switch>
+              <Route exact path={'/'}>
+                <Login onLogin={handleLogin} />
+              </Route>
+              <Route exact path={'/games'}>
+                <GameListContainer />
+              </Route>
+              <Route exact path={'/games/new'}>
+                <NewGameForm onCreateNewGame={handleCreateNewGame} />
+              </Route>
+              <Route path={'/games/:game_id'}>
+                <WaitingContainer />
+              </Route>
+              <Route path={'/user'}>
+                <UserContainer />
+              </Route>
+              <Redirect to={'/games'} />
+            </Switch>
+      }
     </div>
   );
 };
