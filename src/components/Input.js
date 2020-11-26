@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './Input.module.scss';
 
 const Input = ({
@@ -48,6 +49,16 @@ const Input = ({
       }
     </div>
   );
+};
+
+Input.propTypes = {
+  type: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  labelName: PropTypes.string,
+  value: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default React.memo(Input);

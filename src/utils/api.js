@@ -110,13 +110,13 @@ api.delete = async ({ path, body, options = {} }) => {
       headers[key.toLowerCase()] = options[key];
     });
 
-    const response = await fetch(`${REACT_APP_SERVER_URI}${path}`, {
+    await fetch(`${REACT_APP_SERVER_URI}${path}`, {
       method: 'DELETE',
       headers,
       body: JSON.stringify(body),
     });
 
-    return response;
+    return;
   } catch (err) {
     logger('🔥 Error fired: business -> api -> remove');
     console.error(err);

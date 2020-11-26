@@ -2,37 +2,41 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import Camera from '../components/Camera';
 import GameHeader from '../components/GameHeader';
-import { convertMsToMinutes, convertTimeToMs } from '../utils/index';
+import Camera from '../components/Camera';
 import CardWrapper from '../components/CardWrapper';
-import awsRekognition from '../utils/aws';
-import { updateData, listenUpdateData, gameComplete } from '../utils/socket';
 import { Popup } from '../components/Card';
 import Button from '../components/Button';
 import { setRoute } from '../reducer/route';
 import { disconnectGame } from '../reducer/currentGame';
+import awsRekognition from '../utils/aws';
+import { convertMsToMinutes, convertTimeToMs } from '../utils/index';
+import { updateData, listenUpdateData, gameComplete } from '../utils/socket';
+import { GAME_PHASE, DELAY } from '../constants/game';
 
 const GameContainer = () => {
-  const dispatch = useDispatch();
   const gameInfo = useSelector((state) => state.currentGame);
-  const { gameInfo: { quizList, timeLimit }, users } = gameInfo;
+  const {
+    gameInfo: { quizList, timeLimit },
+    users,
+  } = gameInfo;
   const { id: userId } = useSelector((state) => state.user.info);
+  const dispatch = useDispatch();
   const { game_id } = useParams();
 
   const [ minutes, setMinutes ] = useState(0);
   const [ seconds, setSeconds ] = useState(59);
 
   const [ gameIndex, setGameIndex ] = useState(0);
-  const [ gamePhase, setGamePhase ] = useState('keyword');
+  const [ gamePhase, setGamePhase ] = useState(GAME_PHASE.KEYWORD);
   const [ userAnswer, setUserAnswer ] = useState('');
   const [ resultMessage, setResultMessage ] = useState('');
   const [ userAlertList, setUserAlertList ] = useState([]);
   const [ isCardShowing, setIsCardShowing ] = useState(true);
   const [ isHintShowing, setIsHintShowing ] = useState(false);
   const [ isExitShowing, setIsExitShowing ] = useState(false);
-  const [ recognizedKeywordList, setRecognizedKeywordList ] = useState([]);
   const [ isClickedAnswer, setIsClickedAnswer ] = useState(false);
+  const [ recognizedKeywordList, setRecognizedKeywordList ] = useState([]);
 
   useEffect(() => {
     setGameIndex(0);
@@ -51,7 +55,7 @@ const GameContainer = () => {
       setUserAlertList((prev) => {
         return prev.filter((item, index) => index !== 0);
       });
-    }, 3000);
+    }, DELAY.THREE_SEC);
 
     return () => clearInterval(timerId);
   }, [userAlertList]);
@@ -71,22 +75,22 @@ const GameContainer = () => {
           setSeconds(59);
         }
       }
-    }, 1000);
+    }, DELAY.ONE_SEC);
 
     return () => clearTimeout(timerId);
   }, [seconds]);
 
   const matchPhotoToKeyword = async (dataUri) => {
-    if (gamePhase === 'quiz') return;
+    if (gamePhase === GAME_PHASE.QUIZ) return;
 
     const response = await awsRekognition.detectLabels(dataUri);
-    // const result = await awsRekognition.compareLabels({
-    //   keyword: quizList[gameIndex].keyword,
-    //   response,
-    // });
-    const result = true;
+    const result = await awsRekognition.compareLabels({
+      keyword: quizList[gameIndex].keyword,
+      response,
+    });
+
     if (result) {
-      setGamePhase('quiz');
+      setGamePhase(GAME_PHASE.QUIZ);
       setIsCardShowing(true);
       setResultMessage('');
       setRecognizedKeywordList([]);
@@ -105,7 +109,7 @@ const GameContainer = () => {
     if (!isCorrectAnswer) {
       setResultMessage('땡! 다시!🙅‍♀️');
       setUserAnswer('');
-      setGamePhase('quiz');
+      setGamePhase(GAME_PHASE.QUIZ);
       return;
     }
 
@@ -125,7 +129,7 @@ const GameContainer = () => {
         return;
       }
 
-      setGamePhase('keyword');
+      setGamePhase(GAME_PHASE.KEYWORD);
       setIsCardShowing(true);
       setResultMessage('');
       setUserAnswer('');
@@ -155,7 +159,7 @@ const GameContainer = () => {
           <Popup
             className='hintPopup'
             content={
-              gamePhase === 'quiz'
+              gamePhase === GAME_PHASE.QUIZ
                 ? quizList[gameIndex]?.hint
                 : '아직 기다려요!'
             }

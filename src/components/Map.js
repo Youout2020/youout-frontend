@@ -1,17 +1,22 @@
 /* global kakao */
 import React, { useEffect, useState } from 'react';
-import styles from './Map.module.scss';
 import Button from './Button';
+import { getUserLocation } from '../utils/index';
 import { pageName } from '../constants/page';
+import PropTypes from 'prop-types';
+import styles from './Map.module.scss';
 
 const Map = ({ setPage, gameInfo, setGameInfo }) => {
-  // user 정보 다시 가져오기
-  const [ currentCoords, setCurrentCoords ] = useState({
-    lat: 37.5058543,
-    lng: 127.0569843,
-  });
+  const [ currentCoords, setCurrentCoords ] = useState({ lat: 0, lng: 0 });
   const { lat, lng } = currentCoords;
   const [ address, setAddress ] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const { lat, lng } = await getUserLocation();
+      setCurrentCoords({ lat, lng });
+    })();
+  }, []);
 
   useEffect(() => {
     const container = document.getElementById('map');
@@ -67,6 +72,12 @@ const Map = ({ setPage, gameInfo, setGameInfo }) => {
       <Button className='basicButton' text='선택' onClick={handleSelectButton} />
     </div>
   );
+};
+
+Map.propTypes = {
+  setPage: PropTypes.func.isRequired,
+  gameInfo: PropTypes.object.isRequired,
+  setGameInfo: PropTypes.func.isRequired,
 };
 
 export default Map;

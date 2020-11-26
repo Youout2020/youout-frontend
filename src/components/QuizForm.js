@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Input from './Input';
 import Button from './Button';
 import { validateLength, validateSpace } from '../utils/validation';
+import PropTypes from 'prop-types';
 import styles from './NewGameForm.module.scss';
 
 const QuizForm = ({
@@ -135,6 +136,15 @@ const QuizForm = ({
       />
     </div>
   );
+};
+
+QuizForm.propTypes = {
+  index: PropTypes.number.isRequired,
+  setPage: PropTypes.func.isRequired,
+  quizList: PropTypes.array.isRequired,
+  setQuizList: PropTypes.func.isRequired,
+  validationMessage: PropTypes.object.isRequired,
+  setValidationMessage: PropTypes.func.isRequired,
 };
 
 export default QuizForm;

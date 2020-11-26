@@ -1,7 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './GameRoom.module.scss';
 
-const GameRoom = ({ id, isPlaying, name, setTarget, userCount, joinWaitingRoom }) => {
+const GameRoom = ({
+  id,
+  isPlaying,
+  name,
+  setTarget,
+  userCount,
+  joinWaitingRoom
+}) => {
   return (
     <div
       className={`${styles.container} ${(userCount > 0 && !isPlaying) ? styles.playingRoom : ''} ${isPlaying ? styles.playingRoom : ''}`}
@@ -19,6 +27,15 @@ const GameRoom = ({ id, isPlaying, name, setTarget, userCount, joinWaitingRoom }
       </div>
     </div>
   );
+};
+
+GameRoom.propTypes = {
+  id: PropTypes.string.isRequired,
+  isPlaying: PropTypes.bool.isRequired,
+  name: PropTypes.string.isRequired,
+  setTarget: PropTypes.func,
+  userCount: PropTypes.number.isRequired,
+  joinWaitingRoom: PropTypes.func.isRequired,
 };
 
 export default GameRoom;
