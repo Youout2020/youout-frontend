@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Header from '../components/Header';
+import Loading from '../components/Loading';
 import GameList from '../components/GameList';
-import HEADER_TITLE from '../constants/headerTitle';
 import {
   loadGames,
   loadMoreGames,
@@ -12,10 +12,9 @@ import {
   loadPlayingGames,
   joinGame,
 } from '../reducer/game';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { setRoute } from '../reducer/route';
-import Loading from '../components/Loading';
 import { getUserLocation } from '../utils';
+import HEADER_TITLE from '../constants/headerTitle';
 
 const GameListContainer = () => {
   const {
@@ -27,9 +26,9 @@ const GameListContainer = () => {
     playingGameList,
   } = useSelector((state) => state.game);
   const { info } = useSelector((state) => state.user);
-  const [ target, setTarget ] = useState(null);
-  const [ address, setAddress ] = useState('');
   const dispatch = useDispatch();
+  const [ observedTarget, setObservedTarget ] = useState(null);
+  const [ address, setAddress ] = useState('');
 
   const handleJoinWaitingRoom = (id) => dispatch(joinGame(id));
   const handleFilter = () => dispatch(toggleIsSelected());
@@ -41,16 +40,16 @@ const GameListContainer = () => {
   };
 
   useEffect(() => {
-    if (!target) return;
+    if (!observedTarget) return;
 
     let observer;
-    if (target) {
+    if (observedTarget) {
       observer = new IntersectionObserver(onIntersect, { threshold: [0.1] });
-      observer.observe(target);
+      observer.observe(observedTarget);
     }
 
-    return () => observer.unobserve(target);
-  }, [target, hasNextPage]);
+    return () => observer.unobserve(observedTarget);
+  }, [observedTarget, hasNextPage]);
 
   useEffect(() => {
     (async () => {
@@ -82,7 +81,7 @@ const GameListContainer = () => {
             <GameList
               gameList={docs}
               playingGameList={playingGameList}
-              setTarget={setTarget}
+              setObservedTarget={setObservedTarget}
               joinWaitingRoom={handleJoinWaitingRoom}
               address={address}
               isSelected={isSelected}

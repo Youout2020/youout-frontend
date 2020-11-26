@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import NewGameForm from '../components/NewGameForm';
+import PropTypes from 'prop-types';
 
 const NewGame = ({ onCreateNewGame }) => {
   return (
@@ -8,6 +9,10 @@ const NewGame = ({ onCreateNewGame }) => {
       <NewGameForm onCreateNewGame={onCreateNewGame} />
     </Header>
   );
+};
+
+NewGame.propTypes = {
+  onCreateNewGame: PropTypes.func.isRequired,
 };
 
 export default NewGame;
