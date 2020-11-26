@@ -1,7 +1,7 @@
 import { createAction, createReducer, createAsyncThunk } from '@reduxjs/toolkit';
 import { getUserLocation } from '../utils';
 import api from '../utils/api';
-import { socket, getPlayingGames, listenGetGames } from '../utils/socket';
+import { getPlayingGames, listenGetGames, offPlayingGames } from '../utils/socket';
 import { setRoute } from '../reducer/route';
 
 export const UPDATE_GAME = 'gameReducer/UPDATE_GAME';
@@ -26,10 +26,10 @@ export const setPlayingGames = createAction(SET_PLAYING_GAMES);
 export const loadPlayingGames = createAsyncThunk(
   LOAD_PLAYING_GAMES,
   async (payload, { dispatch }) => {
-    socket.on('GET_PLAYING_GAMES', (games) => {
+    listenGetGames((games) => {
       dispatch(setPlayingGames(games));
     });
-    socket.emit('GET_PLAYING_GAMES');
+    getPlayingGames();
   },
 );
 
@@ -90,26 +90,26 @@ export const deleteGame = createAsyncThunk(
 export const joinGame = createAsyncThunk(
   JOIN_GAME,
   async (id, { dispatch }) => {
-    socket.on('GET_PLAYING_GAMES', (games) => {
+    listenGetGames((games) => {
       const game = games.filter((game) => game._id === id)[0];
 
       if (game && game.isPlaying) {
         alert('게임이 시작했다!');
-        socket.off('GET_PLAYING_GAMES');
+        offPlayingGames();
         return;
       }
 
       if (game && game.users.length >= 4) {
         alert('사람이 꽉 찼다!');
-        socket.off('GET_PLAYING_GAMES');
+        offPlayingGames();
         return;
       }
 
       dispatch(setRoute(`/games/${id}`));
-      socket.off('GET_PLAYING_GAMES');
+      offPlayingGames();
     });
 
-    socket.emit('GET_PLAYING_GAMES');
+    getPlayingGames();
   },
 );
 

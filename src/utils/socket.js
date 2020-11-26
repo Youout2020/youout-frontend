@@ -1,8 +1,9 @@
 import io from 'socket.io-client';
 
-export const socket = io(process.env.NODE_ENV !== 'production' ? '' : 'https://api.youout.site');
+const socket = io(process.env.NODE_ENV !== 'production' ? '' : 'https://api.youout.site');
 
-const SOCKET = {
+//export for test
+export const SOCKET = {
   userJoin: 'USER_JOIN',
   userLeave: 'USER_LEAVE',
   gameStart: 'GAME_START',
@@ -58,6 +59,10 @@ export const listenUpdateData = (callback) => {
   socket.on(SOCKET.gameUpdate, (gameInfo) => {
     callback(gameInfo);
   });
+};
+
+export const offPlayingGames = () => {
+  socket.off(SOCKET.getPlayingGames);
 };
 
 export const disconnectRoom = (data) => {

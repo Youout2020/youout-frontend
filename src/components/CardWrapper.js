@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import Card, { Popup } from './Card';
 import ToastMessage from './ToastMessage';
+import { DELAY, GAME_PHASE } from '../constants/game';
 import PropTypes from 'prop-types';
 import styles from './CardWrapper.module.scss';
 
 const CardWrapper = ({
-  currentQuiz,
+  keyword,
+  quiz,
   gamePhase,
   userAnswer,
   resultMessage,
@@ -13,15 +15,13 @@ const CardWrapper = ({
   isCardShowing,
   onSetCardShowing,
   onSubmitAnswer,
-  onAnswerChange,
+  onSetAnswer,
   recognizedKeywordList,
 }) => {
-  const { keyword, quiz } = currentQuiz;
-
   useEffect(() => {
     const timerId = setTimeout(() => {
       onSetCardShowing(false);
-    }, 4000);
+    }, DELAY.THREE_SEC);
 
     return () => clearTimeout(timerId);
   }, [isCardShowing]);
@@ -29,7 +29,7 @@ const CardWrapper = ({
   return (
     <div className={styles.container}>
       {
-        gamePhase === 'keyword'
+        gamePhase === GAME_PHASE.KEYWORD
           ? isCardShowing
             ? <Card
                 gamePhase={gamePhase}
@@ -43,9 +43,11 @@ const CardWrapper = ({
                 <div className={styles.keywordContainer}>
                   {
                     recognizedKeywordList.length > 0 &&
-                    recognizedKeywordList.map((keyword, index) => {
-                      return <div key={index} className={styles.keyword}>{keyword}</div>;
-                    })
+                    recognizedKeywordList.map((keyword, index) => (
+                      <div key={index} className={styles.keyword}>
+                        {keyword}
+                      </div>
+                    ))
                   }
                 </div>
               </Popup>
@@ -60,23 +62,21 @@ const CardWrapper = ({
                 type='text'
                 placeholder='요기에 정답✍️'
                 value={userAnswer}
-                onChange={onAnswerChange}
+                onChange={onSetAnswer}
               />
             </Card>
       }
       <div className={styles.toastContainer}>
         {
           userAlertList.length > 0 &&
-          userAlertList.map((user, index) => {
-            return (
-              <ToastMessage
-                key={index}
-                username={user.username}
-                gameIndex={user.gameIndex + 1}
-                color={user.color}
-              />
-            );
-          })
+          userAlertList.map((user, index) => (
+            <ToastMessage
+              key={index}
+              username={user.username}
+              gameIndex={user.gameIndex + 1}
+              color={user.color}
+            />
+          ))
         }
       </div>
     </div>
@@ -84,7 +84,8 @@ const CardWrapper = ({
 };
 
 CardWrapper.propTypes = {
-  currentQuiz: PropTypes.object.isRequired,
+  keyword: PropTypes.string.isRequired,
+  quiz: PropTypes.string.isRequired,
   gamePhase: PropTypes.string.isRequired,
   userAnswer: PropTypes.string.isRequired,
   resultMessage: PropTypes.string.isRequired,
@@ -92,7 +93,7 @@ CardWrapper.propTypes = {
   isCardShowing: PropTypes.bool.isRequired,
   onSetCardShowing: PropTypes.func.isRequired,
   onSubmitAnswer: PropTypes.func.isRequired,
-  onAnswerChange: PropTypes.func.isRequired,
+  onSetAnswer: PropTypes.func.isRequired,
   recognizedKeywordList: PropTypes.array.isRequired,
 };
 

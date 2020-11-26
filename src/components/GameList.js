@@ -23,9 +23,9 @@ const GameList = ({
   joinWaitingRoom,
   address,
 }) => {
+  const dispatch = useDispatch();
   const [ isSelected, setIsSelected ] = useState(true);
   const [ playingGameData, setPlayingGameData ] = useState([]);
-  const dispatch = useDispatch();
   const handleFilter = () => setIsSelected(!isSelected);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const GameList = ({
 
   return (
     <div className={styles.container}>
-      <Address address={address}/>
+      <Address address={address} />
       <Button
         className='toggleButton'
         text={isSelected ? 'All' : 'Waiting'}
@@ -52,7 +52,7 @@ const GameList = ({
         {
           !gameList.length
             ? <div className={styles.noRoomMessage}>
-                <span>방 없음🤐</span>
+                <p>방 없음🤐</p>
               </div>
             : (
                 isSelected
@@ -77,13 +77,13 @@ const GameList = ({
                   />
                 );
               })
-            }
+        }
       </div>
-            <Button
-              className='fixedButton'
-              text='방 만들기'
-              onClick={() => dispatch(setRoute('/games/new'))}
-            />
+      <Button
+        className='fixedButton'
+        text='방 만들기'
+        onClick={() => dispatch(setRoute('/games/new'))}
+      />
     </div>
   );
 };

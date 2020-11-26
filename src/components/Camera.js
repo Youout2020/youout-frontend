@@ -15,6 +15,7 @@ const Camera = ({ matchPhotoToKeyword }) => {
           isImageMirror={false}
           idealFacingMode={FACING_MODES.ENVIRONMENT}
           imageType={IMAGE_TYPES.JPG}
+          imageCompression={0.5}
         />
       }
     </div>

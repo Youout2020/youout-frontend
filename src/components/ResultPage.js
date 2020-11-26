@@ -15,22 +15,30 @@ const ResultPage = ({ users, renderHome }) => {
       <div className={style.container}>
         <div className={style.title}>기록</div>
         <ul className={style.players}>
-          {users.map((user) => {
-            const minutes = convertMsToMinutes(user.clearTime);
-            const seconds = convertMsToSeconds(user.clearTime);
-            const formated = convertTimeFormat(minutes, seconds);
+          {
+            users.map((user) => {
+              const minutes = convertMsToMinutes(user.clearTime) - 1;
+              const seconds = convertMsToSeconds(user.clearTime);
+              const formated = convertTimeFormat(minutes, seconds);
 
-            return (
-              <li key={user._id}>
-                <img src={user.image} className={style.userIcon} />
-                {Number.isNaN(minutes)
-                  ? `${user.username} 아직 탈출중임둥!`
-                  : `${user.username} ${formated} 남기고 탈출 했슴둥!`}
-              </li>
-            );
-          })}
+              return (
+                <li key={user._id}>
+                  <img src={user.image} className={style.userIcon} />
+                  {
+                    Number.isNaN(minutes)
+                      ? `${user.username} 아직 탈출중임둥!`
+                      : `${user.username} ${formated} 남기고 탈출 했슴둥!`
+                  }
+                </li>
+              );
+            })
+          }
         </ul>
-        <Button className='basicButton' text='홈으로' onClick={renderHome} />
+        <Button
+          className='basicButton'
+          text='홈으로'
+          onClick={renderHome}
+        />
       </div>
     </Header>
   );
