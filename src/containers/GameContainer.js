@@ -86,7 +86,7 @@ const GameContainer = () => {
     const response = await awsRekognition.detectLabels(dataUri);
     const result = await awsRekognition.compareLabels({
       keyword: quizList[gameIndex].keyword,
-      response,
+      data: response,
     });
 
     if (result) {
