@@ -8,7 +8,6 @@ import GameList from '../components/GameList';
 import {
   loadGames,
   loadMoreGames,
-  toggleIsSelected,
   loadPlayingGames,
   joinGame,
 } from '../reducer/game';
@@ -22,29 +21,26 @@ const GameListContainer = () => {
     hasNextPage,
     isLoading,
     error,
-    isSelected,
     playingGameList,
   } = useSelector((state) => state.game);
   const { info } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [ observedTarget, setObservedTarget ] = useState(null);
-  const [ address, setAddress ] = useState('');
+  const [ currentAddress, setCurrentAddress ] = useState('');
 
   const handleJoinWaitingRoom = (id) => dispatch(joinGame(id));
-  const handleFilter = () => dispatch(toggleIsSelected());
-
-  const onIntersect = async ([{ isIntersecting }]) => {
-    if (isIntersecting && hasNextPage) {
-      dispatch(loadMoreGames());
-    }
-  };
 
   useEffect(() => {
     if (!observedTarget) return;
 
     let observer;
     if (observedTarget) {
-      observer = new IntersectionObserver(onIntersect, { threshold: [0.1] });
+      observer = new IntersectionObserver(async ([{ isIntersecting }]) => {
+        if (isIntersecting && hasNextPage) {
+          dispatch(loadMoreGames());
+        }
+      }, { threshold: [0.1] });
+
       observer.observe(observedTarget);
     }
 
@@ -58,7 +54,7 @@ const GameListContainer = () => {
       const coord = new kakao.maps.LatLng(lat, lng);
       geocoder.coord2Address(coord.getLng(), coord.getLat(), (result, status) => {
         if (status === kakao.maps.services.Status.OK) {
-          setAddress(result[0].address.address_name);
+          setCurrentAddress(result[0].address.address_name);
         }
       });
     })();
@@ -75,19 +71,19 @@ const GameListContainer = () => {
   return (
     <>
       {error}
-      {isLoading
-        ? <Loading />
-        : <Header title={HEADER_TITLE.games}>
-            <GameList
-              gameList={docs}
-              playingGameList={playingGameList}
-              setObservedTarget={setObservedTarget}
-              joinWaitingRoom={handleJoinWaitingRoom}
-              address={address}
-              isSelected={isSelected}
-              handleFilter={handleFilter}
-            />
-          </Header>}
+      {
+        isLoading
+          ? <Loading />
+          : <Header title={HEADER_TITLE.games}>
+              <GameList
+                gameList={docs}
+                playingGameList={playingGameList}
+                address={currentAddress}
+                setTarget={setObservedTarget}
+                joinWaitingRoom={handleJoinWaitingRoom}
+              />
+            </Header>
+      }
     </>
   );
 };

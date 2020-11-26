@@ -11,11 +11,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const listenRedirect = async () => {
-  try {
-    return await firebase.auth().getRedirectResult();
-  } catch (err) {
-    console.error(err);
-  }
+  return await firebase.auth().getRedirectResult();
 };
 
 const googleLogin = () => {

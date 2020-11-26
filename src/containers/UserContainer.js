@@ -4,15 +4,15 @@ import { Switch, Route } from 'react-router-dom';
 
 import Header from '../components/Header';
 import UserPage from '../components/UserPage';
-import HistoryPage from '../components/HistoryPage';
+import DetailPage from '../components/DetailPage';
 import HistoryDetail from '../components/HistoryDetail';
-import GamePage from '../components/GamePage';
 import GameDetail from '../components/GameDetail';
 import NewGameForm from '../components/NewGameForm';
 import { loadUserPage } from '../reducer/user';
 import { updateGame, deleteGame } from '../reducer/game';
 import { setRoute } from '../reducer/route';
 import api from '../utils/api';
+import { sliceDocs } from '../utils';
 import HEADER_TITLE from '../constants/headerTitle';
 
 const UserContainer = () => {
@@ -20,12 +20,13 @@ const UserContainer = () => {
     info,
     histories,
     games,
-    isInitializedUserPage
+    isInitializedUserPage,
   } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const handleUpdateGame = (body, gameId) => dispatch(updateGame({ body, gameId }));
   const handleDeleteGame = () => dispatch(deleteGame({ gameId }));
   const handleRenderGameForm = () => dispatch(setRoute(`/user/games/${gameId}/update`));
+
   const [gameId, setGameId] = useState('');
   const [quizList, setQuizList] = useState([]);
   const [gameInfo, setGameInfo] = useState({
@@ -35,13 +36,18 @@ const UserContainer = () => {
     location: {},
     timeLimit: '',
   });
-  const [historyInfo, setHistoryInfo] = useState({ game: { name: '' }, users: [] });
+  const [historyInfo, setHistoryInfo] = useState({
+    game: { name: '' },
+    users: [],
+  });
+
   const navigation = {
     moreHistories: () => dispatch(setRoute('/user/histories')),
     moreGames: () => dispatch(setRoute('/user/games')),
     showDetailGame: async (gameId) => {
       const path = `/games/${gameId}`;
       const response = await api.get({ path });
+
       setGameId(gameId);
       setGameInfo(response);
       setQuizList(response.quizList);
@@ -50,6 +56,7 @@ const UserContainer = () => {
     showDetailHistory: async (historyId) => {
       const path = `/histories/${historyId}`;
       const response = await api.get({ path });
+
       setHistoryInfo(response);
       dispatch(setRoute(`/user/histories/${historyId}`));
     },
@@ -71,16 +78,24 @@ const UserContainer = () => {
               image={info.image}
               name={info.name}
               email={info.email}
-              histories={histories.docs.slice(0, 4)}
-              games={games.docs.slice(0, 4)}
+              histories={sliceDocs(histories.docs, 0, 4)}
+              games={sliceDocs(games.docs, 0, 4)}
               navigation={navigation}
             />
           </Route>
           <Route exact path='/user/histories'>
-            <HistoryPage histories={histories.docs} onClick={navigation.showDetailHistory}/>
+            <DetailPage
+              list={histories.docs}
+              onClick={navigation.showDetailHistory}
+              title='내가 플레이한 방'
+            />
           </Route>
           <Route exact path='/user/games'>
-            <GamePage games={games.docs} onClick={navigation.showDetailGame}/>
+            <DetailPage
+              list={games.docs}
+              onClick={navigation.showDetailGame}
+              title='내가 만든 방'
+            />
           </Route>
           <Route exact path='/user/games/:game_id'>
             <GameDetail

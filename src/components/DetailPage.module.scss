@@ -1,8 +1,9 @@
 @import '../styles/theme.module.scss';
 
-.HistoryPage {
+.detailContainer {
   display: flex;
   flex-direction: column;
+  height: 100vh;
   background-color: $main-color;
 
   .text {
@@ -13,7 +14,7 @@
     font-size: $font-size-3;
   }
 
-  .history {
+  .list {
     li {
       display: flex;
       align-items: center;
