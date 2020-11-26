@@ -3,11 +3,13 @@
 .GamePage {
   display: flex;
   flex-direction: column;
-  height: 90vh;
   background-color: $main-color;
 
   .text {
     margin: 20px;
+    background-color: $yellow;
+    border-radius: 20px;
+    text-align: center;
     font-size: $font-size-3;
   }
 

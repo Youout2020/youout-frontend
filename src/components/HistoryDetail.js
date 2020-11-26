@@ -1,10 +1,11 @@
 import React from 'react';
-import style from './HistoryDetail.module.scss';
 import {
   convertMsToMinutes,
   convertMsToSeconds,
   convertTimeFormat,
 } from '../utils';
+import PropTypes from 'prop-types';
+import style from './HistoryDetail.module.scss';
 
 const HistoryDetail = ({ historyInfo }) => {
   return (
@@ -29,6 +30,10 @@ const HistoryDetail = ({ historyInfo }) => {
       </ul>
     </div>
   );
+};
+
+HistoryDetail.propTypes = {
+  historyInfo: PropTypes.object.isRequired,
 };
 
 export default HistoryDetail;

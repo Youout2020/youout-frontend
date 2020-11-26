@@ -1,8 +1,9 @@
 import React from 'react';
-import { convertTimeFormat } from '../utils/index';
-import styles from './GameHeader.module.scss';
 import { FaDoorClosed } from 'react-icons/fa';
 import { ImKey } from 'react-icons/im';
+import { convertTimeFormat } from '../utils/index';
+import PropTypes from 'prop-types';
+import styles from './GameHeader.module.scss';
 
 const GameHeader = ({
   minutes,
@@ -25,6 +26,14 @@ const GameHeader = ({
       </div>
     </div>
   );
+};
+
+GameHeader.propTypes = {
+  minutes: PropTypes.number.isRequired,
+  seconds: PropTypes.number.isRequired,
+  onHintToggle: PropTypes.func.isRequired,
+  onCancelToggle: PropTypes.func.isRequired,
+  children: PropTypes.node,
 };
 
 export default GameHeader;

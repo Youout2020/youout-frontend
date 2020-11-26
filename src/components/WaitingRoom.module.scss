@@ -9,31 +9,6 @@
   background-color: $main-color;
   box-shadow: $box-shadow-1;
 
-  @keyframes pulse {
-    0% {
-      opacity: 100%;
-    }
-
-    50% {
-      opacity: 0%;
-    }
-
-    100% {
-      opacity: 100%;
-    }
-  }
-
-  .counter {
-    position: fixed;
-    top: 40%;
-    border-radius: 50%;
-    color: $white;
-    font-size: $font-size-7;
-    text-shadow: 2px 2px 2px gray;
-    animation: pulse 1s infinite;
-    -webkit-animation: pulse 1s infinite;
-  }
-
   .users {
     margin: 5vh 0;
     padding: 3vh 0;
@@ -77,4 +52,16 @@
     color: $brown;
     box-shadow: $box-shadow-2;
   }
+}
+
+.counter {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  color: $white;
+  font-size: $font-size-7;
+  text-shadow: 2px 2px 2px gray;
+  z-index: 999;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import styles from './UserPage.module.scss';
 
 const ImageBox = ({ name, image, email }) => {
@@ -15,7 +15,12 @@ const ImageBox = ({ name, image, email }) => {
   );
 };
 
-const ContentsBox = ({ boxTitle, contents, loadMore, showDetail }) => {
+const ContentsBox = ({
+  boxTitle,
+  contents,
+  loadMore,
+  showDetail
+}) => {
   return (
     <div className={styles.contentsBox}>
       <p className={styles.text}>{boxTitle}</p>
@@ -44,7 +49,12 @@ const UserPage = ({
   email,
   histories,
   games,
-  navigation: { moreHistories, moreGames, showDetailGame, showDetailHistory },
+  navigation: {
+    moreHistories,
+    moreGames,
+    showDetailGame,
+    showDetailHistory
+  },
 }) => {
   const nomalizedHistories = histories.map((history) => {
     const { _id: id, game: { name }  } = history;
@@ -77,6 +87,33 @@ const UserPage = ({
       />
     </div>
   );
+};
+
+ImageBox.propTypes = {
+  name: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+};
+
+ContentsBox.propTypes = {
+  boxTitle: PropTypes.string.isRequired,
+  contents: PropTypes.array.isRequired,
+  loadMore: PropTypes.func.isRequired,
+  showDetail: PropTypes.func.isRequired,
+};
+
+UserPage.propTypes = {
+  image: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  histories: PropTypes.array.isRequired,
+  games: PropTypes.array.isRequired,
+  navigation: PropTypes.shape({
+    moreHistories: PropTypes.func.isRequired,
+    moreGames: PropTypes.func.isRequired,
+    showDetailGame: PropTypes.func.isRequired,
+    showDetailHistory: PropTypes.func.isRequired,
+  }),
 };
 
 export default UserPage;

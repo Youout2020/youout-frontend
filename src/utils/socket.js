@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-export const socket = io.connect('', { secure: true });
+export const socket = io(process.env.NODE_ENV !== 'production' ? '' : 'https://api.youout.site');
 
 const SOCKET = {
   userJoin: 'USER_JOIN',
@@ -9,6 +9,11 @@ const SOCKET = {
   gameUpdate: 'GAME_UPDATE',
   gameEnd: 'GAME_END',
   gameComplete: 'GAME_COMPLETE',
+  getPlayingGames: 'GET_PLAYING_GAMES',
+};
+
+export const getPlayingGames = (data) => {
+  socket.emit(SOCKET.getPlayingGames, data);
 };
 
 export const gameStart = (data) => {
@@ -37,6 +42,12 @@ export const listenGameStart = (callback) => {
   });
 };
 
+export const listenGetGames = (callback) => {
+  socket.on(SOCKET.getPlayingGames, (gameInfo) => {
+    callback(gameInfo);
+  });
+};
+
 export const listenJoinUser = (callback) => {
   socket.on(SOCKET.userJoin, (users) => {
     callback(users);
@@ -54,6 +65,7 @@ export const disconnectRoom = (data) => {
   socket.off(SOCKET.gameStart);
   socket.off(SOCKET.gameUpdate);
   socket.off(SOCKET.userLeave);
+  socket.off(SOCKET.getPlayingGames);
 
   socket.emit(SOCKET.userLeave, data);
 };

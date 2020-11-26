@@ -60,10 +60,9 @@
 }
 
 .popupButton {
+  @include buttonBase();
   margin-left: 5px;
   padding: 1vh 5vw;
-  border: none;
-  border-radius: 30px;
   background-color: $brown;
   color: $light-beige;
   font-size: $font-size-1;

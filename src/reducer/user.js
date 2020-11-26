@@ -7,9 +7,11 @@ export const INIT_USER = 'userReducer/INIT_USER';
 export const INIT_USER_PAGE = 'userReducer/INIT_USER_PAGE';
 export const LOAD_USER = 'userReducer/LOAD_USER';
 export const LOAD_USER_PAGE = 'userReducer/LOAD_USER_PAGE';
+export const SET_IS_NATIVE = 'userReducer/SET_IS_NATIVE';
 
 export const initUser = createAction(INIT_USER);
 export const initUserPage = createAction(INIT_USER_PAGE);
+export const setIsNative = createAction(SET_IS_NATIVE);
 
 export const loadUser = createAsyncThunk(
   LOAD_USER,
@@ -21,13 +23,13 @@ export const loadUser = createAsyncThunk(
     } else {
       const { user } = await firebase.listenRedirect();
 
-      if (!user) return dispatch(setRoute('/login'));
+      if (!user) return dispatch(setRoute('/'));
 
       const { email, displayName, photoURL } = user;
       const body = { email, name: displayName, image: photoURL };
-      const response = await api.post({ path: 'login', body });
+      const response = await api.post({ path: '/login', body });
 
-      document.cookie = `token=${response.token}; secure`;
+      localStorage.setItem('token', response.token);
       dispatch(initUser(response.user));
       dispatch(setRoute('/games'));
     }
@@ -65,6 +67,7 @@ const initState = {
   error: '',
   isInitialized: false,
   isInitializedUserPage: false,
+  isNative: false,
 };
 
 const pending = loadUser.pending ||
@@ -85,6 +88,9 @@ export default createReducer(initState, {
     state.games = payload.games;
     state.histories = payload.histories;
     state.isInitializedUserPage = true;
+  },
+  [SET_IS_NATIVE]: (state, action) => {
+    state.isNative = action.payload;
   },
   [pending]: (state, action) => {
     state.isLoading = true;

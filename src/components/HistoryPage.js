@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import styles from './HistoryPage.module.scss';
 
 const Text = ({ text }) => {
@@ -25,6 +25,20 @@ const HistoryPage = ({ histories, onClick }) => {
       <History histories={histories} onClick={onClick}/>
     </div>
   );
+};
+
+Text.propTypes = {
+  text: PropTypes.string.isRequired,
+};
+
+History.propTypes = {
+  histories: PropTypes.array.isRequired,
+  onClick: PropTypes.func.isRequired,
+};
+
+HistoryPage.propTypes = {
+  histories: PropTypes.array.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default HistoryPage;

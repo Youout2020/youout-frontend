@@ -1,9 +1,10 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import styles from './Header.module.scss';
 import { FaHamburger } from 'react-icons/fa';
 import { RiUser5Fill } from 'react-icons/ri';
 import { setRoute } from '../reducer/route';
+import PropTypes from 'prop-types';
+import styles from './Header.module.scss';
 
 const Header = ({ title, children }) => {
   const dispatch = useDispatch();
@@ -20,6 +21,11 @@ const Header = ({ title, children }) => {
       </div>
     </>
   );
+};
+
+Header.proptypes = {
+  title: PropTypes.string.isRequired,
+  children: PropTypes.element,
 };
 
 export default Header;

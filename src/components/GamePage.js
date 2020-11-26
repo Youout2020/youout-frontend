@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import styles from './GamePage.module.scss';
 
 const Text = ({ text }) => {
@@ -33,6 +33,21 @@ const GamePage = ({ games, onClick }) => {
       <Games games={games} onClick={onClick}/>
     </div>
   );
+};
+
+Text.propTypes = {
+  text: PropTypes.string.isRequired,
+};
+
+Game.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+};
+
+GamePage.propTypes = {
+  games: PropTypes.array.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default GamePage;

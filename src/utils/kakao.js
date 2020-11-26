@@ -1,7 +1,6 @@
-import api from './api';
-
 export const translate = async (word) => {
   const encodedWord = encodeURI(word);
+
   const url = `https://dapi.kakao.com/v2/translation/translate?query=${encodedWord}&src_lang=kr&target_lang=en`;
   const { REACT_APP_KAKAO_API_KEY } = process.env;
   const result = await fetch(

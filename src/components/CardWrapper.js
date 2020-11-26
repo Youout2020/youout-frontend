@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Card, { Popup } from './Card';
 import ToastMessage from './ToastMessage';
+import PropTypes from 'prop-types';
 import styles from './CardWrapper.module.scss';
 
 const CardWrapper = ({
@@ -34,8 +35,11 @@ const CardWrapper = ({
                 gamePhase={gamePhase}
                 title={keyword}
               />
-            : <Popup className='keywordPopup' content={keyword}>
-                <span>{resultMessage}</span>
+            : <Popup
+                className='keywordPopup'
+                content={keyword}
+                resultMessage={resultMessage}
+              >
                 <div className={styles.keywordContainer}>
                   {
                     recognizedKeywordList.length > 0 &&
@@ -77,6 +81,19 @@ const CardWrapper = ({
       </div>
     </div>
   );
+};
+
+CardWrapper.propTypes = {
+  currentQuiz: PropTypes.object.isRequired,
+  gamePhase: PropTypes.string.isRequired,
+  userAnswer: PropTypes.string.isRequired,
+  resultMessage: PropTypes.string.isRequired,
+  userAlertList: PropTypes.array.isRequired,
+  isCardShowing: PropTypes.bool.isRequired,
+  onSetCardShowing: PropTypes.func.isRequired,
+  onSubmitAnswer: PropTypes.func.isRequired,
+  onAnswerChange: PropTypes.func.isRequired,
+  recognizedKeywordList: PropTypes.array.isRequired,
 };
 
 export default CardWrapper;

@@ -2,41 +2,45 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import Camera from '../components/Camera';
 import GameHeader from '../components/GameHeader';
-import { convertMsToMinutes, convertTimeToMs } from '../utils/index';
+import Camera from '../components/Camera';
 import CardWrapper from '../components/CardWrapper';
-import awsRekognition from '../utils/aws';
-import { updateData, listenUpdateData, gameComplete } from '../utils/socket';
 import { Popup } from '../components/Card';
 import Button from '../components/Button';
 import { setRoute } from '../reducer/route';
 import { disconnectGame } from '../reducer/currentGame';
+import awsRekognition from '../utils/aws';
+import { convertMsToMinutes, convertTimeToMs } from '../utils/index';
+import { updateData, listenUpdateData, gameComplete } from '../utils/socket';
+import { GAME_PHASE, DELAY } from '../constants/game';
 
 const GameContainer = () => {
-  const dispatch = useDispatch();
   const gameInfo = useSelector((state) => state.currentGame);
-  const { gameInfo: { quizList, timeLimit }, users } = gameInfo;
+  const {
+    gameInfo: { quizList, timeLimit },
+    users,
+  } = gameInfo;
   const { id: userId } = useSelector((state) => state.user.info);
+  const dispatch = useDispatch();
   const { game_id } = useParams();
 
   const [ minutes, setMinutes ] = useState(0);
-  const [ seconds, setSeconds ] = useState(10);
+  const [ seconds, setSeconds ] = useState(59);
 
   const [ gameIndex, setGameIndex ] = useState(0);
-  const [ gamePhase, setGamePhase ] = useState('keyword');
+  const [ gamePhase, setGamePhase ] = useState(GAME_PHASE.KEYWORD);
   const [ userAnswer, setUserAnswer ] = useState('');
   const [ resultMessage, setResultMessage ] = useState('');
   const [ userAlertList, setUserAlertList ] = useState([]);
   const [ isCardShowing, setIsCardShowing ] = useState(true);
   const [ isHintShowing, setIsHintShowing ] = useState(false);
   const [ isExitShowing, setIsExitShowing ] = useState(false);
+  const [ isClickedAnswer, setIsClickedAnswer ] = useState(false);
   const [ recognizedKeywordList, setRecognizedKeywordList ] = useState([]);
 
   useEffect(() => {
     setGameIndex(0);
-    setMinutes(5);
-    // setMinutes(convertMsToMinutes(timeLimit));
+    setMinutes(convertMsToMinutes(timeLimit));
   }, []);
 
   useEffect(() => {
@@ -51,7 +55,7 @@ const GameContainer = () => {
       setUserAlertList((prev) => {
         return prev.filter((item, index) => index !== 0);
       });
-    }, 3000);
+    }, DELAY.THREE_SEC);
 
     return () => clearInterval(timerId);
   }, [userAlertList]);
@@ -59,40 +63,34 @@ const GameContainer = () => {
   useEffect(() => {
     const timerId = setTimeout(() => {
       if (seconds > 0) setSeconds((prev) => prev - 1);
+
       if (seconds === 0) {
-        switch (minutes) {
-          case 0 :
-            dispatch(disconnectGame({ gameId: game_id }));
-            dispatch(setRoute('/games'));
-            clearTimeout(timerId);
-            break;
-          case 1:
-            //TODO: 종료 1분 전 알림 (CSS 시 적용 예정)
-            setMinutes((prev) => prev - 1);
-            setSeconds(59);
-            break;
-          default:
-            setMinutes((prev) => prev - 1);
-            setSeconds(59);
+        if (minutes === 0) {
+          dispatch(disconnectGame({ gameId: game_id }));
+          dispatch(setRoute('/games'));
+          clearTimeout(timerId);
+          return;
+        } else {
+          setMinutes((prev) => prev - 1);
+          setSeconds(59);
         }
       }
-    }, 1000);
+    }, DELAY.ONE_SEC);
 
     return () => clearTimeout(timerId);
   }, [seconds]);
 
   const matchPhotoToKeyword = async (dataUri) => {
-    if (gamePhase === 'quiz') return;
+    if (gamePhase === GAME_PHASE.QUIZ) return;
 
     const response = await awsRekognition.detectLabels(dataUri);
     const result = await awsRekognition.compareLabels({
-      keyword: 'Accessories',
-      // keyword: quizList[gameIndex].keyword,
-      response,
+      keyword: quizList[gameIndex].keyword,
+      data: response,
     });
 
     if (result) {
-      setGamePhase('quiz');
+      setGamePhase(GAME_PHASE.QUIZ);
       setIsCardShowing(true);
       setResultMessage('');
       setRecognizedKeywordList([]);
@@ -104,17 +102,20 @@ const GameContainer = () => {
   };
 
   const handleSubmitAnswer = () => {
+    if (isClickedAnswer) return;
+
     const isCorrectAnswer = userAnswer.trim() === quizList[gameIndex].answer;
 
     if (!isCorrectAnswer) {
       setResultMessage('땡! 다시!🙅‍♀️');
       setUserAnswer('');
-      setGamePhase('quiz');
+      setGamePhase(GAME_PHASE.QUIZ);
       return;
     }
 
     setResultMessage('오~~~ 정답!🙆');
     updateData({ gameId: game_id, userId });
+    setIsClickedAnswer(true);
 
     setTimeout(() => {
       setGameIndex((prev) => prev + 1);
@@ -127,10 +128,12 @@ const GameContainer = () => {
         dispatch(setRoute(`/games/${game_id}/result`));
         return;
       }
-      setGamePhase('keyword');
+
+      setGamePhase(GAME_PHASE.KEYWORD);
       setIsCardShowing(true);
       setResultMessage('');
       setUserAnswer('');
+      setIsClickedAnswer(false);
     }, 2000);
   };
 
@@ -156,7 +159,7 @@ const GameContainer = () => {
           <Popup
             className='hintPopup'
             content={
-              gamePhase === 'quiz'
+              gamePhase === GAME_PHASE.QUIZ
                 ? quizList[gameIndex]?.hint
                 : '아직 기다려요!'
             }
