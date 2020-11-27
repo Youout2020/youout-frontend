@@ -14,6 +14,11 @@ import {
   updateCurrentGame,
 } from '../reducer/currentGame';
 import { listenUpdateData } from '../utils/socket';
+import {
+  convertMsToMinutes,
+  convertMsToSeconds,
+  convertTimeFormat,
+} from '../utils';
 
 const MASTER_INDEX = 0;
 
@@ -24,6 +29,19 @@ const WaitingContainer = () => {
   const dispatch = useDispatch();
   const [ isClickedStart, setIsClickedStart ] = useState(false);
   const isMaster = users[MASTER_INDEX] && users[MASTER_INDEX]._id === id;
+  const usersWithClearTime = users.map((user) => {
+    const minutes = convertMsToMinutes(user.clearTime) - 1;
+    const seconds = convertMsToSeconds(user.clearTime);
+    const formattedClearTime = convertTimeFormat(minutes, seconds);
+
+    let isClearUser = true;
+
+    if (Number.isNaN(minutes) || Number.isNaN(seconds)) {
+      isClearUser = false;
+    }
+
+    return { ...user, formattedClearTime, isClearUser };
+  });
 
   const handleStart = () => {
     if (isClickedStart) return;
@@ -63,7 +81,7 @@ const WaitingContainer = () => {
       </Route>
       <Route exact path='/games/:game_id/result'>
         <ResultPage
-          users={users}
+          users={usersWithClearTime}
           gameInfo={gameInfo}
           renderHome={() => dispatch(setRoute('/games'))}
         />
