@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import Card, { Popup } from './Card';
+import Card from './Card';
 
 describe('<Card />', () => {
   let utils;

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import React from 'react';
+import { render } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import Input from './Input';
 
 describe('<Input />', () => {
@@ -16,18 +17,4 @@ describe('<Input />', () => {
     expect(input).toBeInTheDocument;
     expect(input).toHaveProperty('type', 'text');
   });
-
-  // it('should change input values', () => {
-  //   const { getByPlaceholderText } = render(
-  //     <Input type='text' id='1' value='' onChange={mockFn} labelName='주소' name='address' placeholder='address' />
-  //   );
-
-  //   const input = getByPlaceholderText('address');
-  //   fireEvent.change(input, {
-  //     target: {
-  //       value: '강남구 대치동',
-  //     }
-  //   });
-  //   expect(input).toHaveAttribute('강남구 대치동');
-  // });
 });
