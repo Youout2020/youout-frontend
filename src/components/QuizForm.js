@@ -150,7 +150,12 @@ QuizForm.propTypes = {
   setPage: PropTypes.func.isRequired,
   quizList: PropTypes.array.isRequired,
   setQuizList: PropTypes.func.isRequired,
-  validationMessage: PropTypes.object.isRequired,
+  validationMessage: PropTypes.shape({
+    keyword: PropTypes.string,
+    quiz: PropTypes.string,
+    answer: PropTypes.string,
+    hint: PropTypes.string,
+  }),
   setValidationMessage: PropTypes.func.isRequired,
 };
 

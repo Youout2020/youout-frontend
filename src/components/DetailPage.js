@@ -25,7 +25,13 @@ const DetailPage = ({ list, onClick, title }) => {
 };
 
 DetailPage.propTypes = {
-  list: PropTypes.array.isRequired,
+  list: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string,
+    name: PropTypes.string,
+    game: PropTypes.shape({
+      name: PropTypes.string,
+    }),
+  })),
   onClick: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
 };
