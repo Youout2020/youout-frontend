@@ -1,21 +1,22 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import Button from './Button';
 
 describe('<Button />', () => {
   const mockFn = jest.fn();
-  let wrapper;
-
+  let utils;
   beforeEach(() => {
-    wrapper = shallow(<Button text='확인' onClick={mockFn} />);
+    utils = render(<Button text='confirm' onClick={mockFn} />);
   });
 
-  it('should render button text', () => {
-    expect(wrapper.props().children).toBe('확인');
+  it('should show props correctly', () => {
+    utils.getByText('confirm');
   });
 
-  it('should call onClick event', () => {
-    wrapper.find('button').simulate('click');
-    expect(mockFn.mock.calls.length).toEqual(1);
+  it('should fire onClick event', () => {
+    const button = utils.getByText('confirm');
+    fireEvent.click(button);
+    expect(mockFn).toHaveBeenCalledTimes(1);
   });
 });

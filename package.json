@@ -32,7 +32,7 @@
     "eject": "react-scripts eject",
     "dev": "export NODE_ENV=development HTTPS=true&&port=3000 react-scripts start"
   },
-  "proxy": "https://192.168.0.80:4000",
+  "proxy": "https://192.168.0.57:4000",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -52,11 +52,11 @@
     ]
   },
   "devDependencies": {
-    "redux-logger": "^3.0.6",
-    "prop-types": "^15.7.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "eslint": "^7.13.0",
-    "eslint-plugin-react": "^7.21.5"
+    "eslint-plugin-react": "^7.21.5",
+    "prop-types": "^15.7.2",
+    "redux-logger": "^3.0.6"
   }
 }
