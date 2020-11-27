@@ -21,7 +21,7 @@ const NewGameForm = ({
 }) => {
   const { game_id } = useParams();
   const [ page, setPage ] = useState(1);
-  const [gameInfo, setGameInfo] = useState({
+  const [ gameInfo, setGameInfo ] = useState({
     name: '',
     address: '',
     addressDetail: '',
