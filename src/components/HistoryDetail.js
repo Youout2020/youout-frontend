@@ -35,7 +35,12 @@ const HistoryDetail = ({ historyInfo }) => {
 };
 
 HistoryDetail.propTypes = {
-  historyInfo: PropTypes.object.isRequired,
+  historyInfo: PropTypes.shape({
+    game: PropTypes.shape({
+      name: PropTypes.string
+    }),
+    users: PropTypes.array
+  }).isRequired,
 };
 
 export default HistoryDetail;

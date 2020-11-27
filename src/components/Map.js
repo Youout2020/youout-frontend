@@ -83,7 +83,6 @@ const Map = ({ setPage, gameInfo, setGameInfo }) => {
 
 Map.propTypes = {
   setPage: PropTypes.func.isRequired,
-  gameInfo: PropTypes.object.isRequired,
   setGameInfo: PropTypes.func.isRequired,
 };
 

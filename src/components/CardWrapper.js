@@ -94,7 +94,7 @@ CardWrapper.propTypes = {
   onSetCardShowing: PropTypes.func.isRequired,
   onSubmitAnswer: PropTypes.func.isRequired,
   onSetAnswer: PropTypes.func.isRequired,
-  recognizedKeywordList: PropTypes.array.isRequired,
+  recognizedKeywordList: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default CardWrapper;

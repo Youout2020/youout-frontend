@@ -34,7 +34,9 @@ const GameDetail = ({
 };
 
 GameDetail.propTypes = {
-  quizList: PropTypes.array.isRequired,
+  quizList: PropTypes.arrayOf(PropTypes.shape({
+    quiz: PropTypes.string,
+  })),
   gameInfo: PropTypes.shape({
     name: PropTypes.string.isRequired,
     address: PropTypes.string.isRequired,
