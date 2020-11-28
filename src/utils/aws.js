@@ -12,7 +12,7 @@ const compareLabels = async ({ keyword, data }) => {
   const formattedKeyword = format(translatedKeyword);
 
   return data.Labels.some((label) => (
-    format(label) === formattedKeyword
+    format(label.Name) === formattedKeyword
   ));
 };
 
