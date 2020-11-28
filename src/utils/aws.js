@@ -1,13 +1,18 @@
 import { translate } from './kakao';
 import api from './api';
 
+const format = (string) => {
+  return string.toLowerCase().replace(/(\s*)/g, '');
+};
+
 const compareLabels = async ({ keyword, data }) => {
   if (typeof keyword !== 'string') throw Error(`${keyword} should be string`);
 
   const translatedKeyword = await translate(keyword);
+  const formattedKeyword = format(translatedKeyword);
 
   return data.Labels.some((label) => (
-    label.Name.toLowerCase() === translatedKeyword.toLowerCase()
+    format(label) === formattedKeyword
   ));
 };
 
