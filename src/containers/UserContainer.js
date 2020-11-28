@@ -64,7 +64,6 @@ const UserContainer = () => {
 
   useEffect(() => {
     if (!info) return dispatch(setRoute('/'));
-    if (isInitializedUserPage) return;
 
     dispatch(loadUserPage());
   }, []);

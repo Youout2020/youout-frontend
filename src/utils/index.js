@@ -41,3 +41,7 @@ export const convertTimeFormat = (minutes, seconds) => {
 export const sliceDocs = (docs, from, to) => {
   return docs.slice(from, to);
 };
+
+export const format = (string) => {
+  return string.toLowerCase().replace(/(\s*)/g, '');
+};
