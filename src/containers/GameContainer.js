@@ -11,7 +11,7 @@ import { setRoute } from '../reducer/route';
 import { disconnectGame } from '../reducer/currentGame';
 import awsRekognition from '../utils/aws';
 import { translateKorean } from '../utils/kakao';
-import { convertMsToMinutes, convertTimeToMs } from '../utils/index';
+import { convertMsToMinutes, convertTimeToMs, format } from '../utils/index';
 import { updateData, listenUpdateData, gameComplete } from '../utils/socket';
 import { GAME_PHASE, DELAY, GAME_MESSAGE } from '../constants/game';
 
@@ -106,7 +106,7 @@ const GameContainer = () => {
   const handleSubmitAnswer = () => {
     if (isSubmittedAnswer) return;
 
-    const isCorrectAnswer = userAnswer.trim() === quizList[gameIndex].answer;
+    const isCorrectAnswer = format(userAnswer) === format(quizList[gameIndex].answer);
 
     if (!isCorrectAnswer) {
       setResultMessage(GAME_MESSAGE.WRONG_ANSWER);

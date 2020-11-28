@@ -1,9 +1,6 @@
 import { translate } from './kakao';
 import api from './api';
-
-const format = (string) => {
-  return string.toLowerCase().replace(/(\s*)/g, '');
-};
+import { format } from './index';
 
 const compareLabels = async ({ keyword, data }) => {
   if (typeof keyword !== 'string') throw Error(`${keyword} should be string`);
