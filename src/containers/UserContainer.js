@@ -20,7 +20,6 @@ const UserContainer = () => {
     info,
     histories,
     games,
-    isInitializedUserPage,
   } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const handleUpdateGame = (body, gameId) => dispatch(updateGame({ body, gameId }));

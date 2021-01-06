@@ -71,19 +71,16 @@ const GameListContainer = () => {
   return (
     <>
       {error}
-      {
-        isLoading
-          ? <Loading />
-          : <Header title={HEADER_TITLE.games}>
-              <GameList
-                gameList={docs}
-                playingGameList={playingGameList}
-                address={currentAddress}
-                setTarget={setObservedTarget}
-                joinWaitingRoom={handleJoinWaitingRoom}
-              />
-            </Header>
-      }
+      <Header title={HEADER_TITLE.games}>
+        <GameList
+          gameList={docs}
+          playingGameList={playingGameList}
+          address={currentAddress}
+          setTarget={setObservedTarget}
+          joinWaitingRoom={handleJoinWaitingRoom}
+          isLoading={isLoading}
+        />
+      </Header>
     </>
   );
 };
