@@ -1,3 +1,3 @@
 export default {
-  splash: '/splash.png'
+  splash: '/splash_image.png'
 };
