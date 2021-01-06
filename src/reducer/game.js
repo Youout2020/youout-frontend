@@ -123,34 +123,64 @@ const initState = {
   isSelected: true,
 };
 
-const pending = createNewGame.pending ||
-  loadGames.pending ||
-  loadMoreGames.pending ||
-  updateGame.pending;
-
-const fulfilled = createNewGame.fulfilled ||
-  loadGames.fulfilled ||
-  loadMoreGames.fulfilled ||
-  updateGame.fulfilled;
-
-const rejected = createNewGame.rejected ||
-  loadGames.rejected ||
-  loadMoreGames.rejected ||
-  updateGame.rejected;
-
 export default createReducer(initState, {
   [SET_DOCS]: (state, { payload }) => { state.docs = payload; },
   [SET_NEXT_PAGE]: (state, { payload }) => { state.nextPage = payload; },
   [SET_HAS_NEXT_PAGE]: (state, { payload }) => { state.hasNextPage = payload; },
   [TOGGLE_IS_SELECTED]: (state, action) => { state.isSelected = !state.isSelected; },
   [SET_PLAYING_GAMES]: (state, { payload }) => { state.playingGameList = payload; },
-  [pending]: (state, action) => {
+  [createNewGame.pending]: (state, action) => {
     state.isLoading = true;
   },
-  [fulfilled]: (state, action) => {
+  [loadGames.pending]: (state, action) => {
+    state.isLoading = true;
+  },
+  [loadMoreGames.pending]: (state, action) => {
+    state.isLoading = true;
+  },
+  [updateGame.pending]: (state, action) => {
+    state.isLoading = true;
+  },
+  [createNewGame.fulfilled]: (state, action) => {
     state.isLoading = false;
   },
-  [rejected]: (state, action) => {
+  [loadGames.fulfilled]: (state, action) => {
+    state.isLoading = false;
+  },
+  [loadMoreGames.fulfilled]: (state, action) => {
+    state.isLoading = false;
+  },
+  [updateGame.fulfilled]: (state, action) => {
+    state.isLoading = false;
+  },
+  [createNewGame.rejected]: (state, action) => {
+    if (action.payload) {
+      state.error = action.payload.errorMessage;
+      console.error(action.payload.errorMessage);
+    } else {
+      state.error = action.error.message;
+      console.error(action.payload.errorMessage);
+    }
+  },
+  [loadGames.rejected]: (state, action) => {
+    if (action.payload) {
+      state.error = action.payload.errorMessage;
+      console.error(action.payload.errorMessage);
+    } else {
+      state.error = action.error.message;
+      console.error(action.payload.errorMessage);
+    }
+  },
+  [loadMoreGames.rejected]: (state, action) => {
+    if (action.payload) {
+      state.error = action.payload.errorMessage;
+      console.error(action.payload.errorMessage);
+    } else {
+      state.error = action.error.message;
+      console.error(action.payload.errorMessage);
+    }
+  },
+  [updateGame.rejected]: (state, action) => {
     if (action.payload) {
       state.error = action.payload.errorMessage;
       console.error(action.payload.errorMessage);

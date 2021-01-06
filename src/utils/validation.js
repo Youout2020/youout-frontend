@@ -19,3 +19,13 @@ export const validateSpace = (value) => {
 
   return '';
 };
+
+export const isValidJsonFormat = (input) => {
+  try {
+    JSON.parse(input);
+  } catch (err) {
+    return false;
+  }
+
+  return true;
+};

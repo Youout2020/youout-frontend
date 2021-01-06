@@ -14,6 +14,7 @@ import firebase from '../utils/firebase';
 import { TYPE, emit } from '../utils/native';
 import { updateData, gameComplete } from '../utils/socket';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { isValidJsonFormat } from '../utils/validation';
 
 const AppContainer = () => {
   const { isLoading, isInitialized, info, error } = useSelector((state) => state.user);
@@ -40,7 +41,7 @@ const AppContainer = () => {
     if (!info) return;
 
     const listenNative = ({ data }) => {
-      if (typeof data !== 'string') return;
+      if (!isValidJsonFormat(data)) return;
 
       const { type, payload } = JSON.parse(data);
 
