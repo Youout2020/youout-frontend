@@ -22,6 +22,7 @@ const GameList = ({
   setTarget,
   joinWaitingRoom,
   address,
+  isLoading,
 }) => {
   const dispatch = useDispatch();
   const [ isSelected, setIsSelected ] = useState(true);
@@ -52,7 +53,7 @@ const GameList = ({
         {
           !gameList.length
             ? <div className={styles.noRoomMessage}>
-                <p>방 없음🤐</p>
+              <p>{isLoading ? '방 찾는 중...' : '방 없음'}🤐</p>
               </div>
             : (
                 isSelected
@@ -98,6 +99,7 @@ GameList.propTypes = {
   setTarget: PropTypes.func.isRequired,
   joinWaitingRoom: PropTypes.func.isRequired,
   address: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default GameList;
